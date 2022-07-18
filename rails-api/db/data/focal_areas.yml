@@ -1,0 +1,41 @@
+---
+
+- name: Biodiversity
+  alternative_names: BD
+  tag: Biodiversity
+
+- name: Land Degradation
+  alternative_names: LD
+  tag: LandDegradation
+
+- name: Climate Change
+  alternative_names: CC
+  tag: ClimateChange
+
+- name: Climate Change Adaptation
+  alternative_names: CCA
+  tag: ClimateChangeAdaptation
+
+- name: Climate Change Mitigation
+  alternative_names: CCM
+  tag: ClimateChangeMitigation
+
+- name: International Waters
+  alternative_names: IW
+  tag: InternationalWaters
+
+- name: Sustainable Forest Management
+  alternative_names: SFM
+  tag: SustainableForestManagement
+
+- name: IP SFM Congo
+  alternative_names:
+  tag: IPSFMCongo
+
+- name: Multi-focal Areas
+  alternative_names:
+  tag: Multi-focalAreas
+
+- name: CB
+  alternative_names: CB
+  tag: CB

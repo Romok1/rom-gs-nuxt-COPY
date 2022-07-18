@@ -1,0 +1,20 @@
+---
+
+- name: Global
+
+- name: Africa
+
+- name: Asia
+
+- name: Asia Pacific
+
+- name: Europe
+
+- name: Latin America and the Caribbean
+  alternative_names: LAC
+
+- name: North Africa
+
+- name: Central & Eastern Europe
+
+- name: West Asia
