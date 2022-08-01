@@ -137,9 +137,6 @@ pipeline {
 def BuildProject() {
     sh 'echo "Building Project.............."'
     sh 'docker-compose --project-name=${JOB_NAME} build'
-    sh "docker-compose run web bundle install"
-   sh "docker-compose up -d"
-  sh "docker-compose logs"
 }
 
 def Preparedatabase() {
