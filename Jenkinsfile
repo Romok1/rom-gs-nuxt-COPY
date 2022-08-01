@@ -13,8 +13,7 @@ pipeline {
         SLACK_TOKEN=credentials('slack-token-gef')
         SLACK_CHANNEL="#jenkins-cicd-gefspatial"
         COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}".replaceAll("/", "-").replaceAll(" ", "").toLowerCase()
-        COMPOSE_FILE = "docker-compose.yml:docker-compose-ci.yml"
-        RAILS_ENV = "test"
+        COMPOSE_FILE = "docker-compose.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
     }
     stages {
