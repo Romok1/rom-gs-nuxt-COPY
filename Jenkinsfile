@@ -135,13 +135,13 @@ pipeline {
 
 def BuildProject() {
     sh 'echo "Building Project.............."'
-    sh 'docker-compose --project-name=${JOB_NAME} build'
+    sh 'docker-compose --project-name=${JOB_NAME} build --pull'
 }
 
 def Preparedatabase() {
     COMMAND="bin/rails db:create db:migrate db:seed"
     sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
-    sh "docker-compose --project-name=${JOB_NAME} run --rm nuxt yarn install"
+    sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn install"
     sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn test"
 }
 
