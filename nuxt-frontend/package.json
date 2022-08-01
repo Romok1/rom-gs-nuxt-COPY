@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "nuxt --port=$PORT",
-    "build": "~/.nvm/versions/node/v16.14.2/bin/node node_modules/nuxt/bin/nuxt.js build",
-    "start": "~/.nvm/versions/node/v16.14.2/bin/node node_modules/nuxt/bin/nuxt.js start --port=$PORT",
-    "generate": "~/.nvm/versions/node/v16.14.2/bin/node node_modules/nuxt/bin/nuxt.js generate",
+    "build": "nuxt build",
+    "start": "nuxt start --port=$PORT",
+    "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint:style": "stylelint \"**/*.{vue,css}\" --ignore-path .gitignore",
     "lint": "yarn lint:js && yarn lint:style"

@@ -1,0 +1,28 @@
+FROM node:16.14.2-bullseye
+
+RUN apt-get update -qq
+
+# Get the latest stable release of yarn
+#RUN yarn policies set-version
+
+# first installed node_modules in cache and copy them to src folder
+#RUN mkdir /usr/src/cache
+#WORKDIR /usr/src/cache
+RUN mkdir /usr/src/app
+#WORKDIR /usr/src/app
+COPY package*.json .
+COPY . /usr/src/app
+WORKDIR /usr/src/app
+RUN yarn install --verbose 
+
+# now make a different directory for src code 
+#RUN mkdir /usr/src/app
+#WORKDIR /usr/src/app
+
+# set path to run packages from node_modules
+ENV NODE_PATH=/usr/src/app/node_modules/.bin
+#COPY . .
+
+EXPOSE 3000
+
+CMD ["yarn", "dev"]
