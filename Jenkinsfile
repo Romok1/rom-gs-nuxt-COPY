@@ -140,17 +140,19 @@ def BuildProject() {
 
 def Preparedatabase() {
     COMMAND="bin/rails db:create db:migrate db:seed"
-    sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
+    sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
+    sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn install"
+    sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn test"
 }
 
 def Raketest() {
     COMMAND="bundle exec rake test"
-	sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
+	sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
 }
 
 def Rspectests() {
     COMMAND="bundle exec rspec spec"
-    sh 'docker-compose --project-name=${JOB_NAME} run web $COMMAND'
+    sh 'docker-compose --project-name=${JOB_NAME} run rails $COMMAND'
 }
 
 def imagecleanup() {
