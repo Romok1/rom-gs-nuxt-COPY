@@ -136,12 +136,11 @@ pipeline {
 
 def BuildProject() {
     sh 'echo "Building Project.............."'
-    sh 'docker-compose --project-name=${JOB_NAME} build -f docker-compose-ci.yml'
+    sh 'docker-compose --project-name=${JOB_NAME} build'
 }
 
 def Preparedatabase() {
-    COMMAND="bin/rails db:create db:migrate db:seed RAILS_ENV=test"
-	sh "docker-compose logs"
+    COMMAND="bin/rails db:create db:migrate db:seed"
     sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
 }
 
