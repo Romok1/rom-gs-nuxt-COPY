@@ -143,7 +143,7 @@ def BuildProject() {
 }
 
 def Preparedatabase() {
-    COMMAND="bundle exec rake db:create db:migrate RAILS_ENV=test"
+    COMMAND="bin/rails db:create db:migrate db:seed RAILS_ENV=test"
 	sh "docker-compose logs"
     sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
 }
