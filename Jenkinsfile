@@ -136,7 +136,7 @@ pipeline {
 
 def BuildProject() {
     sh 'echo "Building Project.............."'
-    sh 'docker-compose --project-name=${JOB_NAME} build'
+    sh 'docker-compose --project-name=${JOB_NAME} build -f docker-compose-ci.yml'
 }
 
 def Preparedatabase() {
