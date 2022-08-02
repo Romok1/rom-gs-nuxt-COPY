@@ -138,7 +138,7 @@ def BuildProject() {
 }
 
 def Preparedatabase() {
-    COMMAND="bin/rails db:create db:migrate db:seed"
+    COMMAND="bin/rails db:drop db:create db:migrate db:seed"
     sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
     sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn install"
     // sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn lint"
