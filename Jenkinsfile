@@ -58,15 +58,14 @@ pipeline {
                  Raketest() }
 	     }
         }
-        stage('Clean') {
-              when {
-                  branch 'gf-docker-ci'
-                }
-            steps{
-              sh "docker-compose down --remove-orphans --rmi all"
-              
-            }
-        }
+        //stage('Clean') {
+         //     when {
+         //         branch 'gf-docker-ci'
+         //       }
+        //    steps{
+        //      sh "docker-compose down --remove-orphans --rmi all"       
+        //    }
+       // }
         stage('Scan for vulnerabilities') {
             steps {
              script {
@@ -142,7 +141,7 @@ def Preparedatabase() {
     COMMAND="bin/rails db:create db:migrate db:seed"
     sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
     sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn install"
-    sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn test"
+    // sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn lint"
 }
 
 def Raketest() {
