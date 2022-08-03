@@ -15,6 +15,7 @@ pipeline {
         COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}".replaceAll("/", "-").replaceAll(" ", "").toLowerCase()
         COMPOSE_FILE = "docker-compose.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
+	SNYK_URL = https://app.snyk.io/org/informatics.wcmc/projects
     }
     stages {
         stage ('Start') {
@@ -48,6 +49,16 @@ pipeline {
                  Preparedatabase() }
 	     }
         }
+        stage("Rake test") {
+              when {
+                  branch 'gf-docker-ci'
+                }
+             steps { 
+		script {
+		 CI_ERROR = "Failed: Rake test stage"
+                 Raketest() }
+	     }
+        }
         stage("Rspec test") {
               when {
                   branch 'gf-docker-ci'
@@ -55,28 +66,28 @@ pipeline {
              steps { 
 		script {
 		 CI_ERROR = "Failed: Rspec test stage"
-                 Raketest() }
+                 Rspectests() }
 	     }
         }
-        //stage('Clean') {
-         //     when {
-         //         branch 'gf-docker-ci'
-         //       }
-        //    steps{
-        //      sh "docker-compose down --remove-orphans --rmi all"       
-        //    }
-       // }
         stage('Scan for vulnerabilities') {
             steps {
-       //      script {
-	//      CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${SNYK_API}""
+             script {
+	      CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}""
               echo 'Scanning...'
               snykSecurity(
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'snyktoken',
               )
-	//	}
+	      }
             }
+	   post {
+                  success{
+                      slackSend color : "good", message: "Snyk scan successful", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+                  }
+                  failure{
+                      slackSend color : "danger", message: "Snyk scan failed, visit "${env.SNYK_URL}" to get detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+                  }
+              }
         }
         stage("Deploy") {
              when {
@@ -89,7 +100,7 @@ pipeline {
                  ls
                  printenv
                 git branch
-                echo "bundle exec cap staging deploy" 
+                bundle exec cap staging deploy
                  '''}
               }
              post {
@@ -134,19 +145,19 @@ pipeline {
 
 def BuildProject() {
     sh 'echo "Building Project.............."'
-    sh 'docker-compose --project-name=${JOB_NAME} build --pull'
+    sh 'docker-compose -f docker-compose-ci.yml --project-name=${JOB_NAME} build --pull'
 }
 
 def Preparedatabase() {
     COMMAND="bin/rails db:drop db:create db:migrate db:seed"
     sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
     sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn install"
-    // sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn lint"
 }
 
 def Raketest() {
     COMMAND="bundle exec rake test"
 	sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
+	// sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn lint"
 }
 
 def Rspectests() {
