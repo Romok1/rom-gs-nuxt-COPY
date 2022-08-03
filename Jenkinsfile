@@ -78,7 +78,7 @@ pipeline {
               echo 'Scanning...'
               snykSecurity(
                 snykInstallation: 'snyk@latest',
-                snykTokenId: 'snyktoken',
+                snykTokenId: 'wcmc-snyk',
               )
 	   //   }
             }
@@ -102,6 +102,7 @@ pipeline {
                  ls
                  printenv
                 git branch
+		rvm use $(cat .ruby-version) --install
                 bundle exec cap staging deploy
                  '''}
               }
