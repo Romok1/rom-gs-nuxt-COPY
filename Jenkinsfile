@@ -15,7 +15,7 @@ pipeline {
         //COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}".replaceAll("/", "-").replaceAll(" ", "").toLowerCase()
         COMPOSE_FILE = "docker-compose-ci.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
-	SNYK_URL = "https://app.snyk.io/org/informatics.wcmc/projects"
+	SNYK_URL="https://app.snyk.io/org/informatics.wcmc/projects"
     }
     stages {
         stage ('Start') {
@@ -73,14 +73,14 @@ pipeline {
         }
         stage('Scan for vulnerabilities') {
             steps {
-             script {
-	      CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}""
+         //    script {
+	 //     CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}""
               echo 'Scanning...'
               snykSecurity(
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'snyktoken',
               )
-	      }
+	   //   }
             }
 	   post {
                   success{
