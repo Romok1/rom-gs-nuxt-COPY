@@ -162,7 +162,7 @@ def Raketest() {
 
 def Rspectests() {
     COMMAND="bundle exec rspec spec"
-    sh 'docker-compose --project-name=${JOB_NAME} run rails $COMMAND'
+	sh 'docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}'
 }
 
 def imagecleanup() {
