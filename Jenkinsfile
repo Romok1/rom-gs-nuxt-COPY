@@ -103,6 +103,7 @@ pipeline {
                  printenv
                 git branch
 		rvm use $(cat .ruby-version) --install
+		bundle install
                 bundle exec cap staging deploy
                  '''}
               }
