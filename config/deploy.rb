@@ -4,7 +4,7 @@
 lock '~> 3.17.0'
 
 set :application, 'gef-spatial'
-set :repo_url, 'git@github.com:unepwcmc/gef-spatial.git'
+set :repo_url, 'https://github.com/Romok1/rom-gs-nuxt.git'
 
 set :nvm_type, :user # or :system, depends on your nvm setup
 set :nvm_node, 'v16.8.0'
