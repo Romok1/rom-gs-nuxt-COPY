@@ -98,13 +98,14 @@ pipeline {
              steps { 
                script {
 		 CI_ERROR = "Failed: Deploy stage"
+		  sh 'echo $WORKSPACE'
                  sh '''#!/bin/bash -l
                  ls
-                 printenv
+                 // printenv
                 git branch
-		rvm use $(cat .ruby-version) --install
-		bundle install
-                bundle exec cap staging deploy
+		// rvm use $(cat .ruby-version) --install
+		// bundle install
+                echo "bundle exec cap staging deploy"
                  '''}
               }
              post {
