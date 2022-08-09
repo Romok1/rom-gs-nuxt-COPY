@@ -153,10 +153,7 @@ pipeline {
 		    cleanWs(cleanWhenNotBuilt: false,
                        deleteDirs: true,
                        disableDeferredWipeout: true,
-                       notFailBuild: true,
-		       patterns: [[pattern: '**/*', type: 'INCLUDE'],
-		         [pattern: '~/workspace/deploygfs', type: 'INCLUDE'],
-                         [pattern: '**/*/rails-api', type: 'INCLUDE']])
+                       notFailBuild: true)
 		}
 	        success {
                     slackSend(
