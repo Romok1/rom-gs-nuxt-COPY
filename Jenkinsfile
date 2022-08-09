@@ -151,7 +151,11 @@ pipeline {
 		    cleanWs(cleanWhenNotBuilt: false,
                        deleteDirs: true,
                        disableDeferredWipeout: true,
-                       notFailBuild: true)
+                       notFailBuild: true,
+		       patterns: [[pattern: 'development.log', type: 'INCLUDE'],
+		         [pattern: 'tmp', type: 'INCLUDE'],
+                         [pattern: 'log', type: 'INCLUDE']])
+
 		    dir("${env.WORKSPACE}") {
                        deleteDir()
                     }
