@@ -145,6 +145,8 @@ pipeline {
     post {
                 always {
 			script{
+			        BUILD_STATUS = currentBuild.currentResult
+		                if (currentBuild.currentResult == 'SUCCESS') { CI_ERROR = "NA" }
 				imagecleanup()
 				// cleanWs()
 			}
@@ -153,7 +155,7 @@ pipeline {
                        disableDeferredWipeout: true,
                        notFailBuild: true,
 		       patterns: [[pattern: '**/*', type: 'INCLUDE'],
-		         [pattern: 'tmp', type: 'INCLUDE'],
+		         [pattern: '~/workspace/deploygfs', type: 'INCLUDE'],
                          [pattern: 'log', type: 'INCLUDE']])
 
 		    dir("${env.WORKSPACE}") {
