@@ -16,6 +16,7 @@ pipeline {
         COMPOSE_FILE = "docker-compose-ci.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
 	SNYK_URL="https://app.snyk.io/org/informatics.wcmc/projects"
+	DIR=$JENKINS_HOME/workspace
     }
     stages {
         stage ('Start') {
@@ -99,13 +100,14 @@ pipeline {
              steps { 
                script {
 		 CI_ERROR = "Failed: Prepare deploy stage"
-		  sh 'mkdir $WORKSPACE/deploygfs'
-		 dir('$WORKSPACE/deploygfs') {
+		  sh "mkdir $DIR/deploygfs"
+		 dir('$DIR/deploygfs') {
 		  checkout scm
                   sh '''#!/bin/bash -l
                  ls
                  printenv
                 git branch
+		echo "$GIT_BRANCH"
                  '''
 	   // rvm use $(cat .ruby-version) --install
 		// bundle install
