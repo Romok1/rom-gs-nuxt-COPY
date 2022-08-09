@@ -101,7 +101,7 @@ pipeline {
                script {
 		 CI_ERROR = "Failed: Prepare deploy stage"
 		  sh "mkdir $DIR/deploygfs"
-		 dir('$DIR/deploygfs') {
+		 dir("$DIR/deploygfs") {
 		  checkout scm
                   sh '''#!/bin/bash -l
                  ls
