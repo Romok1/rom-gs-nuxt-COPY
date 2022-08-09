@@ -151,9 +151,9 @@ pipeline {
                        deleteDirs: true,
                        disableDeferredWipeout: true,
                        notFailBuild: true,
-                       patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-				  [pattern: '$WORKSPACE@tmp', type: 'INCLUDE'],
-                               [pattern: '.propsfile', type: 'EXCLUDE']])
+                       patterns: [[pattern: "$DIR/deploygfs", type: 'INCLUDE'],
+				  [pattern: "$WORKSPACE@tmp", type: 'INCLUDE'],
+                               [pattern: '$WORKSPACE', type: 'INCLUDE']])
 		}
 	        success {
                     slackSend(
