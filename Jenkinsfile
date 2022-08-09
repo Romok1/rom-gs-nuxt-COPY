@@ -156,8 +156,10 @@ pipeline {
                        notFailBuild: true,
 		       patterns: [[pattern: '**/*', type: 'INCLUDE'],
 		         [pattern: '~/workspace/deploygfs', type: 'INCLUDE'],
-                         [pattern: 'log', type: 'INCLUDE']])
-
+                         [pattern: '**/*/rails-api', type: 'INCLUDE']])
+			
+                    deleteDir()
+		    
 		    dir("${env.WORKSPACE}") {
                        deleteDir()
                     }
