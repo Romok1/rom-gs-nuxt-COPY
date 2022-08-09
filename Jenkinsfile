@@ -149,6 +149,7 @@ pipeline {
 		                if (currentBuild.currentResult == 'SUCCESS') { CI_ERROR = "NA" }
 				imagecleanup()
 				// cleanWs()
+				deleteworkspace()
 			}
 		    cleanWs(cleanWhenNotBuilt: false,
                        deleteDirs: true,
@@ -157,12 +158,6 @@ pipeline {
 		       patterns: [[pattern: '**/*', type: 'INCLUDE'],
 		         [pattern: '~/workspace/deploygfs', type: 'INCLUDE'],
                          [pattern: '**/*/rails-api', type: 'INCLUDE']])
-			
-                    deleteDir()
-		    
-		    dir("${env.WORKSPACE}") {
-                       deleteDir()
-                    }
 		}
 	        success {
                     slackSend(
@@ -215,4 +210,8 @@ def imagecleanup() {
    sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
    sh "docker rm -v `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
    sh "docker rmi `docker images --filter 'dangling=true' -q --no-trunc` &> /dev/null || true &> /dev/null"
+}
+
+def deleteworkspace() {
+	sh "sudo rm -r $WORKSPACE"
 }
