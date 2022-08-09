@@ -16,7 +16,7 @@ pipeline {
         COMPOSE_FILE = "docker-compose-ci.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
 	SNYK_URL="https://app.snyk.io/org/informatics.wcmc/projects"
-	DIR=$JENKINS_HOME/workspace
+	DIR="$JENKINS_HOME/workspace"
     }
     stages {
         stage ('Start') {
