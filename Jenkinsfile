@@ -152,7 +152,7 @@ pipeline {
                        deleteDirs: true,
                        disableDeferredWipeout: true,
                        notFailBuild: true,
-		       patterns: [[pattern: 'development.log', type: 'INCLUDE'],
+		       patterns: [[pattern: '**/*', type: 'INCLUDE'],
 		         [pattern: 'tmp', type: 'INCLUDE'],
                          [pattern: 'log', type: 'INCLUDE']])
 
