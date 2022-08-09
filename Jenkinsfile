@@ -91,6 +91,28 @@ pipeline {
                   }
               }
         }
+	
+	stage("Prepare Deploy") {
+             when {
+                  branch 'gf-docker-ci'
+                }
+             steps { 
+               script {
+		 CI_ERROR = "Failed: Prepare deploy stage"
+		  sh 'mkdir $WORKSPACE/deploygfs'
+		 dir('$WORKSPACE/deploygfs') {
+		  checkout scm
+                  sh '''#!/bin/bash -l
+                 ls
+                 printenv
+                git branch
+                 '''
+	   // rvm use $(cat .ruby-version) --install
+		// bundle install
+                    }
+                 }
+              }
+        }
         stage("Deploy") {
              when {
                   branch 'gf-docker-ci'
@@ -98,7 +120,6 @@ pipeline {
              steps { 
                script {
 		 CI_ERROR = "Failed: Deploy stage"
-		  sh 'echo $WORKSPACE'
                  sh '''#!/bin/bash -l
                  ls
                  // printenv
@@ -122,8 +143,15 @@ pipeline {
                 always {
 			script{
 				imagecleanup()
-				cleanWs()
+				// cleanWs()
 			}
+		    cleanWs(cleanWhenNotBuilt: false,
+                       deleteDirs: true,
+                       disableDeferredWipeout: true,
+                       notFailBuild: true,
+                       patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+				  [pattern: '$WORKSPACE@tmp', type: 'INCLUDE'],
+                               [pattern: '.propsfile', type: 'EXCLUDE']])
 		}
 	        success {
                     slackSend(
