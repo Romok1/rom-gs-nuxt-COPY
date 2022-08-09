@@ -149,7 +149,6 @@ pipeline {
 		                if (currentBuild.currentResult == 'SUCCESS') { CI_ERROR = "NA" }
 				imagecleanup()
 				// cleanWs()
-				deleteworkspace()
 			}
 		    cleanWs(cleanWhenNotBuilt: false,
                        deleteDirs: true,
@@ -178,6 +177,10 @@ pipeline {
                             message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} \n"
                     )
                 }
+	        cleanup {
+		    script{
+			    deleteworkspace()
+		    }
     }
 }
 
