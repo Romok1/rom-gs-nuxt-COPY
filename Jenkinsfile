@@ -214,5 +214,5 @@ def imagecleanup() {
 }
 
 def deleteworkspace() {
-	sh "sudo rm -r $WORKSPACE"
+	sh "sudo rm -r $$DIR/deploygfs"
 }
