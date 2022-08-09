@@ -151,7 +151,7 @@ pipeline {
 				// cleanWs()
 			}
 		    cleanWs(cleanWhenNotBuilt: false,
-                       deleteDirs: true,
+                       deleteDirs: false,
                        disableDeferredWipeout: true,
                        notFailBuild: true)
 		}
@@ -215,4 +215,5 @@ def imagecleanup() {
 
 def deleteworkspace() {
 	sh "sudo rm -r $DIR/deploygfs"
+	sh "sudo rm -r $WORKSPACE@tmp"
 }
