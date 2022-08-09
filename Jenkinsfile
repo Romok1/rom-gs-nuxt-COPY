@@ -159,15 +159,6 @@ pipeline {
 		    dir("${env.WORKSPACE}") {
                        deleteDir()
                     }
-		    dir("${env.WORKSPACE}@tmp") {
-                       deleteDir()
-                    }
-                    dir("$DIR/deploygfs") {
-                       deleteDir()
-                    }
-                    dir("$DIR/deploygfs@tmp") {
-                       deleteDir()
-                    }
 		}
 	        success {
                     slackSend(
