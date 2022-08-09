@@ -122,14 +122,15 @@ pipeline {
              steps { 
                script {
 		 CI_ERROR = "Failed: Deploy stage"
+		 dir("$DIR/deploygfs") {
                  sh '''#!/bin/bash -l
                  ls
-                 // printenv
                 git branch
-		// rvm use $(cat .ruby-version) --install
-		// bundle install
+		rvm use $(cat .ruby-version) --install
+		bundle install
                 echo "bundle exec cap staging deploy"
                  '''}
+	       }
               }
              post {
                   success{
@@ -150,10 +151,19 @@ pipeline {
 		    cleanWs(cleanWhenNotBuilt: false,
                        deleteDirs: true,
                        disableDeferredWipeout: true,
-                       notFailBuild: true,
-                       patterns: [[pattern: "$DIR/deploygfs", type: 'INCLUDE'],
-				  [pattern: "$WORKSPACE@tmp", type: 'INCLUDE'],
-                               [pattern: '$WORKSPACE', type: 'INCLUDE']])
+                       notFailBuild: true)
+		    dir("${env.WORKSPACE}") {
+                       deleteDir()
+                    }
+		    dir("${env.WORKSPACE}@tmp") {
+                       deleteDir()
+                    }
+                    dir("$DIR/deploygfs") {
+                       deleteDir()
+                    }
+                    dir("$DIR/deploygfs@tmp") {
+                       deleteDir()
+                    }
 		}
 	        success {
                     slackSend(
