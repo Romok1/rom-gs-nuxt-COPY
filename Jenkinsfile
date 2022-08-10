@@ -80,7 +80,7 @@ pipeline {
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
 		severity: 'high',
-		targetFile: 'nuxt-frontend/,
+		targetFile: 'nuxt-frontend/',
               )
             }
 	   post {
