@@ -175,11 +175,11 @@ pipeline {
                     )
                 }
 	        cleanup {
-                	//cleanWs()
-			cleanWs(cleanWhenNotBuilt: false,
-                          deleteDirs: true,
-                          disableDeferredWipeout: true,
-                          notFailBuild: true)
+                	cleanWs()
+			//cleanWs(cleanWhenNotBuilt: false,
+                         // deleteDirs: true,
+                        //  disableDeferredWipeout: true,
+                        //  notFailBuild: true)
 		//	script{
 		//		deleteworkspace()
 		//	}
@@ -190,9 +190,9 @@ pipeline {
 	          dir("$DIR/deploygfs@tmp") {
 		    deleteDir()
 		    }
-		  //dir("$WORKSPACE") {
-		  //  deleteDir()
-		  //  }
+		  dir("$WORKSPACE") {
+		    deleteDir()
+		    }
 		  //dir("${workspace}@tmp") {
 		  //  deleteDir()
 		 // }
