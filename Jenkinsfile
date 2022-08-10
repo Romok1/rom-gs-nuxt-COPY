@@ -81,7 +81,6 @@ pipeline {
                 snykTokenId: 'wcmc-snyk',
 		additionalArguments: '--all-projects',
 		severity: 'high',
-		monitor: true,
               )
             }
 	   post {
