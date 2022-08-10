@@ -175,20 +175,20 @@ pipeline {
                     )
                 }
 	        cleanup {
-			cleanWs()
-			script{
-				deleteworkspace()
-			}
+		//	cleanWs()
+		//	script{
+		//		deleteworkspace()
+		//	}
 		
-	       //   dir("$DIR/deploygfs") {
-		//    deleteDir()
-		//    }
-		//  dir("$WORKSPACE") {
-		//    deleteDir()
-		//    }
-		//  dir("$WORKSPACE_TMP") {
-		//    deleteDir()
-		 //  }
+	          dir("$DIR/deploygfs") {
+		    deleteDir()
+		    }
+		  dir("$WORKSPACE") {
+		    deleteDir()
+		    }
+		  dir("${WORKSPACE}@tmp") {
+		    deleteDir()
+		  }
 	         // deleteworkspace()
 		}
     }
