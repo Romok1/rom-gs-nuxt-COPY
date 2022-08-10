@@ -183,7 +183,7 @@ pipeline {
 		//	script{
 		//		deleteworkspace()
 		//	}
-		// deleteDir()
+		 deleteDir()
 	          dir("$DIR/deploygfs") {
 		    deleteDir()
 		    }
@@ -196,7 +196,7 @@ pipeline {
 		//  dir("${workspace}@tmp") {
 		//    deleteDir()
 		//  }
-	         deleteworkspace()
+	         //deleteworkspace()
 		}
     }
 }
