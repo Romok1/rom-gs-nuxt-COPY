@@ -81,6 +81,7 @@ pipeline {
                 snykTokenId: 'wcmc-snyk',
 		additionalArguments: '--all-projects',
 		severity: 'high',
+		targetFile: 'nuxt-frontend/package.json',
               )
             }
 	   post {
