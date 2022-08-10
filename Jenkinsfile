@@ -92,6 +92,7 @@ pipeline {
 			    CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details 
 			  }
 		    }
+		  }
                   success{
                       slackSend color : "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
                   }
