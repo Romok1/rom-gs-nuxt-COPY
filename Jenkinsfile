@@ -196,7 +196,7 @@ pipeline {
 		//  dir("${WORKSPACE}@tmp") {
 		 //   deleteDir()
 		//  }
-	         //  deleteworkspace()
+	           deleteworkspace()
 		}
     }
 }
