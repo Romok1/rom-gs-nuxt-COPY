@@ -179,6 +179,7 @@ pipeline {
 		//		deleteworkspace()
 		//	}
 		 // deleteDir()
+		   cleanWs()
 	          dir("$DIR/deploygfs") {
 		    deleteDir()
 		    }
