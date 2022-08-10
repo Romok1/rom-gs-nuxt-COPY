@@ -175,15 +175,16 @@ pipeline {
                     )
                 }
 	        cleanup {
+		 deleteDir()
 	          dir("$DIR/deploygfs") {
 		    deleteDir()
 		    }
 		  dir("$DIR/deploygfs@tmp") {
 		    deleteDir()
 		    }
-	          dir("$env.WORKSPACE") {
-		    deleteDir()
-		    }
+		  dir("${workspace}@tmp") {
+                    deleteDir()
+                   }
 		}
     }
 }
