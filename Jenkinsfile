@@ -183,7 +183,10 @@ pipeline {
 	          dir("$DIR/deploygfs") {
 		    deleteDir()
 		    }
-	          deleteworkspace()
+		  dir("$WORKSPACE") {
+		    deleteDir()
+		    }
+	         // deleteworkspace()
 		}
     }
 }
