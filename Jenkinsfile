@@ -82,7 +82,10 @@ pipeline {
 		additionalArguments: '--all-projects',
 		severity: 'high',
               )
-	   //   } 
+		    script{
+			    CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details
+		    }
+	       } 
             }
 	   post {
                   success{
@@ -197,7 +200,7 @@ pipeline {
 		//  dir("${WORKSPACE}@tmp") {
 		 //   deleteDir()
 		//  }
-	        //   deleteworkspace()
+	           deleteworkspace()
 		}
     }
 }
