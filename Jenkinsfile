@@ -86,13 +86,6 @@ pipeline {
 	       } 
             }
 	   post {
-		  always{
-			 steps {
-			  script{
-			    CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details 
-			  }
-		    }
-		  }
                   success{
                       slackSend color : "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
                   }
@@ -100,6 +93,14 @@ pipeline {
                       slackSend color : "danger", message: "Snyk scan failed, visit ${env.SNYK_URL} to get detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
                   }
               }
+        }
+	stage("Post Snyk scan") {
+             steps { 
+		 script {
+	                  BUILD_STATUS = currentBuild.currentResult
+		          if (currentBuild.currentResult == 'FAILURE') { CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}"" }
+		 }
+	     }
         }
 	
 	stage("Prepare Deploy") {
