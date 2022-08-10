@@ -79,9 +79,8 @@ pipeline {
               snykSecurity(
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
-		//additionalArguments: '--all-projects',
 		severity: 'high',
-		targetFile: 'nuxt-frontend/*', 'rails-api/*'
+		targetFile: 'nuxt-frontend/,
               )
             }
 	   post {
@@ -91,7 +90,7 @@ pipeline {
                   failure{
                       slackSend color : "danger", message: "Snyk scan failed, visit ${env.SNYK_URL} to get detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
                   }
-              }
+              } //additionalArguments: '--all-projects',
         }
 	stage("Post Snyk scan") {
              steps { 
