@@ -190,12 +190,12 @@ pipeline {
 	          dir("$DIR/deploygfs@tmp") {
 		    deleteDir()
 		    }
-		  dir("${env.WORKSPACE}") {
-		    deleteDir()
-		    }
-		  dir("${workspace}@tmp") {
-		    deleteDir()
-		  }
+		 // dir("${env.WORKSPACE}") {
+		 //   deleteDir()
+		//    }
+		//  dir("${workspace}@tmp") {
+		//    deleteDir()
+		//  }
 	         deleteworkspace()
 		}
     }
