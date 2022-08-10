@@ -74,9 +74,7 @@ pipeline {
         }
         stage('Scan for vulnerabilities') {
             steps {
-             script {
 	      CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}""
-	     }
               echo 'Scanning...'
               snykSecurity(
                 snykInstallation: 'snyk@latest',
@@ -153,10 +151,10 @@ pipeline {
 				imagecleanup()
 				// cleanWs()
 			}
-		    cleanWs(cleanWhenNotBuilt: false,
-                       deleteDirs: true,
-                       disableDeferredWipeout: true,
-                       notFailBuild: true)
+		  //  cleanWs(cleanWhenNotBuilt: false,
+                 //      deleteDirs: true,
+                 //      disableDeferredWipeout: true,
+                 //      notFailBuild: true)
 		}
 	        success {
                     slackSend(
@@ -199,7 +197,7 @@ pipeline {
 		//  dir("${WORKSPACE}@tmp") {
 		 //   deleteDir()
 		//  }
-	           deleteworkspace()
+	        //   deleteworkspace()
 		}
     }
 }
