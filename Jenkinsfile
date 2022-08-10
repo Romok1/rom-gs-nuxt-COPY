@@ -193,9 +193,9 @@ pipeline {
 		  dir("${env.WORKSPACE}") {
 		    deleteDir()
 		    }
-		  //dir("${workspace}@tmp") {
-		  //  deleteDir()
-		 // }
+		  dir("${workspace}@tmp") {
+		    deleteDir()
+		  }
 	         deleteworkspace()
 		}
     }
