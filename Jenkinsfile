@@ -175,9 +175,9 @@ pipeline {
                     )
                 }
 	        cleanup {
-			script{
-				deleteworkspace()
-			}
+		//	script{
+		//		deleteworkspace()
+		//	}
 		 // deleteDir()
 	          dir("$DIR/deploygfs") {
 		    deleteDir()
