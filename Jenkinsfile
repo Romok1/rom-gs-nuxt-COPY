@@ -196,7 +196,7 @@ pipeline {
 		  //dir("${workspace}@tmp") {
 		  //  deleteDir()
 		 // }
-	         // deleteworkspace()
+	         deleteworkspace()
 		}
     }
 }
@@ -233,7 +233,7 @@ def imagecleanup() {
 }
 
 def deleteworkspace() {
-	sh "sudo rm -r $DIR/deploygfs*"
-	sh "sudo rm -rf ${env.WORKSPACE}"
-	sh "sudo rm -rf ${workspace}@tmp"
+	//sh "sudo rm -r $DIR/deploygfs*"
+	//sh "sudo rm -rf ${env.WORKSPACE}"
+	sh "sudo rm -rf ${workspace}_ws-*"
 }
