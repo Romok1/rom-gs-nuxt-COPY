@@ -188,6 +188,7 @@ pipeline {
 		    }
 		  dir("$WORKSPACE_TMP") {
 		    deleteDir()
+		   }
 	         // deleteworkspace()
 		}
     }
