@@ -175,8 +175,14 @@ pipeline {
                     )
                 }
 	        cleanup {
-		    script{
-			    deleteworkspace()
+	          dir("$DIR/deploygfs") {
+		    deleteDir()
+		    }
+		  dir("$DIR/deploygfs@tmp") {
+		    deleteDir()
+		    }
+	          dir("$env.WORKSPACE") {
+		    deleteDir()
 		    }
 		}
     }
@@ -216,5 +222,4 @@ def imagecleanup() {
 def deleteworkspace() {
 	sh "sudo rm -r $DIR/deploygfs*"
 	sh "sudo rm -rf ${env.WORKSPACE}"
-	sh "sudo rm -rf ${env.WORKSPACE_TMP}"
 }
