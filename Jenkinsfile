@@ -175,7 +175,7 @@ pipeline {
                     )
                 }
 	        cleanup {
-		//	cleanWs()
+                	cleanWs()
 		//	script{
 		//		deleteworkspace()
 		//	}
