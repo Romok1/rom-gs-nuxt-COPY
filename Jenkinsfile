@@ -179,14 +179,14 @@ pipeline {
 		//	script{
 		//		deleteworkspace()
 		//	}
-		
+		deleteDir()
 	          dir("$DIR/deploygfs") {
 		    deleteDir()
 		    }
-		  dir("$WORKSPACE") {
-		    deleteDir()
-		    }
-		  dir("${WORKSPACE}@tmp") {
+		  //dir("$WORKSPACE") {
+		  //  deleteDir()
+		  //  }
+		  dir("${workspace}@tmp") {
 		    deleteDir()
 		  }
 	         // deleteworkspace()
