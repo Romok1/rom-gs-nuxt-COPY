@@ -83,7 +83,6 @@ pipeline {
 		severity: 'high',
 		monitor: true,
               )
-	       } 
             }
 	   post {
                   success{
