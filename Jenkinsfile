@@ -79,9 +79,9 @@ pipeline {
               snykSecurity(
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
-		additionalArguments: '--all-projects',
+		//additionalArguments: '--all-projects',
 		severity: 'high',
-		targetFile: 'nuxt-frontend/package.json',
+		targetFile: 'nuxt-frontend/*', 'rails-api/*'
               )
             }
 	   post {
