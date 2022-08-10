@@ -74,14 +74,17 @@ pipeline {
         }
         stage('Scan for vulnerabilities') {
             steps {
-         //    script {
-	 //     CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}""
+             script {
+	      CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}""
+	     }
               echo 'Scanning...'
               snykSecurity(
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
+		additionalArguments: '--all-projects',
+		severity: 'high',
               )
-	   //   }
+	   //   } 
             }
 	   post {
                   success{
