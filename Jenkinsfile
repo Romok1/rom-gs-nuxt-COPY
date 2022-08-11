@@ -83,7 +83,7 @@ pipeline {
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
 		severity: 'critical', 
-		additionalArguments: '--all-projects --detection-depth=4 --exclude=rails-api,package.json --target-dir=rails-api --all-sub-projects --configuration-matching=^(?!Gemfile).* --debug',
+		additionalArguments: '--all-projects --detection-depth=4 --exclude=./,package.json --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --debug',
               )
             }
 	   post {
