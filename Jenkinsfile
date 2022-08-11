@@ -75,7 +75,7 @@ pipeline {
         stage('Scan for vulnerabilities') {
             steps {
 		    script {
-	                 CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}""
+	                 CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details, ${env.SNYK_URL}"
 		 }
 	     // CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}""
               echo 'Scanning...'
