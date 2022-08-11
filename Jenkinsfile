@@ -79,8 +79,8 @@ pipeline {
               snykSecurity(
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
-		severity: 'high',
-		additionalArguments: '--target-dir', 
+		severity: 'critical',
+		additionalArguments: '--all-projects', 
               )
             }
 	   post {
