@@ -10,8 +10,8 @@ pipeline {
     }
     environment {
         SLACK_TEAM_DOMAIN="wcmc"
-        SLACK_TOKEN=credentials('slack-token-gef')
-        SLACK_CHANNEL="#jenkins-cicd-gefspatial"
+        SLACK_TOKEN=credentials('slack-token-g')
+        SLACK_CHANNEL="#jenkins-cicd-gefspati"
         //COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}".replaceAll("/", "-").replaceAll(" ", "").toLowerCase()
         COMPOSE_FILE = "docker-compose-ci.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
