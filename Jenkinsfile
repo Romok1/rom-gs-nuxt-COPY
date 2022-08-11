@@ -84,7 +84,7 @@ pipeline {
                 snykTokenId: 'wcmc-snyk',
 		severity: 'critical', 
 		targetFile: 'rails-api/Gemfile.lock',
-		additionalArguments: '--detection-depth=4 --exclude=rails-api --policy-path=nuxt-frontend --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --debug',
+		additionalArguments: '--detection-depth=4 --policy-path=nuxt-frontend --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --debug',
               )
             } // additionalArguments: '--exclude=rails-api --target-dir=rails-api --all-projects --detection-depth=4 --policy-path=nuxt-frontend/package.json --exclude=package.json, --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --prune-repeated-subdependencies --debug',
 	   post {
@@ -94,7 +94,7 @@ pipeline {
                   failure{
                       slackSend color : "danger", message: "Snyk scan failed, visit ${env.SNYK_URL} to get detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
                   }
-              } //additionalArguments: '--all-projects', targetFile: 'rails-api/Gemfile',
+              } //additionalArguments: '--all-projects', --exclude=rails-api targetFile: 'rails-api/Gemfile',
         }
 	
 	stage("Prepare Deploy") {
