@@ -73,7 +73,7 @@ pipeline {
 	     }
         }
         stage('Scan for vulnerabilities') {
-            steps {
+            steps {		    
 	     // CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}""
               echo 'Scanning...'
               snykSecurity(
@@ -82,14 +82,12 @@ pipeline {
 		severity: 'critical',
 		additionalArguments: '--all-projects', 
               )
+	      script {
+	                  BUILD_STATUS = currentBuild.currentResult
+		          if (currentBuild.currentResult == 'FAILURE') { CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details" }
+		 }
             }
 	   post {
-		   always {
-			   script {
-	                  BUILD_STATUS = currentBuild.currentResult
-		          if (currentBuild.currentResult == 'FAILURE') { CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}"" }
-		 }
-		   }
                   success{
                       slackSend color : "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
                   }
