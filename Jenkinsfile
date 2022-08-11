@@ -83,7 +83,7 @@ pipeline {
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
 		severity: 'critical', 
-		additionalArguments: '--all-projects -p --detection-depth=3 --exclude=rails-api,package.json --debug',
+		additionalArguments: '--all-projects --yarn-workspaces --detection-depth=4 --exclude=./rails-api/package.json --debug',
               )
             }
 	   post {
