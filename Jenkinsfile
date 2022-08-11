@@ -83,7 +83,7 @@ pipeline {
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
 		severity: 'critical', 
-		targetFile: ["rails-api/Gemfile.lock", "rails-api/Gemfile"],
+		targetFile: 'rails-api/Gemfile',
 		additionalArguments: '--all-projects --detection-depth=4 --exclude=rails-api,package.json --debug',
               )
             }
