@@ -83,7 +83,7 @@ pipeline {
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
 		severity: 'critical',
-		additionalArguments: '--all-projects -p --detection-depth=2',
+		additionalArguments: '--all-projects -p --detection-depth=2 --debug',
               )
             }
 	   post {
