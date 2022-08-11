@@ -83,7 +83,8 @@ pipeline {
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
 		severity: 'critical', 
-		additionalArguments: '--all-projects --detection-depth=4 --policy-path=nuxt-frontend --targetFiles=rails-api/Gemfile, --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --prune-repeated-subdependencies --debug',
+		targetFile: 'rails-api/Gemfile.lock'
+		additionalArguments: '--all-projects --detection-depth=4 --targetFiles=rails-api/Gemfile, --exclude=rails-api --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --prune-repeated-subdependencies --debug',
               )
             } // additionalArguments: '--exclude=rails-api --all-projects --detection-depth=4 --policy-path=nuxt-frontend/package.json --exclude=package.json, --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --prune-repeated-subdependencies --debug',
 	   post {
