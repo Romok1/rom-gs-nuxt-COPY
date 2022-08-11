@@ -82,8 +82,8 @@ pipeline {
               snykSecurity(
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
-		severity: 'critical',
-		additionalArguments: '--all-projects -p --detection-depth=3 --exclude=rails-api/package.json --debug',
+		severity: 'critical', 
+		additionalArguments: '--all-projects -p --detection-depth=3 --exclude=rails-api,package.json --debug',
               )
             }
 	   post {
