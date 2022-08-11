@@ -80,7 +80,7 @@ pipeline {
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
 		severity: 'critical',
-		additionalArguments: '--all-sub-projects', 
+		additionalArguments: '--all-projects', 
               )
             }
 	   post {
