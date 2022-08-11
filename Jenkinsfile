@@ -83,9 +83,9 @@ pipeline {
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
 		severity: 'critical', 
-		additionalArguments: '--all-projects --detection-depth=4 --policy-path=nuxt-frontend/package.json --exclude=package.json, --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --prune-repeated-subdependencies --debug',
-              )
-            }
+		additionalArguments: '--all-projects --detection-depth=4 --exclude=rails-api, --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --prune-repeated-subdependencies --debug',
+              )targetFiles":
+            } // additionalArguments: '--all-projects --detection-depth=4 --policy-path=nuxt-frontend/package.json --exclude=package.json, --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --prune-repeated-subdependencies --debug',
 	   post {
                   success{
                       slackSend color : "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
