@@ -73,19 +73,18 @@ pipeline {
 	     }
         }
         stage('Scan for vulnerabilities') {
-            steps {		    
+            steps {
+		    script {
+	                 CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details"
+		 }
 	     // CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}""
               echo 'Scanning...'
               snykSecurity(
                 snykInstallation: 'snyk@latest',
                 snykTokenId: 'wcmc-snyk',
 		severity: 'critical',
-		additionalArguments: '--all-projects', 
+		targetFile: 'rails-api/Gemfile', 
               )
-	      script {
-	                  BUILD_STATUS = currentBuild.currentResult
-		          if (currentBuild.currentResult == 'FAILURE') { CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details" }
-		 }
             }
 	   post {
                   success{
