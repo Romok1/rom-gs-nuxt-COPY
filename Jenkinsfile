@@ -86,7 +86,7 @@ pipeline {
 		severity: 'critical', 
 		failOnIssues: false,
 		targetFile: 'rails-api/Gemfile.lock',
-		additionalArguments: '--detection-depth=4 --policy-path=nuxt-frontend/yarn.lock --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --debug',
+		additionalArguments: '--detection-depth=4 --file=rails-api/Gemfile.lock --target-dir=rails-api --debug',
               )
             } // additionalArguments: '--exclude=rails-api --target-dir=rails-api --all-projects --detection-depth=4 --policy-path=nuxt-frontend/package.json --exclude=package.json, --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --prune-repeated-subdependencies --debug',
 	  }
