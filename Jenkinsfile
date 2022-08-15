@@ -19,17 +19,17 @@ pipeline {
 	DIR="$JENKINS_HOME/workspace"
     }
     stages {
-        stage ('Start') {
-               steps {
-                slackSend(
-                            teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-                            token: "${env.SLACK_TOKEN}",
-                            channel: "${env.SLACK_CHANNEL}",
-                            color: "#FFFF00",
-                            message: "STARTED: ['${env.BRANCH_NAME} ${env.GIT_COMMIT_MSG}'] Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
-                    )
-	           }
-        }
+        //stage ('Start') {
+        //       steps {
+        //        slackSend(
+        //                    teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+        //                    token: "${env.SLACK_TOKEN}",
+        //                    channel: "${env.SLACK_CHANNEL}",
+        //                    color: "#FFFF00",
+         //                   message: "STARTED: ['${env.BRANCH_NAME} ${env.GIT_COMMIT_MSG}'] Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+        //            )
+	//           }
+       // }
         stage("Build") {
              when {
                   branch 'gf-docker-ci'
@@ -165,7 +165,7 @@ pipeline {
               }
         }
     }
-    // paste post back here
+   //paste back here
 }
 
 
