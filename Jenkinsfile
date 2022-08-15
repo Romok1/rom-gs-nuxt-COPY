@@ -165,7 +165,63 @@ pipeline {
              // }
         }
     }
-   //paste back here
+        post {
+                always {
+			script{
+			        BUILD_STATUS = currentBuild.currentResult
+		                if (currentBuild.currentResult == 'SUCCESS') { CI_ERROR = "NA" }
+				imagecleanup()
+				// cleanWs()
+			}
+		  //  cleanWs(cleanWhenNotBuilt: false,
+                 //      deleteDirs: true,
+                 //      disableDeferredWipeout: true,
+                 //      notFailBuild: true)
+		}
+	        success {
+                    slackSend(
+                            teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+                            token: "${env.SLACK_TOKEN}",
+                            channel: "${env.SLACK_CHANNEL}",
+                            color: "good",
+                            message: "Job:  ${env.JOB_NAME}\n Status: *SUCCESS* \n"
+                    )
+                }
+
+                failure {
+                    slackSend(
+                            teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+                            token: "${env.SLACK_TOKEN}",
+                            channel: "${env.SLACK_CHANNEL}",
+                            color: "danger",
+                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} \n"
+                    )
+                }
+	        cleanup {
+                	cleanWs()
+			//cleanWs(cleanWhenNotBuilt: false,
+                         // deleteDirs: true,
+                        //  disableDeferredWipeout: true,
+                        //  notFailBuild: true)
+		//	script{
+		//		deleteworkspace()
+		//	}
+		// deleteDir()
+	          dir("$DIR/deploygfs") {
+		    deleteDir()
+		    }
+	          dir("$DIR/deploygfs@tmp") {
+		    deleteDir()
+		    }
+		 // dir("${env.WORKSPACE}") {
+		 //   deleteDir()
+		//    }
+		//  dir("${WORKSPACE}@tmp") {
+		 //   deleteDir()
+		//  }
+	           deleteworkspace()
+		}
+    }
 }
 
 
