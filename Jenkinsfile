@@ -73,7 +73,8 @@ pipeline {
 	     }
         }
         stage('Scan for vulnerabilities') {
-	     stages {
+	    steps {
+	     script {
 	      stage("scan rails app") {
                 steps {
 		    script {
@@ -106,6 +107,7 @@ pipeline {
               )
             }
 	   }
+	  }
 	  }
           post {
                   success{
