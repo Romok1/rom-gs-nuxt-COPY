@@ -73,11 +73,12 @@ pipeline {
 	     }
         }
         stage('Scan for vulnerabilities') {
-            steps {
+	     stages {
+	      stage("scan rails app") {
+                steps {
 		    script {
-	                 CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details, ${env.SNYK_URL}"
+	                 CI_ERROR = "Failed: Snyk scan failed for rails-BE, check the snyk site for details, ${env.SNYK_URL}"
 		 }
-	     // CI_ERROR = "Failed: Snyk scan failed, check the snyk site for details "${env.SNYK_URL}""
               echo 'Scanning...'
               snykSecurity(
                 snykInstallation: 'snyk@latest',
@@ -88,7 +89,25 @@ pipeline {
 		additionalArguments: '--detection-depth=4 --policy-path=nuxt-frontend/yarn.lock --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --debug',
               )
             } // additionalArguments: '--exclude=rails-api --target-dir=rails-api --all-projects --detection-depth=4 --policy-path=nuxt-frontend/package.json --exclude=package.json, --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --prune-repeated-subdependencies --debug',
-	   post {
+	  }
+		
+             stage("scan project") {
+                steps {
+		    script {
+	                 CI_ERROR = "Failed: Snyk scan failed for project, check the snyk site for details, ${env.SNYK_URL}"
+		 }
+              echo 'Scanning...'
+              snykSecurity(
+                snykInstallation: 'snyk@latest',
+                snykTokenId: 'wcmc-snyk',
+		severity: 'critical', 
+		failOnIssues: false,
+		additionalArguments: '--all-projects --detection-depth=4 --exclude=rails-api, --debug',
+              )
+            }
+	   }
+	  }
+          post {
                   success{
                       slackSend color : "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
                   }
