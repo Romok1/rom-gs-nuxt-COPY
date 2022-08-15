@@ -85,11 +85,10 @@ pipeline {
                 snykTokenId: 'wcmc-snyk',
 		severity: 'critical', 
 		failOnIssues: true,
-		targetFile: 'rails-api/Gemfile.lock',
-		additionalArguments: '--detection-depth=4 --targetFile=rails-api/Gemfile.lock --file=rails-api/Gemfile.lock --all-sub-projects --target-dir=rails-api --debug',
+		additionalArguments: '--detection-depth=4 --file=rails-api/Gemfile.lock --all-sub-projects --target-dir=rails-api --debug',
               )
             } // additionalArguments: '--exclude=rails-api --target-dir=rails-api --all-projects --detection-depth=4 --policy-path=nuxt-frontend/package.json --exclude=package.json, --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --prune-repeated-subdependencies --debug',
-	  }
+	  } // targetFile: 'rails-api/Gemfile.lock', --targetFile=rails-api/Gemfile.lock
 		
              stage("scan project") {
                 steps {
