@@ -10,7 +10,7 @@ RUN apt-get update -qq
 #WORKDIR /usr/src/cache
 RUN mkdir /usr/src/app
 #WORKDIR /usr/src/app
-COPY package*.json .
+#COPY package*.json .
 COPY . /usr/src/app
 WORKDIR /usr/src/app
 RUN yarn install --verbose 
