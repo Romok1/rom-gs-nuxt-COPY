@@ -20,8 +20,9 @@ services:
 
   nuxt:
     build: 
-      context: .rom-gs-nuxt/nuxt-frontend
+      context: ./rom-gs-nuxt/nuxt-frontend
       dockerfile: Dockerfile-ci
+    working_dir: /rom-gs-nuxt/nuxt-frontend
     command: bash -l -c "yarn dev"
     volumes:
       - './nuxt-frontend:/usr/src/app'
