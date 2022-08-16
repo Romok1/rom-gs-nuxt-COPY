@@ -222,7 +222,9 @@ pipeline {
 
 def BuildProject() {
     sh 'echo "Building Project.............."'
-	sh 'docker-compose -f ${COMPOSE_FILE} --project-name=${JOB_NAME} build --pull'
+	sh "cd $WORKSPACE/ci"
+	sh 'docker-compose --project-name=${JOB_NAME} build --pull'
+	// -f ${COMPOSE_FILE}
 }
 
 def Preparedatabase() {
