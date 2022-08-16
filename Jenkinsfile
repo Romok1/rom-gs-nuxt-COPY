@@ -13,7 +13,7 @@ pipeline {
         SLACK_TOKEN=credentials('slack-token-gef')
         SLACK_CHANNEL="#jenkins-cicd-gefspatial"
         //COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}".replaceAll("/", "-").replaceAll(" ", "").toLowerCase()
-        COMPOSE_FILE = "$WORKSPACE/ci/docker-compose.yml"
+        COMPOSE_FILE = "docker-compose.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
 	SNYK_URL="https://app.snyk.io/org/informatics.wcmc/projects"
 	DIR="$JENKINS_HOME/workspace"
@@ -223,7 +223,7 @@ pipeline {
 def BuildProject() {
     sh 'echo "Building Project.............."'
 //	sh "cd $WORKSPACE/ci"
-	sh 'docker-compose -f ${COMPOSE_FILE} --project-name=${JOB_NAME} build --pull'
+	sh 'docker-compose --project-name=${JOB_NAME} build --pull'
 	// -f ${COMPOSE_FILE}
 }
 
