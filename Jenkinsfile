@@ -1,11 +1,16 @@
 pipeline {
     agent any
     options {
+	 // number of build logs to keep - https://www.jenkins.io/doc/book/pipeline/syntax/
         buildDiscarder(logRotator(numToKeepStr: '5'))
+	 //Pipeline speed, much faster, Greatly reduces disk I/O - requires clean shutdown to save running pipelines
         durabilityHint('PERFORMANCE_OPTIMIZED')
+	 // Disallow concurrent executions of the Pipeline. Can be useful for preventing simultaneous accesses to shared resources
         disableConcurrentBuilds()
     }
     triggers {
+	// Accepts a cron-style string to define a regular interval at which Jenkins should check for new source changes. 
+	// If new changes exist, the Pipeline will be re-triggered
         pollSCM 'H/5 * * * *'
     }
     environment {
@@ -50,14 +55,14 @@ pipeline {
                  Preparedatabase() }
 	     }
         }
-        stage("Rake test") {
+        stage("Run Frontend test") {
               when {
                   branch 'gf-docker-ci'
                 }
              steps { 
 		script {
-		 CI_ERROR = "Failed: Rake test stage"
-                 Raketest() }
+		 CI_ERROR = "Failed: Frontend test stage"
+                 testFrontend() }
 	     }
         }
         stage("Rspec test") {
@@ -67,8 +72,8 @@ pipeline {
              steps { 
 		script {
 		 CI_ERROR = "Failed: Rspec test stage"
-	         echo "Rspectests"
-                // Rspectests() 
+	         echo "runRspecTests"
+                // runRspecTests() 
 		}
 	     }
         }
@@ -165,7 +170,7 @@ pipeline {
 			script{
 			        BUILD_STATUS = currentBuild.currentResult
 		                if (currentBuild.currentResult == 'SUCCESS') { CI_ERROR = "NA" }
-				imagecleanup()
+				dockerImageCleanup()
 				// cleanWs()
 			}
 		  //  cleanWs(cleanWhenNotBuilt: false,
@@ -233,18 +238,18 @@ def Preparedatabase() {
     sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn install"
 }
 
-def Raketest() {
+def testFrontend() {
     COMMAND="bundle exec rake test"
 	sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
 	// sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn lint"
 }
 
-def Rspectests() {
+def runRspecTests() {
     COMMAND="bundle exec rspec spec"
 	sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
 }
 
-def imagecleanup() {
+def dockerImageCleanup() {
    sh "docker-compose --project-name=${JOB_NAME} stop &> /dev/null || true &> /dev/null"
    sh "docker-compose --project-name=${JOB_NAME} rm --force &> /dev/null || true &> /dev/null"
    sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
