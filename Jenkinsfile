@@ -13,7 +13,7 @@ pipeline {
         SLACK_TOKEN=credentials('slack-token-gef')
         SLACK_CHANNEL="#jenkins-cicd-gefspatial"
         //COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}".replaceAll("/", "-").replaceAll(" ", "").toLowerCase()
-        COMPOSE_FILE = "ci/docker-compose.yml"
+        COMPOSE_FILE = ".ci/docker-compose.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
 	SNYK_URL="https://app.snyk.io/org/informatics.wcmc/projects"
 	DIR="$JENKINS_HOME/workspace"
@@ -173,25 +173,25 @@ pipeline {
                  //      disableDeferredWipeout: true,
                  //      notFailBuild: true)
 		}
-	        success {
-                    slackSend(
-                            teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-                            token: "${env.SLACK_TOKEN}",
-                            channel: "${env.SLACK_CHANNEL}",
-                            color: "good",
-                            message: "Job:  ${env.JOB_NAME}\n Status: *SUCCESS* \n"
-                    )
-                }
+	      //  success {
+              //      slackSend(
+              //              teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+              //              token: "${env.SLACK_TOKEN}",
+              //              channel: "${env.SLACK_CHANNEL}",
+              //              color: "good",
+               //             message: "Job:  ${env.JOB_NAME}\n Status: *SUCCESS* \n"
+               //     )
+              //  }
 
-                failure {
-                    slackSend(
-                            teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-                            token: "${env.SLACK_TOKEN}",
-                            channel: "${env.SLACK_CHANNEL}",
-                            color: "danger",
-                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} \n"
-                    )
-                }
+              //  failure {
+              //      slackSend(
+              //              teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+               //             token: "${env.SLACK_TOKEN}",
+               //             channel: "${env.SLACK_CHANNEL}",
+               //             color: "danger",
+                //            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} \n"
+                //    )
+               // }
 	        cleanup {
                 	cleanWs()
 			//cleanWs(cleanWhenNotBuilt: false,
