@@ -223,7 +223,7 @@ pipeline {
 def BuildProject() {
     sh 'echo "Building Project.............."'
 	sh "cd $WORKSPACE/ci"
-	sh 'docker-compose --project-name=${JOB_NAME} build --pull'
+	sh 'docker-compose --project-name=${JOB_NAME} build . --pull'
 	// -f ${COMPOSE_FILE}
 }
 
