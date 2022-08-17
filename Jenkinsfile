@@ -148,7 +148,7 @@ def buildProject() {
 }
 
 def prepareDatabase() {
-    COMMAND="bin/rails db:drop db:create db:migrate db:seed"
+    COMMAND = "bin/rails db:drop db:create db:migrate db:seed"
     sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
 }
 
@@ -158,7 +158,7 @@ def testFrontend() {
 }
 
 def runRspecTests() {
-    COMMAND="bundle exec rspec spec"
+    COMMAND = "bundle exec rspec spec"
     sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
 }
 
