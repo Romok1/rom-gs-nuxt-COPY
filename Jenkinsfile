@@ -140,17 +140,17 @@ def buildProject() {
 
 def prepareDatabase() {
     COMMAND="bin/rails db:drop db:create db:migrate db:seed"
-    sh "docker-compose --project-name=${JOB_NAME} run railsapi ${COMMAND}"
+    sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
 }
 
 def testFrontend() {
-    sh "docker-compose --project-name=${JOB_NAME} run frontend yarn install"
-    // sh "docker-compose --project-name=${JOB_NAME} run frontend yarn lint"
+    sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn install"
+    // sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn lint"
 }
 
 def runRspecTests() {
     COMMAND="bundle exec rspec spec"
-    sh "docker-compose --project-name=${JOB_NAME} run railsapi ${COMMAND}"
+    sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
 }
 
 def dockerImageCleanup() {
