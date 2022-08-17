@@ -35,7 +35,10 @@ pipeline {
         }
         stage("Build") {
             when {
-                branch 'testb'
+                anyOf {
+                    branch 'feature*'
+                    branch 'develop'
+                }
             }
             steps { 
 	            script {
@@ -46,7 +49,10 @@ pipeline {
         }
         stage("Test DB") {
             when {
-                branch 'testb'
+                anyOf {
+                    branch 'feature*'
+                    branch 'develop'
+                }
             }
             steps { 
 		        script {
@@ -57,7 +63,10 @@ pipeline {
         }
         stage("Run Frontend test") {
             when {
-                branch 'testb'
+                anyOf {
+                    branch 'feature*'
+                    branch 'develop'
+                }
             }
             steps { 
 		        script {
@@ -68,7 +77,7 @@ pipeline {
         }
         stage('Scan for vulnerabilities') {
             when {
-                branch 'testb'
+                branch 'develop'
             }
 	        stages {
 	            stage("scan rails app") {
@@ -98,6 +107,14 @@ pipeline {
                         }
 	                }
 	            }
+	        post {
+                success{
+                    slackSend color : "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+                }
+                failure{
+                    slackSend color : "danger", message: "Snyk scan failed, visit ${env.SNYK_URL} to get detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+                }
+            }
     	}
     }
     post {
@@ -128,7 +145,7 @@ pipeline {
         }
         cleanup {
                 cleanWs()
-		        deleteworkspace()
+		        deleteWorkspace()
 		}
     }
 }
@@ -145,7 +162,7 @@ def prepareDatabase() {
 
 def testFrontend() {
     sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn install"
-    // sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn lint"
+    // sh "docker-compose --project-name=${JOB_NAME} run frontend yarn lint"
 }
 
 def runRspecTests() {
