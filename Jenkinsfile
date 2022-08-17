@@ -1,7 +1,8 @@
 pipeline {
     agent any
     options {
-        // number of build logs to keep - https://www.jenkins.io/doc/book/pipeline/syntax/
+        // Number of build logs to keep
+	// @see https://www.jenkins.io/doc/book/pipeline/syntax/
         buildDiscarder(logRotator(numToKeepStr: '5'))
         //Pipeline speed, much faster, Greatly reduces disk I/O - requires clean shutdown to save running pipelines
         durabilityHint('PERFORMANCE_OPTIMIZED')
@@ -14,12 +15,12 @@ pipeline {
         pollSCM 'H/5 * * * *'
     }
     environment {
-        SLACK_TEAM_DOMAIN="wcmc"
-        SLACK_TOKEN=credentials('slack-token-gef')
-        SLACK_CHANNEL="#jenkins-cicd-gefspatial"
+        SLACK_TEAM_DOMAIN = "wcmc"
+        SLACK_TOKEN = credentials('slack-token-gef')
+        SLACK_CHANNEL = "#jenkins-cicd-gefspatial"
         COMPOSE_FILE = "docker-compose.yml"
-	    GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
-	    SNYK_URL="https://app.snyk.io/org/informatics.wcmc/projects"
+	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
+	SNYK_URL = "https://app.snyk.io/org/informatics.wcmc/projects"
     }
     stages {
         stage ('Start') {
@@ -78,9 +79,9 @@ pipeline {
 		                }
                             echo 'Scanning...'
                             snykSecurity(
-                            snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
-		                    severity: 'critical', failOnIssues: false,
-		                    additionalArguments: '--detection-depth=4 --file=rails-api/Gemfile.lock --all-sub-projects --target-dir=rails-api', 
+                            	snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
+		                severity: 'critical', failOnIssues: false,
+		                additionalArguments: '--detection-depth=4 --file=rails-api/Gemfile.lock --all-sub-projects --target-dir=rails-api', 
 			                )
                         } 
 	            }	
@@ -100,10 +101,10 @@ pipeline {
 	            }
 	        post {
                 success{
-                    slackSend color : "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+                    slackSend color: "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
                 }
                 failure{
-                    slackSend color : "danger", message: "Snyk scan failed, visit ${env.SNYK_URL} to get detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+                    slackSend color: "danger", message: "Snyk scan failed, visit ${env.SNYK_URL} to get detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
                 }
             }
     	}
