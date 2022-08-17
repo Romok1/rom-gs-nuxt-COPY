@@ -35,10 +35,7 @@ pipeline {
         }
         stage("Build") {
             when {
-                anyOf {
-                    branch 'feature*'
-                    branch 'develop'
-                }
+                branch 'testb'
             }
             steps { 
 	            script {
@@ -48,11 +45,8 @@ pipeline {
 	        }
         }
         stage("Test DB") {
-            when {
-                anyOf {
-                    branch 'feature*'
-                    branch 'develop'
-                }
+           when {
+                branch 'testb'
             }
             steps { 
 		        script {
@@ -62,11 +56,8 @@ pipeline {
 	        }
         }
         stage("Run Frontend test") {
-            when {
-                anyOf {
-                    branch 'feature*'
-                    branch 'develop'
-                }
+           when {
+                branch 'testb'
             }
             steps { 
 		        script {
@@ -77,7 +68,7 @@ pipeline {
         }
         stage('Scan for vulnerabilities') {
             when {
-                branch 'develop'
+                branch 'testb'
             }
 	        stages {
 	            stage("scan rails app") {
