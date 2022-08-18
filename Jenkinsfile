@@ -127,10 +127,15 @@ pipeline {
 		 dir("$DIR/deploygfs") {
 		  checkout scm
                   sh '''#!/bin/bash -l
+		  git checkout develop
+		git branch
                  ls
                  printenv
                 git branch
 		echo "$GIT_BRANCH"
+		rvm use $(cat .ruby-version) --install
+		bundle install
+		echo "bundle exec cap staging deploy"
                  '''
 	   // rvm use $(cat .ruby-version) --install
 		// bundle install
