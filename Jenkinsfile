@@ -1,269 +1,221 @@
 pipeline {
     agent any
     options {
-	 // number of build logs to keep - https://www.jenkins.io/doc/book/pipeline/syntax/
+        // Number of build logs to keep
+        // @see https://www.jenkins.io/doc/book/pipeline/syntax/
         buildDiscarder(logRotator(numToKeepStr: '5'))
-	 //Pipeline speed, much faster, Greatly reduces disk I/O - requires clean shutdown to save running pipelines
+        //Pipeline speed, much faster, Greatly reduces disk I/O - requires clean shutdown to save running pipelines
         durabilityHint('PERFORMANCE_OPTIMIZED')
-	 // Disallow concurrent executions of the Pipeline. Can be useful for preventing simultaneous accesses to shared resources
+        // Disallow concurrent executions of the Pipeline. Can be useful for preventing simultaneous accesses to shared resources
         disableConcurrentBuilds()
     }
     triggers {
-	// Accepts a cron-style string to define a regular interval at which Jenkins should check for new source changes. 
+        // Accepts a cron-style string to define a regular interval at which Jenkins should check for new source changes 
 	// If new changes exist, the Pipeline will be re-triggered
         pollSCM 'H/5 * * * *'
     }
     environment {
-        SLACK_TEAM_DOMAIN="wcmc"
-        SLACK_TOKEN=credentials('slack-token-gef')
-        SLACK_CHANNEL="#jenkins-cicd-gefspatial"
-        //COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}".replaceAll("/", "-").replaceAll(" ", "").toLowerCase()
+        SLACK_TEAM_DOMAIN = "wcmc"
+        SLACK_TOKEN = credentials('slack-token-gef')
+        SLACK_CHANNEL = "#jenkins-cicd-gefspatial"
         COMPOSE_FILE = "docker-compose.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
-	SNYK_URL="https://app.snyk.io/org/informatics.wcmc/projects"
-	DIR="$JENKINS_HOME/workspace"
+	SNYK_URL = "https://app.snyk.io/org/informatics.wcmc/projects"
+        DIR = "$JENKINS_HOME/workspace"
     }
     stages {
-        //stage ('Start') {
-        //       steps {
-        //        slackSend(
-        //                    teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-        //                    token: "${env.SLACK_TOKEN}",
-        //                    channel: "${env.SLACK_CHANNEL}",
-        //                    color: "#FFFF00",
-         //                   message: "STARTED: ['${env.BRANCH_NAME} ${env.GIT_COMMIT_MSG}'] Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
-        //            )
-	//           }
-       // }
-        stage("Build") {
-             when {
-                  branch 'gf-docker-ci'
+        stage ('Start') {
+            steps {
+                slackSend(
+                    teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+                    token: "${env.SLACK_TOKEN}",
+                    channel: "${env.SLACK_CHANNEL}",
+                    color: "#FFFF00",
+                    message: "STARTED: '${env.BRANCH_NAME} [${env.GIT_COMMIT_MSG}]' Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+                )
+	    }
+        }
+	stage("Build") {
+            when {
+                anyOf {
+                    branch 'feat/*'
+                    branch 'develop'
                 }
+            }
             steps { 
-	       script {
-	         CI_ERROR = "Failed: Build stage"
-                 BuildProject() }
+	        script {
+	            CI_ERROR = "Failed: Build stage"
+                    buildProject()
+	        }
 	    }
         }
         stage("Test DB") {
-              when {
-                  branch 'gf-docker-ci'
+            when {
+                anyOf {
+                    branch 'feat/*'
+                    branch 'develop'
                 }
-             steps { 
-		 script {
-		 CI_ERROR = "Failed: Test DB stage"
-                 Preparedatabase() }
-	     }
+            }
+            steps { 
+		script {
+		    CI_ERROR = "Failed: Test DB stage"
+                    prepareDatabase() 
+		}
+	    }
         }
         stage("Run Frontend test") {
-              when {
-                  branch 'gf-docker-ci'
+            when {
+                anyOf {
+                    branch 'feat/*'
+                    branch 'develop'
                 }
-             steps { 
+            }
+            steps { 
 		script {
-		 CI_ERROR = "Failed: Frontend test stage"
-                 testFrontend() }
-	     }
-        }
-        stage("Rspec test") {
-              when {
-                  branch 'gf-docker-ci'
-                }
-             steps { 
-		script {
-		 CI_ERROR = "Failed: Rspec test stage"
-	         echo "runRspecTests"
-                // runRspecTests() 
-		}
-	     }
+		    CI_ERROR = "Failed: Test Frontend stage"
+                    testFrontend() 
+	 	}
+	    }
         }
         stage('Scan for vulnerabilities') {
-	    stages {
-	      stage("scan rails app") {
-                steps {
-		    script {
-	                 CI_ERROR = "Failed: Snyk scan failed for rails-BE, check the snyk site for details, ${env.SNYK_URL}"
-		 }
-              echo 'Scanning...'
-              snykSecurity(
-                snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
-		severity: 'critical', failOnIssues: false,
-		additionalArguments: '--detection-depth=4 --file=rails-api/Gemfile.lock --all-sub-projects --target-dir=rails-api --debug',
-              )
-            } // additionalArguments: '--exclude=rails-api --target-dir=rails-api --all-projects --detection-depth=4 --policy-path=nuxt-frontend/package.json --exclude=package.json, --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --prune-repeated-subdependencies --debug',
-	  } // targetFile: 'rails-api/Gemfile.lock', --targetFile=rails-api/Gemfile.lock
-		
-             stage("scan project") {
-                steps {
-		    script {
-	                 CI_ERROR = "Failed: Snyk scan failed for project, check the snyk site for details, ${env.SNYK_URL}"
-		 }
-              echo 'Scanning...'
-              snykSecurity(
-                snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
-		severity: 'critical', failOnIssues: false,
-		additionalArguments: '--all-projects --detection-depth=4 --exclude=rails-api, --debug',
-              )
+            when {
+                anyOf {
+                    branch 'feat/*'
+                    branch 'develop'
+                }
             }
-	   }
-	   }
-         // post {
-              //    success{
-               //       slackSend color : "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
-              //    }
-               //   failure{
-               //       slackSend color : "danger", message: "Snyk scan failed, visit ${env.SNYK_URL} to get detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
-                //  }
-              //} //additionalArguments: '--all-projects', --exclude=rails-api targetFile: 'rails-api/Gemfile',
-	}
-	stage("Prepare Deploy") {
-             when {
-                  branch 'gf-docker-ci'
-                }
-             steps { 
-               script {
-		 CI_ERROR = "Failed: Prepare deploy stage"
-		  sh "mkdir $DIR/deploygfs"
-		 dir("$DIR/deploygfs") {
-		  checkout scm
-                  sh '''#!/bin/bash -l
-		  git checkout develop
-		git branch
-                 ls
-                 printenv
-                git branch
-		echo "$GIT_BRANCH"
-		rvm use $(cat .ruby-version) --install
-		bundle install
-		echo "bundle exec cap staging deploy"
-                 '''
-	   // rvm use $(cat .ruby-version) --install
-		// bundle install
+	    stages {
+	       	stage("scan rails app") {
+                    steps {
+		        script {
+	                    CI_ERROR = "Failed: Snyk scan failed for rails-BE, check the snyk site for details, ${env.SNYK_URL}"
+		       	}
+                        echo 'Scanning...'
+                      	snykSecurity(
+                            snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
+		            severity: 'critical', failOnIssues: true,
+		            additionalArguments: '--detection-depth=4 --file=rails-api/Gemfile.lock --all-sub-projects --target-dir=rails-api', 
+			)
+                    } 
+	     	}	
+                stage("scan other projects") {
+                    steps {
+		        script {
+	                    CI_ERROR = "Failed: Snyk scan failed for project, check the snyk site for details, ${env.SNYK_URL}"
+		        }
+                        echo 'Scanning...'
+                        snykSecurity(
+                            snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
+		            severity: 'critical', failOnIssues: true,
+		            additionalArguments: '--all-projects --detection-depth=4 --exclude=rails-api,', 
+			)
                     }
-                 }
-              }
-        }
-        stage("Deploy") {
-             when {
-                  branch 'gf-docker-ci'
+	      	}
+	    }
+	    post {
+                success{
+                    slackSend color: "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
                 }
-             steps { 
-               script {
-		 CI_ERROR = "Failed: Deploy stage"
-		 dir("$DIR/deploygfs") {
-                 sh '''#!/bin/bash -l
-                 ls
-                git branch
-		rvm use $(cat .ruby-version) --install
-		bundle install
-                echo "bundle exec cap staging deploy"
-                 '''}
-	       }
-              }
-           //  post {
-             //     success{
-             //         slackSend color : "good", message: "Deploy to staging environment successful", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
-              //    }
-             //     failure{
-              //        slackSend color : "danger", message: "Failed to deploy to staging environment, check the logs and confirm error", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
-             //     }
-             // }
+                failure{
+                    slackSend color: "danger", message: "Snyk scan failed, visit ${env.SNYK_URL} to get detailed report", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+                }
+            }
+    	}
+        stage("Deploy to Staging") {
+            when {
+                branch 'develop'
+            }
+            steps { 
+               	script {
+		    CI_ERROR = "Failed: Prepare deploy stage"
+		    sh "mkdir $DIR/deploydir"
+		    dir("$DIR/deploydir") {
+		      checkout scm
+                    sh '''#!/bin/bash -l
+		      git checkout develop
+                      ls
+                      git branch
+		      rvm use $(cat .ruby-version) --install
+		      bundle install
+		      bundle exec cap staging deploy"
+                    '''
+                    }
+                }
+            }
+            post {
+                success{
+                    slackSend color: "good", message: "Deploy to Staging server successful", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+                }
+                failure{
+                    slackSend color: "danger", message: "Deploy to Staging server failed", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+                }
+            }
         }
     }
-        post {
-                always {
-			script{
-			        BUILD_STATUS = currentBuild.currentResult
-		                if (currentBuild.currentResult == 'SUCCESS') { CI_ERROR = "NA" }
-				dockerImageCleanup()
-				// cleanWs()
-			}
-		  //  cleanWs(cleanWhenNotBuilt: false,
-                 //      deleteDirs: true,
-                 //      disableDeferredWipeout: true,
-                 //      notFailBuild: true)
+    post {
+        always {
+	    script {
+               	BUILD_STATUS = currentBuild.currentResult
+		if (currentBuild.currentResult == 'SUCCESS') { 
+		    CI_ERROR = "NA" 
 		}
-	      //  success {
-              //      slackSend(
-              //              teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-              //              token: "${env.SLACK_TOKEN}",
-              //              channel: "${env.SLACK_CHANNEL}",
-              //              color: "good",
-               //             message: "Job:  ${env.JOB_NAME}\n Status: *SUCCESS* \n"
-               //     )
-              //  }
-
-              //  failure {
-              //      slackSend(
-              //              teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-               //             token: "${env.SLACK_TOKEN}",
-               //             channel: "${env.SLACK_CHANNEL}",
-               //             color: "danger",
-                //            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} \n"
-                //    )
-               // }
-	        cleanup {
-                	cleanWs()
-			//cleanWs(cleanWhenNotBuilt: false,
-                         // deleteDirs: true,
-                        //  disableDeferredWipeout: true,
-                        //  notFailBuild: true)
-		//	script{
-		//		deleteworkspace()
-		//	}
-		// deleteDir()
-	          dir("$DIR/deploygfs") {
-		    deleteDir()
-		    }
-	          dir("$DIR/deploygfs@tmp") {
-		    deleteDir()
-		    }
-		 // dir("${env.WORKSPACE}") {
-		 //   deleteDir()
-		//    }
-		//  dir("${WORKSPACE}@tmp") {
-		 //   deleteDir()
-		//  }
-	           deleteworkspace()
-		}
+		dockerImageCleanup()
+                }
+        }
+	success {
+            slackSend(
+                teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+                token: "${env.SLACK_TOKEN}",
+                channel: "${env.SLACK_CHANNEL}",
+                color: "good",
+                message: "Job:  ${env.JOB_NAME}\n Status: *SUCCESS* \n"
+            )
+        }
+        failure {
+            slackSend(
+                teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+                token: "${env.SLACK_TOKEN}",
+                channel: "${env.SLACK_CHANNEL}",
+                color: "danger",
+                message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} \n"
+            )
+        }
+        cleanup {
+	    cleanWs()
+	    deleteWorkspace()
+	}
     }
 }
 
-
-def BuildProject() {
+def buildProject() {
     sh 'echo "Building Project.............."'
-//	sh "cd $WORKSPACE/ci"
-	sh 'docker-compose --project-name=${JOB_NAME} build --pull'
-	// -f ${COMPOSE_FILE}
+    sh 'docker-compose -f ${COMPOSE_FILE} --project-name=${JOB_NAME} build --pull'
 }
 
-def Preparedatabase() {
-    COMMAND="bin/rails db:drop db:create db:migrate db:seed"
-    sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
-    sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn install"
+def prepareDatabase() {
+    COMMAND = "bin/rails db:drop db:create db:migrate db:seed"
+    sh "docker-compose --project-name=${JOB_NAME} run railsapi ${COMMAND}"
 }
 
 def testFrontend() {
-    COMMAND="bundle exec rake test"
-	sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
-	// sh "docker-compose --project-name=${JOB_NAME} run nuxt yarn lint"
+    sh "docker-compose --project-name=${JOB_NAME} run frontend yarn install"
+    // sh "docker-compose --project-name=${JOB_NAME} run frontend yarn lint"
 }
 
 def runRspecTests() {
-    COMMAND="bundle exec rspec spec"
-	sh "docker-compose --project-name=${JOB_NAME} run rails ${COMMAND}"
+    COMMAND = "bundle exec rspec spec"
+    sh "docker-compose --project-name=${JOB_NAME} run railsapi ${COMMAND}"
 }
 
 def dockerImageCleanup() {
-   sh "docker-compose --project-name=${JOB_NAME} stop &> /dev/null || true &> /dev/null"
-   sh "docker-compose --project-name=${JOB_NAME} rm --force &> /dev/null || true &> /dev/null"
-   sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
-   sh "docker rm -v `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
-   sh "docker rmi `docker images --filter 'dangling=true' -q --no-trunc` &> /dev/null || true &> /dev/null"
+    sh "docker-compose --project-name=${JOB_NAME} stop &> /dev/null || true &> /dev/null"
+    sh "docker-compose --project-name=${JOB_NAME} rm --force &> /dev/null || true &> /dev/null"
+    sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
+    sh "docker rm -v `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
+    sh "docker rmi `docker images --filter 'dangling=true' -q --no-trunc` &> /dev/null || true &> /dev/null"
 }
 
-def deleteworkspace() {
-	//sh "sudo rm -r $DIR/deploygfs*"
-	//sh "sudo rm -rf ${env.WORKSPACE}"
-	sh "sudo rm -rf ${workspace}_ws-*"
+def deleteWorkspace() {
+    sh "sudo rm -r $DIR/deploydir*"
+    sh "sudo rm -rf ${workspace}_ws-*"
 }
