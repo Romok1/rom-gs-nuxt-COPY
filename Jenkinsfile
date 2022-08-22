@@ -35,6 +35,7 @@ pipeline {
         //            )
 	//           }
        // }
+	
         stage("Build") {
              when {
                   branch 'gf-docker-ci'
@@ -45,8 +46,21 @@ pipeline {
                  BuildProject() }
 	    }
         }
-        stage("Test DB") {
+	stage("Test branch") {
               when {
+                anyOf {
+                    branch 'feat*'
+                    branch 'gf-docker-ci'
+                }
+            }
+             steps { 
+		 script {
+                 echo "does this catch feature branch"
+		 }
+	     }
+        }
+        stage("Test DB") {
+            when {
                   branch 'gf-docker-ci'
                 }
              steps { 
