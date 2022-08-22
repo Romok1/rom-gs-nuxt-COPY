@@ -20,7 +20,7 @@ pipeline {
         //COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}".replaceAll("/", "-").replaceAll(" ", "").toLowerCase()
         COMPOSE_FILE = "docker-compose.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
-	SNYK_URL="https://app.snyk.io/org/informatics.wcmc/projects"
+	SNYK_URL="https://app.snyk.io/org/olaiyafunmmi/projects"
 	DIR="$JENKINS_HOME/workspace"
     }
     stages {
@@ -114,7 +114,7 @@ pipeline {
 		 }
               echo 'Scanning...'
               snykSecurity(
-                snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
+                snykInstallation: 'snyk@latest', snykTokenId: 'snyktoken',
 		severity: 'critical', failOnIssues: false,
 		additionalArguments: '--all-projects --detection-depth=4 --exclude=rails-api, --debug',
               )
