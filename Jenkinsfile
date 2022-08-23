@@ -61,6 +61,16 @@ pipeline {
 		 }
 	     }
         }
+	stage("Test branch 2") {
+              when {
+        anyOf { branch 'develop'; branch '~ /feat\/.*/' }
+            }
+             steps { 
+		 script {
+                 echo "does this catch feature branch second?"
+		 }
+	     }
+        }
         stage("Test DB") {
             when {
                   branch 'gf-docker-ci'
