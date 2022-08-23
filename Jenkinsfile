@@ -63,8 +63,10 @@ pipeline {
         }
 	stage("Test branch 2") {
               when {
+		 expression {
                   return env.BRANCH_NAME ==~ /fix\/.*/; || env.BRANCH_NAME ==~ /feat\/.*/;
-            }
+                }
+	      }
              steps { 
 		 script {
                  echo "does this catch feature branch second?"
