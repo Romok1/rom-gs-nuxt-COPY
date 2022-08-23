@@ -47,9 +47,14 @@ pipeline {
 	    }
         }
 	stage("Test branch") {
-              when {
-        anyOf { branch 'master'; branch 'develop'; branch 'feat/*' }
+		when{
+                expression {
+                    return env.BRANCH_NAME ==~ /feat\/.*/
+                }
             }
+           //   when {
+        //anyOf { branch 'master'; branch 'develop'; branch 'feat/*' }
+        //    }
              steps { 
 		 script {
                  echo "does this catch feature branch"
