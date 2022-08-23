@@ -49,7 +49,7 @@ pipeline {
 	stage("Test branch") {
               when {
                 anyOf {
-                    branch 'feat/123/test-branch'
+                    branch '.*feat.*'
                     branch 'gf-docker-ci'
                 }
             } //branch 'feat/.*$'
