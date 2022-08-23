@@ -48,8 +48,8 @@ pipeline {
         }
 	stage("Test branch") {
               when {
-               branch 'origin/feat*'
-            } //branch 'feat/.*$'.  branch 'feat/[0-9]+\.[0-9]+\.[0-9]+/*'
+        anyOf { branch 'master'; branch 'develop'; branch 'feat*' }
+            }
              steps { 
 		 script {
                  echo "does this catch feature branch"
