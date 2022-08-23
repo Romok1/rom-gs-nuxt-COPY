@@ -52,10 +52,9 @@ pipeline {
                     branch 'feat[^/]+$'
 		    branch 'feat/*'
 		    branch 'feat/[0-9]*'
-	            branch 'feat/[0-9]+\.[0-9]+\.[0-9]+/*'
                     branch 'gf-docker-ci'
                 }
-            } //branch 'feat/.*$'
+            } //branch 'feat/.*$'.  branch 'feat/[0-9]+\.[0-9]+\.[0-9]+/*'
              steps { 
 		 script {
                  echo "does this catch feature branch"
