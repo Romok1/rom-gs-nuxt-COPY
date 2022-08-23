@@ -48,9 +48,7 @@ pipeline {
         }
 	stage("Test branch") {
               when {
-                 expression {
-               env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'feat*'
-               }
+               branch 'origin/feat*'
             } //branch 'feat/.*$'.  branch 'feat/[0-9]+\.[0-9]+\.[0-9]+/*'
              steps { 
 		 script {
