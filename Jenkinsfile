@@ -48,7 +48,7 @@ pipeline {
         }
 	stage("Test branch") {
               when {
-        anyOf { branch 'master'; branch 'develop'; branch 'feat*' }
+        anyOf { branch 'master'; branch 'develop'; branch 'feat/*' }
             }
              steps { 
 		 script {
