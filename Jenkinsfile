@@ -51,7 +51,8 @@ pipeline {
                 anyOf {
                     branch 'feat[^/]+$'
 		    branch 'feat/*'
-	            branch 'feat\/[0-9]+\.[0-9]+\.[0-9]+/*'
+		    branch 'feat/[0-9]*'
+	            branch 'feat/[0-9]+\.[0-9]+\.[0-9]+/*'
                     branch 'gf-docker-ci'
                 }
             } //branch 'feat/.*$'
