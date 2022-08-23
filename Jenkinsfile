@@ -48,11 +48,8 @@ pipeline {
         }
 	stage("Test branch") {
               when {
-                anyOf {
-                    branch 'feat[^/]+$'
-		    branch 'feat/*'
-		    branch 'feat/[0-9]*'
-                    branch 'gf-docker-ci'
+                not {
+                    branch 'master'
                 }
             } //branch 'feat/.*$'.  branch 'feat/[0-9]+\.[0-9]+\.[0-9]+/*'
              steps { 
