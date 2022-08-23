@@ -64,7 +64,9 @@ pipeline {
 	stage("Test branch 2") {
               when {
 		 expression {
-                  return env.BRANCH_NAME ==~ /fix\/.*/|/feat\/.*/;
+		     BRANCH_NAME ==~ /(fix\/.*|feat\/.*)/
+		//	 expression { BRANCH_NAME ==~ /(production|staging)/ }
+                //  return env.BRANCH_NAME ==~ /fix\/.*/ || /feat\/.*/;
 		//  return env.BRANCH_NAME ==~ /feat\/.*/;
                 }
 	      }
