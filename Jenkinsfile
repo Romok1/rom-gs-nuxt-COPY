@@ -49,10 +49,10 @@ pipeline {
 	stage("Test branch") {
               when {
                 anyOf {
-                    branch 'feat/.*$'
+                    branch 'feat**'
                     branch 'gf-docker-ci'
                 }
-            }
+            } //branch 'feat/.*$'
              steps { 
 		 script {
                  echo "does this catch feature branch"
@@ -100,7 +100,7 @@ pipeline {
 		 }
               echo 'Scanning...'
               snykSecurity(
-                snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
+                snykInstallation: 'snyk@latest', snykTokenId: 'snyktoken',
 		severity: 'critical', failOnIssues: false,
 		additionalArguments: '--detection-depth=4 --file=rails-api/Gemfile.lock --all-sub-projects --target-dir=rails-api --debug',
               )
