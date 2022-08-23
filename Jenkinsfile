@@ -63,7 +63,7 @@ pipeline {
         }
 	stage("Test branch 2") {
               when {
-        anyOf { branch 'develop'; branch '~ /feat\/.*/' }
+                  return env.BRANCH_NAME ==~ /fix\/.*/; || env.BRANCH_NAME ==~ /feat\/.*/;
             }
              steps { 
 		 script {
