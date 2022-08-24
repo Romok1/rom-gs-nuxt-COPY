@@ -42,9 +42,6 @@ pipeline {
 		     BRANCH_NAME ==~ /(fix\/.*|feat\/.*|gf-docker-ci\/.*)/
                 }
 	      }
-             when {
-                  branch 'gf-docker-ci'
-                }
             steps { 
 	       script {
 	         CI_ERROR = "Failed: Build stage"
