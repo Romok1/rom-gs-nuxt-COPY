@@ -39,7 +39,7 @@ pipeline {
         stage("Build") {
 	     when {
 		 expression {
-		     BRANCH_NAME ==~ /(fix\/.*|feat\/.*|gf-docker-ci\/.*)/
+		     BRANCH_NAME ==~ /(fix\/.*|feat\/.*|gf-docker-ci|test)/
                 }
 	      }
             steps { 
