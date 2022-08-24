@@ -37,9 +37,11 @@ pipeline {
        // }
 	
         stage("Build") {
-             when {
-                  branch 'gf-docker-ci'
+               when {
+		 expression {
+		     BRANCH_NAME ==~ /(fix\/.*|feat\/.*)/
                 }
+	      }
             steps { 
 	       script {
 	         CI_ERROR = "Failed: Build stage"
@@ -77,9 +79,11 @@ pipeline {
 	     }
         }
         stage("Test DB") {
-            when {
-                  branch 'gf-docker-ci'
+              when {
+		 expression {
+		     BRANCH_NAME ==~ /(fix\/.*|feat\/.*)/
                 }
+	      }
              steps { 
 		 script {
 		 CI_ERROR = "Failed: Test DB stage"
@@ -88,8 +92,10 @@ pipeline {
         }
         stage("Run Frontend test") {
               when {
-                  branch 'gf-docker-ci'
+		 expression {
+		     BRANCH_NAME ==~ /(fix\/.*|feat\/.*)/
                 }
+	      }
              steps { 
 		script {
 		 CI_ERROR = "Failed: Frontend test stage"
@@ -98,8 +104,10 @@ pipeline {
         }
         stage("Rspec test") {
               when {
-                  branch 'gf-docker-ci'
+		 expression {
+		     BRANCH_NAME ==~ /(fix\/.*|feat\/.*)/
                 }
+	      }
              steps { 
 		script {
 		 CI_ERROR = "Failed: Rspec test stage"
@@ -148,9 +156,11 @@ pipeline {
               //} //additionalArguments: '--all-projects', --exclude=rails-api targetFile: 'rails-api/Gemfile',
 	}
 	stage("Prepare Deploy") {
-             when {
-                  branch 'gf-docker-ci'
+         when {
+		 expression {
+		     BRANCH_NAME ==~ /(fix\/.*|feat\/.*)/
                 }
+	      }
              steps { 
                script {
 		 CI_ERROR = "Failed: Prepare deploy stage"
@@ -175,9 +185,11 @@ pipeline {
               }
         }
         stage("Deploy") {
-             when {
-                  branch 'gf-docker-ci'
+          when {
+		 expression {
+		     BRANCH_NAME ==~ /(fix\/.*|feat\/.*)/
                 }
+	      }
              steps { 
                script {
 		 CI_ERROR = "Failed: Deploy stage"
