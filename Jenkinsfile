@@ -37,6 +37,11 @@ pipeline {
        // }
 	
         stage("Build") {
+	     when {
+		 expression {
+		     BRANCH_NAME ==~ /(fix\/.*|feat\/.*|gf-docker-ci\/.*)/
+                }
+	      }
              when {
                   branch 'gf-docker-ci'
                 }
