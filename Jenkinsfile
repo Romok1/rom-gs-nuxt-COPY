@@ -304,7 +304,8 @@ def dockerImageCleanup() {
    sh "docker rm -v `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
    sh "docker rmi `docker images --filter 'dangling=true' -q --no-trunc` &> /dev/null || true &> /dev/null"
    sh "docker-compose --project-name=${JOB_NAME} down --volumes"
-   sh "docker rmi --force `docker images --quiet --filter=reference=${JOB_NAME}` &> /dev/null || true &> /dev/null"
+   sh "docker rmi --project-name=${JOB_NAME} `docker images -a -q` --force --quiet &> /dev/null || true &> /dev/null"
+  // sh "docker rmi --force `docker images --quiet --filter=reference=${JOB_NAME}` &> /dev/null || true &> /dev/null"
 }
 
 def deleteworkspace() {
