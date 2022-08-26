@@ -22,6 +22,7 @@ pipeline {
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
 	SNYK_URL="https://app.snyk.io/org/olaiyafunmmi/projects"
 	DIR="$JENKINS_HOME/workspace"
+	jenkinsConsoleUrl = "$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"
     }
     stages {
         //stage ('Start') {
@@ -201,7 +202,8 @@ pipeline {
                //             token: "${env.SLACK_TOKEN}",
                //             channel: "${env.SLACK_CHANNEL}",
                //             color: "danger",
-                //            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} \n"
+                //            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} + jenkinsConsoleUrl \n",
+		//            attachments: "attachments"
                 //    )
                // }
 	        cleanup {
