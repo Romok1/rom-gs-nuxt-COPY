@@ -59,7 +59,7 @@ pipeline {
         //    }
              steps { 
 		 script {
-                 echo "does this catch feature branch"
+                 echo "does this catch feature branch, i caught new branch"
 		 }
 	     }
         }
@@ -116,45 +116,6 @@ pipeline {
 		}
 	     }
         }
-        stage('Scan for vulnerabilities') {
-	    stages {
-	      stage("scan rails app") {
-                steps {
-		    script {
-	                 CI_ERROR = "Failed: Snyk scan failed for rails-BE, check the snyk site for details, ${env.SNYK_URL}"
-		 }
-              echo 'Scanning...'
-              snykSecurity(
-                snykInstallation: 'snyk@latest', snykTokenId: 'snyktoken',
-		severity: 'critical', failOnIssues: false,
-		additionalArguments: '--detection-depth=4 --file=rails-api/Gemfile.lock --all-sub-projects --target-dir=rails-api --debug',
-              )
-            } // additionalArguments: '--exclude=rails-api --target-dir=rails-api --all-projects --detection-depth=4 --policy-path=nuxt-frontend/package.json --exclude=package.json, --target-dir=rails-api --configuration-matching=^(?!Gemfile).* --prune-repeated-subdependencies --debug',
-	  } // targetFile: 'rails-api/Gemfile.lock', --targetFile=rails-api/Gemfile.lock
-		
-             stage("scan project") {
-                steps {
-		    script {
-	                 CI_ERROR = "Failed: Snyk scan failed for project, check the snyk site for details, ${env.SNYK_URL}"
-		 }
-              echo 'Scanning...'
-              snykSecurity(
-                snykInstallation: 'snyk@latest', snykTokenId: 'snyktoken',
-		severity: 'critical', failOnIssues: false,
-		additionalArguments: '--all-projects --detection-depth=4 --exclude=rails-api, --debug',
-              )
-            }
-	   }
-	   }
-         // post {
-              //    success{
-               //       slackSend color : "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
-              //    }
-               //   failure{
-               //       slackSend color : "danger", message: "Snyk scan failed, visit ${env.SNYK_URL} to get detailed report", teamDomain : "${env.SLACK_TEAM_DOMAIN}", token : "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
-                //  }
-              //} //additionalArguments: '--all-projects', --exclude=rails-api targetFile: 'rails-api/Gemfile',
-	}
 	stage("Prepare Deploy") {
          when {
 		 expression {
