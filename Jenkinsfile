@@ -64,17 +64,15 @@ pipeline {
 	     }
         }
 	stage("Test branch 2") {
-              when {
-		 expression {
-		     BRANCH_NAME ==~ /(fix\/.*|feat\/.*)/
-		//	 expression { BRANCH_NAME ==~ /(production|staging)/ }
-                //  return env.BRANCH_NAME ==~ /fix\/.*/ || /feat\/.*/;
-		//  return env.BRANCH_NAME ==~ /feat\/.*/;
+              when{
+                expression {
+                    return env.BRANCH_NAME ==~ /(develop|((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)\/.*))/
                 }
-	      }
+            }
              steps { 
 		 script {
                  echo "does this catch feature branch second?"
+	         printenv
 		 }
 	     }
         }
