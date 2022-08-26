@@ -49,6 +49,11 @@ pipeline {
 	    }
         }
 	stage("Test branch") {
+		when{
+                expression {
+                    return env.BRANCH_NAME ==~ /(develop|(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)\/.*))/
+                }
+            }
            //   when {
         //anyOf { branch 'master'; branch 'develop'; branch 'feat/*' }
         //    }
