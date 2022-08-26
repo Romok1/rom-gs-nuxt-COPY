@@ -49,11 +49,6 @@ pipeline {
 	    }
         }
 	stage("Test branch") {
-		when{
-                expression {
-                    return env.BRANCH_NAME ==~ /(develop|(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)\/.*))/
-                }
-            }
            //   when {
         //anyOf { branch 'master'; branch 'develop'; branch 'feat/*' }
         //    }
@@ -305,7 +300,7 @@ def dockerImageCleanup() {
    sh "docker rmi `docker images --filter 'dangling=true' -q --no-trunc` &> /dev/null || true &> /dev/null"
    sh "docker-compose --project-name=${JOB_NAME} down --volumes"
    sh "docker rmi --force `docker images --quiet --filter 'project-name=${JOB_NAME}' -q --no-trunc` &> /dev/null || true &> /dev/null"
-   sh "docker image prune -fa &> /dev/null || true &> /dev/null
+   sh "docker image prune -fa &> /dev/null || true &> /dev/null"
   // sh "docker rmi --force ${docker images -a -q} --filter 'reference=${JOB_NAME}'"
   // sh "docker rmi --force `docker images --quiet --filter=reference=${JOB_NAME}` &> /dev/null || true &> /dev/null"
 }
