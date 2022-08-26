@@ -72,7 +72,7 @@ pipeline {
              steps { 
 		 script {
                  echo "does this catch feature branch second?"
-	         printenv
+	         sh 'printenv'
 		 }
 	     }
         }
@@ -257,12 +257,15 @@ def runRspecTests() {
 }
 
 def dockerImageCleanup() {
+	sh "echo "${BUILD_URL}""
    sh "docker-compose --project-name=${JOB_NAME} stop &> /dev/null || true &> /dev/null"
    sh "docker-compose --project-name=${JOB_NAME} rm --force &> /dev/null || true &> /dev/null"
    sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
    sh "docker rm -v `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
+  sh "echo rmi 1"
    sh "docker rmi `docker images --filter 'dangling=true' -q --no-trunc` &> /dev/null || true &> /dev/null"
-   sh "docker-compose --project-name=${JOB_NAME} down --volumes"
+   sh "docker-compose --project-name=${JOB_NAME} down --volumes &> /dev/null || true &> /dev/null"
+  sh "echo rmi 2"
    sh "docker rmi --force `docker images --quiet --filter 'project-name=${JOB_NAME}' -q --no-trunc` &> /dev/null || true &> /dev/null"
    sh "docker image prune -fa &> /dev/null || true &> /dev/null"
   // sh "docker rmi --force ${docker images -a -q} --filter 'reference=${JOB_NAME}'"
