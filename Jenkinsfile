@@ -51,7 +51,7 @@ pipeline {
 	stage("Test branch") {
 		when{
                 expression {
-                    return env.BRANCH_NAME ==~ /feat\/.*/
+                    return env.BRANCH_NAME ==~ /(develop|(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)\/.*))/
                 }
             }
            //   when {
