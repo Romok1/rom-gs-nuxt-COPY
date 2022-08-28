@@ -197,7 +197,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "good",
-                            message: "Job:  ${env.JOB_NAME}\n Status: *SUCCESS*  + ${jenkinsConsoleUrl} + ${BUILD_ARCHIVE} \n"
+                            message: "Job:  ${env.JOB_NAME}\n Status: *SUCCESS*  + jenkinsConsoleUrl + ${BUILD_ARCHIVE} \n"
                     )
                 }
 
