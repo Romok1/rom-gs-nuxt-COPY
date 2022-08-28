@@ -22,9 +22,9 @@ pipeline {
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
 	SNYK_URL="https://app.snyk.io/org/olaiyafunmmi/projects"
 	DIR="$JENKINS_HOME/workspace"
-	jenkinsConsoleUrl = '"$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"'
+	jenkinsConsoleUrl = "$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"
 	   // jenkinsConsoleUrl = sh(zip consoleTextout_${env.JOB_NAME}.zip wget -O - -q "${URL}")
-	    jenkinsConsoleUrl1 = sh("wget '${jenkinsConsoleUrl}' < consoleText.zip")
+	    jenkinsConsoleUrl1 = sh("wget "${jenkinsConsoleUrl}" < consoleText.zip")
 	BUILD_ARCHIVE = "$env.BUILD_URL/*zip*/archive.zip"
     }
     stages {
