@@ -182,10 +182,6 @@ pipeline {
 				dockerImageCleanup()
 				// cleanWs()
 			}
-		   archiveArtifacts artifacts: '**/*.zip',
-                   	allowEmptyArchive: true,
-                   	fingerprint: true,
-                   	onlyIfSuccessful: false
 		  //  cleanWs(cleanWhenNotBuilt: false,
                  //      deleteDirs: true,
                  //      disableDeferredWipeout: true,
@@ -207,7 +203,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "danger",
-                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} \n",
+                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} \n"
                     )
                 }
 	        cleanup {
