@@ -15,7 +15,7 @@ pipeline {
     }
     environment {
         SLACK_TEAM_DOMAIN="wcmc"
-        SLACK_TOKEN=credentials("slack-token-test-jenkinsci")
+        SLACK_TOKEN=credentials('slack-token-test-jenkinsci')
         SLACK_CHANNEL='#test-jenkinsci'
         //COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}".replaceAll("/", "-").replaceAll(" ", "").toLowerCase()
         COMPOSE_FILE = "docker-compose.yml"
@@ -32,7 +32,7 @@ pipeline {
                steps { //token: "${env.SLACK_TOKEN}",
                 slackSend(
                             teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-                            token: '$SLACK_TOKEN',
+                            token: $SLACK_TOKEN,
                             channel: "${env.SLACK_CHANNEL}",
                             color: "#FFFF00",
                             message: "STARTED: ${env.BRANCH_NAME}\n Commit message: '${env.GIT_COMMIT_MSG}'\n Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
