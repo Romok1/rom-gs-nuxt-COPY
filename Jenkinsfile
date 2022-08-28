@@ -35,7 +35,7 @@ pipeline {
                             token: "$env.SLACK_TOKEN",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "#FFFF00",
-                            message: "STARTED: Branch -- ${env.BRANCH_NAME}\n Git Commit message: '${env.GIT_COMMIT_MSG}'\n Job: ${env.JOB_NAME} - [${env.BUILD_NUMBER}]' \n Build link: (${env.BUILD_URL})"
+                            message: "STARTED: Branch -- ${env.BRANCH_NAME}\n Git Commit message: '${env.GIT_COMMIT_MSG}'\n Job: ${env.JOB_NAME} - [${env.BUILD_NUMBER}]' \n Build link: [(<${env.BUILD_URL} | View >)]"
                     )
 	           }
        }
