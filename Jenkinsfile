@@ -35,7 +35,7 @@ pipeline {
                             token: "$env.SLACK_TOKEN",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "#FFFF00",
-                            message: "STARTED: ${env.BRANCH_NAME}\n Commit message: '${env.GIT_COMMIT_MSG}'\n Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+                            message: "STARTED: ${env.BRANCH_NAME}\n Commit message: '${env.GIT_COMMIT_MSG}'\n Job: ${env.JOB_NAME} - [${env.BUILD_NUMBER}]' \n Build link: (${env.BUILD_URL})"
                     )
 	           }
        }
@@ -203,7 +203,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "good",
-                            message: "Job:  ${env.JOB_NAME}\n Build: ${env.BUILD_NUMBER} -- Completed for [${env.JOB_NAME}]\n Status: *SUCCESS* \n Result: Pipeline has finished build successfully build ${currentBuild.fullDisplayName} - ${BUILD_TAG} - ${env.BRANCH_NAME} :white_check_mark:\n Run Duration: [${currentBuild.durationString}]\n View Build: [(<${JOB_DISPLAY_URL} | View >)]\n Logs path and Details: [(<${jenkinsConsoleUrl} | here >)] \n"
+                            message: "Job:  ${env.JOB_NAME}\n Build: ${env.BUILD_NUMBER} -- Completed for [${env.JOB_NAME}]\n Status: *SUCCESS* \n Result: Pipeline has finished build successfully for - ${currentBuild.fullDisplayName} - - ${env.BRANCH_NAME} :white_check_mark:\n Run Duration: [${currentBuild.durationString}]\n View Build: [(<${JOB_DISPLAY_URL} | View >)]\n Logs path and Details: [(<${jenkinsConsoleUrl} | here >)] \n"
                     )
                 } // Details: [(<${RUN_DISPLAY_URL} | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl}\n + ${BUILD_ARCHIVE} \n"
 
