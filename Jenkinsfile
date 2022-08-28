@@ -24,7 +24,7 @@ pipeline {
 	DIR="$JENKINS_HOME/workspace"
 	jenkinsConsoleUrl = '"$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"'
 	   // jenkinsConsoleUrl = sh(zip consoleTextout_${env.JOB_NAME}.zip wget -O - -q "${URL}")
-	    jenkinsConsoleUrl1 = sh('wget ${jenkinsConsoleUrl} -O consoleText.zip')
+	    jenkinsConsoleUrl1 = sh('wget "${jenkinsConsoleUrl}" consoleText.zip')
 	BUILD_ARCHIVE = "$env.BUILD_URL/*zip*/archive.zip"
     }
     stages {
