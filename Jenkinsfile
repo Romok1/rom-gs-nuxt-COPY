@@ -200,7 +200,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "good",
-                            message: "Job:  ${env.JOB_NAME}\n Build ${env.BUILD_NUMBER} completed for ${env.JOB_NAME}.\n Details: [(<consoleoutput() | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl1}\n + ${BUILD_ARCHIVE} \n"
+                            message: "Job:  ${env.JOB_NAME}\n Build ${env.BUILD_NUMBER} completed for ${env.JOB_NAME}.\n Details: [(<consoleoutput() | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl}\n + ${BUILD_ARCHIVE} \n"
                     )
                 }
 
@@ -210,7 +210,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "danger",
-                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n ${jenkinsConsoleUrl1} + consoleoutput() \n"
+                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n ${jenkinsConsoleUrl} + consoleoutput() \n"
                     )
                 } // message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} + ${jenkinsConsoleUrl} \n"
 	        cleanup {
