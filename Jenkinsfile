@@ -208,7 +208,6 @@ pipeline {
                             channel: "${env.SLACK_CHANNEL}",
                             color: "danger",
                             message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} \n",
-		            attachments: "attachments"
                     )
                 }
 	        cleanup {
