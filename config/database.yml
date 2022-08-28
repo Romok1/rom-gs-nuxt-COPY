@@ -1,0 +1,22 @@
+# PostgreSQL. Versions 9.1 and up are supported
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
+  host: <%= ENV.fetch("DB_HOST", "") %>
+  username: <%= ENV.fetch("DB_USER", "postgres") %>
+  password: <%= ENV.fetch("DB_PASS", "postgres") %>
+
+development:
+  <<: *default
+  database: <%= ENV.fetch("DB_NAME", "ncfa_development") %>
+
+test:
+  <<: *default
+  database: ncfa_test
+
+production:
+  <<: *default
+  database: ncfa_production
+  username: ncfa
+  password: <%= ENV['NCFA_DATABASE_PASSWORD'] %>
