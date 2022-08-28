@@ -216,7 +216,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "danger",
-                            message: "Job:  ${env.JOB_NAME}\n Build: ${env.BUILD_NUMBER} -- Failed for [${env.JOB_NAME}]\n Status: *FAILURE* \n Result: Pipeline has failed for - - ${currentBuild.fullDisplayName} :red_check_mark:\n Error description: ${CI_ERROR}\n Run Duration: [${currentBuild.durationString}]\n View Build: [(<${JOB_DISPLAY_URL} | View >)]\n Logs path and Details: [(<${jenkinsConsoleUrl} | here >)] \n"
+                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE* \n Result: Pipeline has failed for - - ${currentBuild.fullDisplayName} :cross_mark:\n Error description: ${CI_ERROR}\n Run Duration: [${currentBuild.durationString}]\n View Build: [(<${JOB_DISPLAY_URL} | View >)]\n Logs path and Details: [(<${jenkinsConsoleUrl} | here >)] \n"
                     )
                 } // message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} + ${jenkinsConsoleUrl} \n"
 	        cleanup {
