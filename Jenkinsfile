@@ -179,7 +179,7 @@ pipeline {
 			script{
 			        BUILD_STATUS = currentBuild.currentResult
 		                if (currentBuild.currentResult == 'SUCCESS') { CI_ERROR = "NA" }
-				dockerImageCleanup()
+			//	dockerImageCleanup()
 				// cleanWs()
 			}
 		  //  cleanWs(cleanWhenNotBuilt: false,
