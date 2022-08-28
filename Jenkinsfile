@@ -64,7 +64,8 @@ pipeline {
              steps { 
 		 script {
                  echo "does this catch feature branch, i caught new branch"
-			sh "echo '${env.blue_rest}'"
+			def rest = "${env.blue_rest}"
+			sh "echo '${rest}'"
 		 }
 	     }
         }
