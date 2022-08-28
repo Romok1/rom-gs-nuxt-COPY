@@ -200,7 +200,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "good",
-                            message: "Job:  ${env.JOB_NAME}\n Build ${env.BUILD_NUMBER} completed for ${env.JOB_NAME}.\n Details: [(<consoleoutput() | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl}\n + ${BUILD_ARCHIVE} \n"
+                            message: "Job:  ${env.JOB_NAME}\n Build ${env.BUILD_NUMBER} completed for ${env.JOB_NAME}.\n Details: [(<${blueocean-display-url} | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl}\n + ${BUILD_ARCHIVE} \n"
                     )
                 }
 
