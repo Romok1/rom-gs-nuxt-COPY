@@ -64,7 +64,7 @@ pipeline {
              steps { 
 		 script {
                  echo "does this catch feature branch, i caught new branch"
-			def rest = "${env.blue_rest}"
+			def rest = "${blue_rest}"
 			sh "echo '${rest}'"
 			 echo "message=Resti artifacturl: ${rest}"
 		 }
