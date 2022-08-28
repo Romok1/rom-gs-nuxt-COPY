@@ -14,7 +14,7 @@ pipeline {
         pollSCM 'H/5 * * * *'
     }
     environment {
-        SLACK_TEAM_DOMAIN='wcmc'
+        SLACK_TEAM_DOMAIN="wcmc"
         SLACK_TOKEN=credentials('slack-token-test-jenkinsci')
         SLACK_CHANNEL='#test-jenkinsci'
         //COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}".replaceAll("/", "-").replaceAll(" ", "").toLowerCase()
@@ -24,16 +24,16 @@ pipeline {
 	DIR="$JENKINS_HOME/workspace"
 	jenkinsConsoleUrl = "$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"
 	   // jenkinsConsoleUrl = sh(zip consoleTextout_${env.JOB_NAME}.zip wget -O - -q "${URL}")
-	    jenkinsConsoleUrl1 = sh('wget "${jenkinsConsoleUrl} -O consoleText.zip"')
+	    jenkinsConsoleUrl1 = sh('wget "${jenkinsConsoleUrl}" -O consoleText.zip')
 	BUILD_ARCHIVE = "$env.BUILD_URL/*zip*/archive.zip"
     }
     stages {
         stage ('Start') {
                steps {
                 slackSend(
-                            teamDomain: '${env.SLACK_TEAM_DOMAIN}',
+                            teamDomain: "${env.SLACK_TEAM_DOMAIN}",
                             token: "'${env.SLACK_TOKEN}'",
-                            channel: '${env.SLACK_CHANNEL}',
+                            channel: "${env.SLACK_CHANNEL}",
                             color: "#FFFF00",
                             message: "STARTED: ${env.BRANCH_NAME}\n Commit message: '${env.GIT_COMMIT_MSG}'\n Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
                     )
