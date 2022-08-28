@@ -32,7 +32,7 @@ pipeline {
                steps {
                 slackSend(
                             teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-                            token: "'${env.SLACK_TOKEN}'",
+                            token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "#FFFF00",
                             message: "STARTED: ${env.BRANCH_NAME}\n Commit message: '${env.GIT_COMMIT_MSG}'\n Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
@@ -200,7 +200,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "good",
-                            message: "Job:  ${env.JOB_NAME}\n Build ${env.BUILD_NUMBER} completed for ${env.JOB_NAME}.\n Details: [(<${blueocean-display-url} | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl}\n + ${BUILD_ARCHIVE} \n"
+                            message: "Job:  ${env.JOB_NAME}\n Build ${env.BUILD_NUMBER} completed for ${env.JOB_NAME}.\n Details: [(<${RUN_DISPLAY_URL} | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl}\n + ${BUILD_ARCHIVE} \n"
                     )
                 }
 
@@ -210,7 +210,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "danger",
-                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n ${jenkinsConsoleUrl} + consoleoutput() \n"
+                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n ${jenkinsConsoleUrl}\n Details: [(<${RUN_DISPLAY_URL} | here >)]\n"
                     )
                 } // message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} + ${jenkinsConsoleUrl} \n"
 	        cleanup {
