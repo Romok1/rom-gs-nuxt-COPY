@@ -182,6 +182,10 @@ pipeline {
 			//	dockerImageCleanup()
 				// cleanWs()
 			}
+			archiveArtifacts artifacts: '**/*.zip',
+                   		allowEmptyArchive: true,
+                   		fingerprint: true,
+                   		onlyIfSuccessful: false
 		  //  cleanWs(cleanWhenNotBuilt: false,
                  //      deleteDirs: true,
                  //      disableDeferredWipeout: true,
