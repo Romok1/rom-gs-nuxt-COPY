@@ -64,7 +64,7 @@ pipeline {
              steps { 
 		 script {
                  echo "does this catch feature branch, i caught new branch"
-			 echo "${env.blue-rest-report}"
+			sh "echo '${env.blue_rest}'"
 		 }
 	     }
         }
