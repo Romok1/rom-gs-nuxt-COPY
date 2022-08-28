@@ -181,7 +181,7 @@ pipeline {
 			script{
 			        BUILD_STATUS = currentBuild.currentResult
 		                if (currentBuild.currentResult == 'SUCCESS') { CI_ERROR = "NA" }
-				jenkinsConsoleUrl1 = sh("wget ${jenkinsConsoleUrl} < consoleText.zip")
+				
 			//	dockerImageCleanup()
 				// cleanWs()
 			}
@@ -210,7 +210,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "danger",
-                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n ${jenkinsConsoleUrl1} \n"
+                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n ${jenkinsConsoleUrl1}\n jenkinsConsoleUrl1 = sh("wget ${jenkinsConsoleUrl} < 'consoleText.zip'")\n"
                     )
                 } // message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} + ${jenkinsConsoleUrl} \n"
 	        cleanup {
