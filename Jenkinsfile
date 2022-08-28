@@ -23,6 +23,8 @@ pipeline {
 	SNYK_URL="https://app.snyk.io/org/olaiyafunmmi/projects"
 	DIR="$JENKINS_HOME/workspace"
 	jenkinsConsoleUrl = "$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"
+	   // jenkinsConsoleUrl = sh(zip consoleTextout_${env.JOB_NAME}.zip wget -O - -q "${URL}")
+	    jenkinsConsoleUrl1 = sh(wget "${jenkinsConsoleUrl} -O consoleText.zip")
 	BUILD_ARCHIVE = "$env.BUILD_URL/*zip*/archive.zip"
     }
     stages {
@@ -197,7 +199,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "good",
-                            message: "Job:  ${env.JOB_NAME}\n Build ${env.BUILD_NUMBER} completed for ${env.JOB_NAME}.\n Details: [(<${env.BUILD_URL} | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl}\n + ${BUILD_ARCHIVE} \n"
+                            message: "Job:  ${env.JOB_NAME}\n Build ${env.BUILD_NUMBER} completed for ${env.JOB_NAME}.\n Details: [(<${env.BUILD_URL} | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl1}\n + ${BUILD_ARCHIVE} \n"
                     )
                 }
 
@@ -207,7 +209,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "danger",
-                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n ${jenkinsConsoleUrl} \n"
+                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n ${jenkinsConsoleUrl1} \n"
                     )
                 } // message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} + ${jenkinsConsoleUrl} \n"
 	        cleanup {
