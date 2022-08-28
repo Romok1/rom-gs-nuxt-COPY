@@ -203,9 +203,9 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "good",
-                            message: "Job:  ${env.JOB_NAME}\n Build ${env.BUILD_NUMBER} completed for ${env.JOB_NAME}.\n Details: [(<${RUN_DISPLAY_URL} | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl}\n + ${BUILD_ARCHIVE} \n"
+                            message: "Job:  ${env.JOB_NAME}\n Build number: [${env.BUILD_NUMBER} Completed for ${env.JOB_NAME}]\n Status: *SUCCESS* \n Result: pipeline has finished build for ${currentBuild.displayName} :white_check_mark:\n Logs path and Details: [(<${jenkinsConsoleUrl} | here >)] \n"
                     )
-                }
+                } // Details: [(<${RUN_DISPLAY_URL} | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl}\n + ${BUILD_ARCHIVE} \n"
 
                 failure {
                     slackSend(
@@ -213,7 +213,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "danger",
-                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n ${jenkinsConsoleUrl}\n Details: [(<${RUN_DISPLAY_URL} | here >)]\n"
+                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n ${jenkinsConsoleUrl}\n Logs path and Details: [(<${jenkinsConsoleUrl} | here >)]\n"
                     )
                 } // message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} + ${jenkinsConsoleUrl} \n"
 	        cleanup {
