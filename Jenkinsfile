@@ -185,10 +185,10 @@ pipeline {
 			//	dockerImageCleanup()
 				// cleanWs()
 			}
-			archiveArtifacts artifacts: '**/*.zip',
-                   		allowEmptyArchive: true,
-                   		fingerprint: true,
-                   		onlyIfSuccessful: false
+		//	archiveArtifacts artifacts: '**/*.zip',
+                 //  		allowEmptyArchive: true,
+                //   		fingerprint: true,
+                 //  		onlyIfSuccessful: false
 		  //  cleanWs(cleanWhenNotBuilt: false,
                  //      deleteDirs: true,
                  //      disableDeferredWipeout: true,
@@ -200,7 +200,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "good",
-                            message: "Job:  ${env.JOB_NAME}\n Build ${env.BUILD_NUMBER} completed for ${env.JOB_NAME}.\n Details: [(<${env.BUILD_URL} | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl1}\n + ${BUILD_ARCHIVE} \n"
+                            message: "Job:  ${env.JOB_NAME}\n Build ${env.BUILD_NUMBER} completed for ${env.JOB_NAME}.\n Details: [(<consoleoutput() | here >)]\n Status: *SUCCESS* + ${jenkinsConsoleUrl1}\n + ${BUILD_ARCHIVE} \n"
                     )
                 }
 
@@ -210,7 +210,7 @@ pipeline {
                             token: "${env.SLACK_TOKEN}",
                             channel: "${env.SLACK_CHANNEL}",
                             color: "danger",
-                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n ${jenkinsConsoleUrl1}\n jenkinsConsoleUrl1 = sh("wget ${jenkinsConsoleUrl} < 'consoleText.zip'")\n"
+                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n ${jenkinsConsoleUrl1} + consoleoutput() \n"
                     )
                 } // message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} + ${jenkinsConsoleUrl} \n"
 	        cleanup {
@@ -285,4 +285,8 @@ def deleteworkspace() {
 	//sh "sudo rm -r $DIR/deploygfs*"
 	//sh "sudo rm -rf ${env.WORKSPACE}"
 	sh "sudo rm -rf ${workspace}_ws-*"
+}
+
+def consoleoutput() {
+jenkinsConsoleUrl1 = sh("wget ${jenkinsConsoleUrl} < 'consoleText.zip'")
 }
