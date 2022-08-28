@@ -15,27 +15,28 @@ pipeline {
     }
     environment {
         SLACK_TEAM_DOMAIN="wcmc"
-        SLACK_TOKEN=credentials('slack-token-gef')
-        SLACK_CHANNEL="#jenkins-cicd-gefspatial"
+        SLACK_TOKEN=credentials('slack-token-test-jenkinsci')
+        SLACK_CHANNEL="#test-jenkinsci"
         //COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}".replaceAll("/", "-").replaceAll(" ", "").toLowerCase()
         COMPOSE_FILE = "docker-compose.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
 	SNYK_URL="https://app.snyk.io/org/olaiyafunmmi/projects"
 	DIR="$JENKINS_HOME/workspace"
 	jenkinsConsoleUrl = "$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"
+	BUILD_ARCHIVE = "$env.BUILD_URL/*zip*/archive.zip"
     }
     stages {
-        //stage ('Start') {
-        //       steps {
-        //        slackSend(
-        //                    teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-        //                    token: "${env.SLACK_TOKEN}",
-        //                    channel: "${env.SLACK_CHANNEL}",
-        //                    color: "#FFFF00",
-         //                   message: "STARTED: ['${env.BRANCH_NAME} ${env.GIT_COMMIT_MSG}'] Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
-        //            )
-	//           }
-       // }
+        stage ('Start') {
+               steps {
+                slackSend(
+                            teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+                            token: "${env.SLACK_TOKEN}",
+                            channel: "${env.SLACK_CHANNEL}",
+                            color: "#FFFF00",
+                            message: "STARTED: ['${env.BRANCH_NAME} ${env.GIT_COMMIT_MSG}'] Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+                    )
+	           }
+       }
 	
         stage("Build") {
                when {
@@ -181,31 +182,35 @@ pipeline {
 				dockerImageCleanup()
 				// cleanWs()
 			}
+		   archiveArtifacts artifacts: '**/*.zip',
+                   	allowEmptyArchive: true,
+                   	fingerprint: true,
+                   	onlyIfSuccessful: false
 		  //  cleanWs(cleanWhenNotBuilt: false,
                  //      deleteDirs: true,
                  //      disableDeferredWipeout: true,
                  //      notFailBuild: true)
 		}
-	      //  success {
-              //      slackSend(
-              //              teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-              //              token: "${env.SLACK_TOKEN}",
-              //              channel: "${env.SLACK_CHANNEL}",
-              //              color: "good",
-               //             message: "Job:  ${env.JOB_NAME}\n Status: *SUCCESS* \n"
-               //     )
-              //  }
+	        success {
+                    slackSend(
+                            teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+                            token: "${env.SLACK_TOKEN}",
+                            channel: "${env.SLACK_CHANNEL}",
+                            color: "good",
+                            message: "Job:  ${env.JOB_NAME}\n Status: *SUCCESS*  + ${jenkinsConsoleUrl} + ${BUILD_ARCHIVE} \n"
+                    )
+                }
 
-              //  failure {
-              //      slackSend(
-              //              teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-               //             token: "${env.SLACK_TOKEN}",
-               //             channel: "${env.SLACK_CHANNEL}",
-               //             color: "danger",
-                //            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} + jenkinsConsoleUrl \n",
-		//            attachments: "attachments"
-                //    )
-               // }
+                failure {
+                    slackSend(
+                            teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+                            token: "${env.SLACK_TOKEN}",
+                            channel: "${env.SLACK_CHANNEL}",
+                            color: "danger",
+                            message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} + ${jenkinsConsoleUrl} + ${BUILD_ARCHIVE} \n",
+		            attachments: "attachments"
+                    )
+                }
 	        cleanup {
                 	cleanWs()
 			//cleanWs(cleanWhenNotBuilt: false,
@@ -216,19 +221,19 @@ pipeline {
 		//		deleteworkspace()
 		//	}
 		// deleteDir()
-	          dir("$DIR/deploygfs") {
-		    deleteDir()
-		    }
-	          dir("$DIR/deploygfs@tmp") {
-		    deleteDir()
-		    }
+	        //  dir("$DIR/deploygfs") {
+		//    deleteDir()
+		//    }
+	       //   dir("$DIR/deploygfs@tmp") {
+		//    deleteDir()
+		//    }
 		 // dir("${env.WORKSPACE}") {
 		 //   deleteDir()
 		//    }
 		//  dir("${WORKSPACE}@tmp") {
 		 //   deleteDir()
 		//  }
-	           deleteworkspace()
+	        //   deleteworkspace()
 		}
     }
 }
