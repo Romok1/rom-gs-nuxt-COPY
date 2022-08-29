@@ -15,26 +15,26 @@ pipeline {
         pollSCM 'H/5 * * * *'
     }
     environment {
-        SLACK_TEAM_DOMAIN = "wcmc"
-        SLACK_TOKEN = credentials('slack-token-gef')
-        SLACK_CHANNEL = "#jenkins-cicd-gefspatial"
+       // SLACK_TEAM_DOMAIN = "wcmc"
+       // SLACK_TOKEN = credentials('slack-token-gef')
+        //SLACK_CHANNEL = "#jenkins-cicd-gefspatial"
         COMPOSE_FILE = "docker-compose.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
-	SNYK_URL = "https://app.snyk.io/org/informatics.wcmc/projects"
+	//SNYK_URL = "https://app.snyk.io/org/informatics.wcmc/projects"
         DIR = "$JENKINS_HOME/workspace"
     }
     stages {
-        stage ('Start') {
-            steps {
-                slackSend(
-                    teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-                    token: "${env.SLACK_TOKEN}",
-                    channel: "${env.SLACK_CHANNEL}",
-                    color: "#FFFF00",
-                    message: "STARTED: '${env.BRANCH_NAME} [${env.GIT_COMMIT_MSG}]' Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
-                )
-	    }
-        }
+       // stage ('Start') {
+       //     steps {
+        //        slackSend(
+         //           teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+         //           token: "${env.SLACK_TOKEN}",
+         //           channel: "${env.SLACK_CHANNEL}",
+          //          color: "#FFFF00",
+         //           message: "STARTED: '${env.BRANCH_NAME} [${env.GIT_COMMIT_MSG}]' Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+         //       )
+	 //   }
+      //  }
 	stage("Build") {
             when {
                 anyOf {
@@ -77,50 +77,50 @@ pipeline {
 	 	}
 	    }
         }
-        stage('Scan for vulnerabilities') {
-            when {
-                anyOf {
-                    branch 'feat/*'
-                    branch 'develop'
-                }
-            }
-	    stages {
-	       	stage("scan rails app") {
-                    steps {
-		        script {
-	                    CI_ERROR = "Failed: Snyk scan failed for rails-BE, check the snyk site for details, ${env.SNYK_URL}"
-		       	}
-                        echo 'Scanning...'
-                      	snykSecurity(
-                            snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
-		            severity: 'critical', failOnIssues: true,
-		            additionalArguments: '--detection-depth=4 --file=rails-api/Gemfile.lock --all-sub-projects --target-dir=rails-api', 
-			)
-                    } 
-	     	}	
-                stage("scan other projects") {
-                    steps {
-		        script {
-	                    CI_ERROR = "Failed: Snyk scan failed for project, check the snyk site for details, ${env.SNYK_URL}"
-		        }
-                        echo 'Scanning...'
-                        snykSecurity(
-                            snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
-		            severity: 'critical', failOnIssues: true,
-		            additionalArguments: '--all-projects --detection-depth=4 --exclude=rails-api,', 
-			)
-                    }
-	      	}
-	    }
-	    post {
-                success{
-                    slackSend color: "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
-                }
-                failure{
-                    slackSend color: "danger", message: "Snyk scan failed, visit ${env.SNYK_URL} to get detailed report", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
-                }
-            }
-    	}
+     //   stage('Scan for vulnerabilities') {
+       //     when {
+      //          anyOf {
+       //             branch 'feat/*'
+        //            branch 'develop'
+        //        }
+         //   }
+	 //   stages {
+	  //     	stage("scan rails app") {
+         //           steps {
+	//	        script {
+	 //                   CI_ERROR = "Failed: Snyk scan failed for rails-BE, check the snyk site for details, ${env.SNYK_URL}"
+	//	       	}
+         //               echo 'Scanning...'
+         //             	snykSecurity(
+         //                   snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
+	//	            severity: 'critical', failOnIssues: true,
+	//	            additionalArguments: '--detection-depth=4 --file=rails-api/Gemfile.lock --all-sub-projects --target-dir=rails-api', 
+	//		)
+         //           } 
+	//     	}	
+         //       stage("scan other projects") {
+         //           steps {
+	//	        script {
+	  //                  CI_ERROR = "Failed: Snyk scan failed for project, check the snyk site for details, ${env.SNYK_URL}"
+	//	        }
+         //               echo 'Scanning...'
+         //               snykSecurity(
+         //                   snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
+	//	            severity: 'critical', failOnIssues: true,
+	//	            additionalArguments: '--all-projects --detection-depth=4 --exclude=rails-api,', 
+	//		)
+         //           }
+	 //     	}
+	 //   }
+	//    post {
+        //        success{
+        //            slackSend color: "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+        //        }
+        //        failure{
+       //             slackSend color: "danger", message: "Snyk scan failed, visit ${env.SNYK_URL} to get detailed report", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+        //        }
+        //    }
+    	//}
         stage("Deploy to Staging") {
             when {
                 branch 'develop'
@@ -135,21 +135,22 @@ pipeline {
 		      git checkout develop
                       ls
                       git branch
-		      rvm use $(cat .ruby-version) --install
-		      bundle install
-		      bundle exec cap staging deploy"
-                    '''
+		        '''
+		 //     rvm use $(cat .ruby-version) --install
+		  //    bundle install
+		//      bundle exec cap staging deploy"
+                //    '''
                     }
                 }
             }
-            post {
-                success{
-                    slackSend color: "good", message: "Deploy to Staging server successful", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
-                }
-                failure{
-                    slackSend color: "danger", message: "Deploy to Staging server failed", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
-                }
-            }
+          //  post {
+         //       success{
+          //          slackSend color: "good", message: "Deploy to Staging server successful", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+          //      }
+          //      failure{
+           //         slackSend color: "danger", message: "Deploy to Staging server failed", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
+           //     }
+          //  }
         }
     }
     post {
@@ -162,24 +163,24 @@ pipeline {
 		dockerImageCleanup()
                 }
         }
-	success {
-            slackSend(
-                teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-                token: "${env.SLACK_TOKEN}",
-                channel: "${env.SLACK_CHANNEL}",
-                color: "good",
-                message: "Job:  ${env.JOB_NAME}\n Status: *SUCCESS* \n"
-            )
-        }
-        failure {
-            slackSend(
-                teamDomain: "${env.SLACK_TEAM_DOMAIN}",
-                token: "${env.SLACK_TOKEN}",
-                channel: "${env.SLACK_CHANNEL}",
-                color: "danger",
-                message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} \n"
-            )
-        }
+	//success {
+        //    slackSend(
+        //        teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+        //        token: "${env.SLACK_TOKEN}",
+        //        channel: "${env.SLACK_CHANNEL}",
+        //        color: "good",
+        //        message: "Job:  ${env.JOB_NAME}\n Status: *SUCCESS* \n"
+         //   )
+      //  }
+      //  failure {
+       //     slackSend(
+       //         teamDomain: "${env.SLACK_TEAM_DOMAIN}",
+       //         token: "${env.SLACK_TOKEN}",
+        //        channel: "${env.SLACK_CHANNEL}",
+       //         color: "danger",
+        //        message: "Job:  ${env.JOB_NAME}\n Status: *FAILURE*\n Error description: ${CI_ERROR} \n"
+        //    )
+      //  }
         cleanup {
 	    cleanWs()
 	    deleteWorkspace()
