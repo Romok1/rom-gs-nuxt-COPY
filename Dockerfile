@@ -35,9 +35,10 @@ RUN bundle _${BUNDLER_VERSION}_ install -j 4
 COPY package*.json yarn.lock ./
 RUN yarn install
 
+#COPY config/database-jenkinsci.yml /encore/config/database.yml
 
-#ARG rails_master_key
-#RUN RAILS_MASTER_KEY=$rails_master_key
+ARG rails_master_key
+RUN RAILS_MASTER_KEY=$rails_master_key
 
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
