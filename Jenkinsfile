@@ -176,11 +176,12 @@ pipeline {
 }
 def buildProject() {
     sh 'echo "Building Project.............."'
-    def rails_key = credentials('encore-rails_master_key')
+    rails_key = credentials('encore-rails_master_key')
+	sh "ls"
     sh "echo '${rails_key}' > config/master.key"
     sh "cp .env-example .env"
     sh "cp config/database-jenkinsci.yml config/database.yml"
-    sh "cp sidekiq-jenkins.yml sidekiq.yml"
+    sh "cp config/sidekiq-jenkins.yml config/sidekiq.yml"
     sh 'docker-compose -f ${COMPOSE_FILE} --project-name=${JOB_NAME} build --pull'
 }
 
