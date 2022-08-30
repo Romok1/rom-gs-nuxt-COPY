@@ -200,7 +200,7 @@ def prepareDatabase() {
 
 def prepare() {
     sh "docker-compose --project-name=${JOB_NAME} run web yarn install"
-    // sh "docker-compose --project-name=${JOB_NAME} run web yarn lint"
+     sh "docker-compose --project-name=${JOB_NAME} run web yarn lint"
 }
 
 def runRspecTests() {
