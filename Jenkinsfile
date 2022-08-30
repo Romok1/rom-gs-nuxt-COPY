@@ -20,8 +20,8 @@ pipeline {
         SLACK_TOKEN = credentials('slack-token-encore-inuse')
         SLACK_CHANNEL = "#jenkins-cicd-encore"
         COMPOSE_FILE = "docker-compose.yml"
-	      GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
-	      SNYK_URL = "https://app.snyk.io/org/informatics.wcmc/projects"
+	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
+	SNYK_URL = "https://app.snyk.io/org/informatics.wcmc/projects"
         jenkinsConsoleUrl = "$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"
         DIR = "$JENKINS_HOME/workspace"
     }
@@ -176,7 +176,8 @@ pipeline {
 }
 def buildProject() {
     sh 'echo "Building Project.............."'
-    sh "echo '${encore-rails_master_key}' > config/master.key"
+    def rails_key = credentials('encore-rails_master_key')
+    sh "echo '${rails_key}' > config/master.key"
     sh "cp .env-example .env"
     sh "cp config/database-jenkinsci.yml config/database.yml"
     sh "cp sidekiq-jenkins.yml sidekiq.yml"
