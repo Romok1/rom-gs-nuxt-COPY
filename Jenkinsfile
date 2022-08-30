@@ -154,9 +154,6 @@ pipeline {
 		              if (currentBuild.currentResult == 'SUCCESS') { 
 		                CI_ERROR = "NA" 
 		            }
-              	//if (env.BRANCH_NAME == 'test-encore-temp') {
-                //deleteDeployDir()
-              	//}
 		 dockerImageCleanup()
                 }
         }
@@ -187,7 +184,6 @@ pipeline {
 }
 def buildProject() {
     sh 'echo "Building Project.............."'
-	sh "ls"
 	sh "echo ${rails_key} > config/master.key"
     sh "cp .env-example .env"
     sh "cp config/database-jenkinsci.yml config/database.yml"
