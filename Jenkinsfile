@@ -24,6 +24,7 @@ pipeline {
 	SNYK_URL = "https://app.snyk.io/org/informatics.wcmc/projects"
         jenkinsConsoleUrl = "$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"
         DIR = "$JENKINS_HOME/workspace"
+	rails_key = credentials('encore-rails_master_key')
     }
     stages {
         stage ('Start') {
@@ -181,9 +182,8 @@ pipeline {
 }
 def buildProject() {
     sh 'echo "Building Project.............."'
-    rails_key = credentials('encore-rails_master_key')
 	sh "ls"
-    sh "echo "$encore-rails_master_key" > config/master.key"
+	sh "echo ${rails_key} > config/master.key"
     sh "cp .env-example .env"
     sh "cp config/database-jenkinsci.yml config/database.yml"
     sh "cp config/sidekiq-jenkins.yml config/sidekiq.yml"
