@@ -185,6 +185,7 @@ pipeline {
 }
 def buildProject() {
     sh 'echo "Building Project.............."'
+	sh "ls"
 	sh "echo ${rails_key} > config/master.key"
     sh "cp .env-example .env"
     sh "cp config/database-jenkinsci.yml config/database.yml"
