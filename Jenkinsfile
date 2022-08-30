@@ -1,3 +1,9 @@
+if (currentBuild.getBuildCauses().toString().contains('BranchIndexingCause') || currentBuild.getBuildCauses().toString().contains('Branch event')) {
+  print "INFO: Build skipped due to trigger being Branch Indexing"
+  currentBuild.result = 'ABORTED' // optional, gives a better hint to the user that it's been skipped, rather than the default which shows it's successful
+  return
+}
+
 pipeline {
     agent any
     options {
@@ -191,7 +197,7 @@ def buildProject() {
 }
 
 def prepareDatabase() {
-    COMMAND = "bundle exec rake db:drop db:create db:migrate db:seed"
+    COMMAND = "bundle exec rake db:drop db:create db:migrate"
     sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
 }
 
@@ -211,6 +217,7 @@ def dockerImageCleanup() {
     sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
     sh "docker rm -v `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
     sh "docker rmi `docker images --filter 'dangling=true' -q --no-trunc` &> /dev/null || true &> /dev/null"
+	sh 'docker-compose down --remove-orphans --rmi all'
     sh "docker image prune -fa &> /dev/null || true &> /dev/null"
 }
 
