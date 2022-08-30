@@ -36,8 +36,8 @@ pipeline {
                     message: "STARTED: Branch -- ${env.BRANCH_NAME}\n Git Commit message: '${env.GIT_COMMIT_MSG}'\n Job: ${env.JOB_NAME} - [${env.BUILD_NUMBER}]' \n Build link: [(<${env.BUILD_URL} | View >)]"
                 )
 	          }
-        }
-	        stage("Build") {
+       	 }
+	  stage("Build") {
             when {
                 anyOf {
                     branch 'test-encore-temp'
@@ -59,8 +59,8 @@ pipeline {
                 }
             }
             steps { 
-		          script {
-		            CI_ERROR = "Build Failed at stage: Test DB - Running db migrate"
+		   script {
+		        CI_ERROR = "Build Failed at stage: Test DB - Running db migrate"
                     prepareDatabase() 
 		          }
 	          }
@@ -73,8 +73,8 @@ pipeline {
                 }
             }
             steps { 
-		          script {
-		            CI_ERROR = "Build Failed at stage: Prepare - Run yarn install"
+		  script {
+		   CI_ERROR = "Build Failed at stage: Prepare - Run yarn install"
                     prepare() 
 	            	}
 	           }
@@ -87,17 +87,16 @@ pipeline {
                 }
             }
                steps {
-		                  script {
+		        script {
 	                    CI_ERROR = "Build Failed at stage:: Snyk vulnerability scan failed for this project, check the snyk site for details, ${env.SNYK_URL}"
 		                  }
                         echo 'Scanning...'
                         snykSecurity(
                             snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
-		                        severity: 'critical', failOnIssues: false,
-		                        additionalArguments: '--all-projects --detection-depth=4', 
-			                  )
+		                 severity: 'critical', failOnIssues: false,
+		                  additionalArguments: '--all-projects --detection-depth=4', 
+			      )
 	      	      }
-	        }
 	        post {
                 success{
                     slackSend color: "good", message: "Snyk scan successful, visit ${env.SNYK_URL} for detailed report", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
@@ -139,18 +138,18 @@ pipeline {
     }
     post {
         always {
-	          script {
+	     script {
                	BUILD_STATUS = currentBuild.currentResult
 		              if (currentBuild.currentResult == 'SUCCESS') { 
 		                CI_ERROR = "NA" 
 		            }
-              if (env.BRANCH_NAME == 'test-encore-temp') {
+              	if (env.BRANCH_NAME == 'test-encore-temp') {
                 deleteDeployDir()
-              }
-		            dockerImageCleanup()
+              	}
+		 dockerImageCleanup()
                 }
         }
-	      success {
+	 success {
             slackSend(
                 teamDomain: "${env.SLACK_TEAM_DOMAIN}",
                 token: "${env.SLACK_TOKEN}",
@@ -171,10 +170,10 @@ pipeline {
         cleanup {
 	            cleanWs()
 	            deleteWorkspace()
-	}
-    }
-}
+		}
+    	}
 
+}
 def buildProject() {
     sh 'echo "Building Project.............."'
     sh "echo '${encore-rails_master_key}' > config/master.key"
