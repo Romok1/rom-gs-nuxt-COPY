@@ -127,6 +127,11 @@ pipeline {
                 }
             }
             post {
+		always {
+	             script {
+			 deleteDeployDir()
+		     }
+		}
                 success{
                     slackSend color: "good", message: "Deploy to Staging server successful", teamDomain: "${env.SLACK_TEAM_DOMAIN}", token: "${env.SLACK_TOKEN}", channel: "${env.SLACK_CHANNEL}"
                 }
@@ -143,8 +148,8 @@ pipeline {
 		              if (currentBuild.currentResult == 'SUCCESS') { 
 		                CI_ERROR = "NA" 
 		            }
-              	if (env.BRANCH_NAME == 'test-encore-temp') {
-                deleteDeployDir()
+              	//if (env.BRANCH_NAME == 'test-encore-temp') {
+                //deleteDeployDir()
               	}
 		 dockerImageCleanup()
                 }
