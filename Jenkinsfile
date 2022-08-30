@@ -150,7 +150,7 @@ pipeline {
 		            }
               	//if (env.BRANCH_NAME == 'test-encore-temp') {
                 //deleteDeployDir()
-              	}
+              	//}
 		 dockerImageCleanup()
                 }
         }
