@@ -178,7 +178,7 @@ def buildProject() {
     sh 'echo "Building Project.............."'
     rails_key = credentials('encore-rails_master_key')
 	sh "ls"
-    sh "echo '${rails_key}' > config/master.key"
+    sh "echo "$encore-rails_master_key" > config/master.key"
     sh "cp .env-example .env"
     sh "cp config/database-jenkinsci.yml config/database.yml"
     sh "cp config/sidekiq-jenkins.yml config/sidekiq.yml"
