@@ -8,7 +8,7 @@ pipeline {
         durabilityHint('PERFORMANCE_OPTIMIZED')
         // Disallow concurrent executions of the Pipeline. Can be useful for preventing simultaneous accesses to shared resources
         disableConcurrentBuilds()
-        overrideIndexTriggers(false)
+        overrideIndexTriggers(true)
     }
     triggers {
         // Accepts a cron-style string to define a regular interval at which Jenkins should check for new source changes 
@@ -17,11 +17,11 @@ pipeline {
     }
     environment {
         SLACK_TEAM_DOMAIN = "wcmc"
-        SLACK_TOKEN = credentials('slack-token-encore-inuse')
-        SLACK_CHANNEL = "#jenkins-cicd-encore"
+        SLACK_TOKEN = credentials('slack-token-test-jenkinsci')
+        SLACK_CHANNEL = "#test-jenkinsci"
         COMPOSE_FILE = "docker-compose.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
-	SNYK_URL = "https://app.snyk.io/org/informatics.wcmc/projects"
+	SNYK_URL = "https://app.snyk.io/org/olaiyafunmmi/projects"
         jenkinsConsoleUrl = "$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"
         DIR = "$JENKINS_HOME/workspace"
 	rails_key = credentials('encore-rails_master_key')
@@ -93,7 +93,7 @@ pipeline {
 		                  }
                         echo 'Scanning...'
                         snykSecurity(
-                            snykInstallation: 'snyk@latest', snykTokenId: 'wcmc-snyk',
+                            snykInstallation: 'snyk@latest', snykTokenId: 'snyktoken',
 		                 severity: 'critical', failOnIssues: false,
 		                  additionalArguments: '--all-projects --detection-depth=4', 
 			      )
