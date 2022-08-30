@@ -14,7 +14,7 @@ pipeline {
         durabilityHint('PERFORMANCE_OPTIMIZED')
         // Disallow concurrent executions of the Pipeline. Can be useful for preventing simultaneous accesses to shared resources
         disableConcurrentBuilds()
-	overrideIndexTriggers(true)
+	overrideIndexTriggers(false)
     }
     triggers {
         // Accepts a cron-style string to define a regular interval at which Jenkins should check for new source changes 
