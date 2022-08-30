@@ -101,7 +101,7 @@ pipeline {
                         echo 'Scanning...'
                         snykSecurity(
                             snykInstallation: 'snyk@latest', snykTokenId: 'snyktoken',
-		                 severity: 'critical', failOnIssues: false,
+		                 severity: 'critical', failOnIssues: true,
 		                  additionalArguments: '--all-projects --detection-depth=4', 
 			      )
 	      	      }
