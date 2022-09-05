@@ -220,7 +220,7 @@ def dockerImageCleanup() {
 	//sh "docker-compose volume ls | grep ${BRANCH_NAME} | awk '{print $1}' | xargs docker-compose down --volumes"
     sh "docker rm -v `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
     sh "docker rmi `docker images --filter 'dangling=true' -q --no-trunc` &> /dev/null || true &> /dev/null"
-	sh "docker images -a | grep \${BRANCH_NAME} | awk '{print $1}' | xargs docker rmi"
+	sh "docker images -a | grep env.BRANCH_NAME | awk '{print $1}' | xargs docker rmi"
   //  sh "docker-compose down --volumes"
 //	sh "docker-compose down -v --remove-orphans --rmi all"
   //  sh "grep ${BRANCH_NAME} docker image prune -fa &> /dev/null || true &> /dev/null"
