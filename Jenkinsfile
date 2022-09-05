@@ -215,7 +215,7 @@ def dockerImageCleanup() {
     sh "docker-compose --project-name=${JOB_NAME} rm --force &> /dev/null || true &> /dev/null"
     sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
 		sh '''#!/bin/bash
-	docker-compose volume ls | grep \${BRANCH_NAME} | awk '{print $1}' | xargs docker-compose down --volumes
+	docker-compose volume ls | grep env.BRANCH_NAME | awk '{print $1}' | xargs docker-compose down --volumes
 	'''
 	//sh "docker-compose volume ls | grep ${BRANCH_NAME} | awk '{print $1}' | xargs docker-compose down --volumes"
     sh "docker rm -v `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
