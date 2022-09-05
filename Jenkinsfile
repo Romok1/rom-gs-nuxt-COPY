@@ -216,11 +216,11 @@ def dockerImageCleanup() {
     sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
     sh "docker rm -v `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
     sh "docker rmi `docker images --filter 'dangling=true' -q --no-trunc` &> /dev/null || true &> /dev/null"
-    sh "docker-compose down --project-name=${JOB_NAME} --volumes"
-    sh "docker-compose down -v --remove-orphans --rmi all"
+    sh "docker-compose down --volumes"
+    sh "docker-compose down -v | grep ${BRANCH_NAME} --remove-orphans --rmi all"
     sh "docker image prune -fa | grep ${BRANCH_NAME} &> /dev/null || true &> /dev/null"
-    sh "docker system prune --force --all --volumes | grep ${BRANCH_NAME}"
-} // --filter=reference=${BRANCH_NAME}
+    sh "docker system prune | grep ${BRANCH_NAME} --force --all --volumes"
+} // --filter=reference=${BRANCH_NAME}, sh "docker-compose down --project-name=${JOB_NAME} --volumes"
 
 def deleteDeployDir() {
     sh "sudo rm -r $DIR/deploydir*"
