@@ -218,8 +218,8 @@ def dockerImageCleanup() {
     sh "docker rmi `docker images --filter 'dangling=true' -q --no-trunc` &> /dev/null || true &> /dev/null"
     sh "docker-compose down --project-name=${JOB_NAME} --volume"
     sh "docker-compose down -v --remove-orphans --rmi all"
-    sh "docker image prune -fa --filter name=${BRANCH_NAME} &> /dev/null || true &> /dev/null"
-    sh "docker system prune --force --all --volumes --filter name=${BRANCH_NAME}"
+    sh "docker image prune -fa --filter=reference=${BRANCH_NAME} &> /dev/null || true &> /dev/null"
+    sh "docker system prune --force --all --volumes --filter=reference=${BRANCH_NAME}"
 } //
 
 def deleteDeployDir() {
