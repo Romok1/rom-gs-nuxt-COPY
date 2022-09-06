@@ -20,6 +20,7 @@ pipeline {
         // Accepts a cron-style string to define a regular interval at which Jenkins should check for new source changes 
 	// If new changes exist, the Pipeline will be re-triggered
         pollSCM 'H/5 * * * *'
+	githubPush()
     }
     environment {
         SLACK_TEAM_DOMAIN = "wcmc"
