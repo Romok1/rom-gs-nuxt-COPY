@@ -215,7 +215,7 @@ def dockerImageCleanup() {
     sh "docker-compose --project-name=${JOB_NAME} rm --force &> /dev/null || true &> /dev/null"
     sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
     sh "docker-compose --project-name=${JOB_NAME} down --volumes --rmi all --remove-orphans"
-	sh "docker images -a -q | grep ${BRANCH_NAME} | xargs docker rmi -f"
+    sh "docker images | grep ${BRANCH_NAME} -a -q | xargs docker rmi -f"
   //  sh	"docker image prune $(docker images | grep ${BRANCH_NAME}) --force -fa"
 }
 
