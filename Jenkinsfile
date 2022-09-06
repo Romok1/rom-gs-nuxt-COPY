@@ -214,17 +214,17 @@ def dockerImageCleanup() {
     sh "docker-compose --project-name=${JOB_NAME} stop &> /dev/null || true &> /dev/null"
     sh "docker-compose --project-name=${JOB_NAME} rm --force &> /dev/null || true &> /dev/null"
     sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
-    sh "docker-compose down --volumes &> /dev/null || true &> /dev/null"
+    sh "docker-compose --project-name=${JOB_NAME} down --volumes"
     sh	"docker image prune --force `docker images | grep ${BRANCH_NAME}' -q --no-trunc`"
-		sh '''#!/bin/bash
-	docker images -a | grep env.BRANCH_NAME | awk '{print $1}' | xargs docker rmi
-	'''
+//		sh '''#!/bin/bash
+//	docker images -a | grep env.BRANCH_NAME | awk '{print $1}' | xargs docker rmi 
+//	'''
 	//sh "docker-compose volume ls | grep ${BRANCH_NAME} | awk '{print $1}' | xargs docker-compose down --volumes"
     sh "docker rm -v `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
     sh "docker rmi `docker images --filter 'dangling=true' -q --no-trunc` &> /dev/null || true &> /dev/null"
 //	sh "docker images -a | grep env.BRANCH_NAME | awk '{print $1}' | xargs docker rmi"
   //  sh "docker-compose down --volumes"
-//	sh "docker-compose down -v --remove-orphans --rmi all"
+	sh "docker-compose --project-name=${JOB_NAME} down -v --remove-orphans --rmi all"
   //  sh "grep ${BRANCH_NAME} docker image prune -fa &> /dev/null || true &> /dev/null"
  //   sh "grep ${BRANCH_NAME} docker system prune --force --all --volumes"
 } // --filter=reference=${BRANCH_NAME}, sh "docker-compose down --project-name=${JOB_NAME} --volumes"
