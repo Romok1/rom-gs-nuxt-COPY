@@ -1,4 +1,4 @@
-properties([pipelineTriggers([githubPush()])])
+//properties([pipelineTriggers([githubPush()])])
 
 if (currentBuild.getBuildCauses().toString().contains('BranchIndexingCause') || currentBuild.getBuildCauses().toString().contains('Branch event')) 
   print "INFO: Build skipped due to trigger being Branch Indexing"
@@ -16,12 +16,13 @@ pipeline {
         durabilityHint('PERFORMANCE_OPTIMIZED')
         // Disallow concurrent executions of the Pipeline. Can be useful for preventing simultaneous accesses to shared resources
         disableConcurrentBuilds()
-        overrideIndexTriggers(false)
+       // overrideIndexTriggers(false)
     }
     triggers {
         // Accepts a cron-style string to define a regular interval at which Jenkins should check for new source changes 
 	// If new changes exist, the Pipeline will be re-triggered
-        pollSCM 'H/5 * * * *'
+        //pollSCM 'H/5 * * * *'
+	pollSCM ('')
 	githubPush()
     }
     environment {
