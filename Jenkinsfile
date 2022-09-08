@@ -138,7 +138,7 @@ pipeline {
 			ls
 		              rvm use $(cat .ruby-version) --install
 		              bundle install
-		           echo "bundle exec cap staging deploy --trace"
+		           bundle exec cap staging deploy --trace
                   '''
 			} //git checkout echo ${env.BRANCH_NAME}
                     //}
