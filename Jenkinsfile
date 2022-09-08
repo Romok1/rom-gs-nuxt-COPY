@@ -128,7 +128,7 @@ pipeline {
 			git checkout test-encore-temp
 		              rvm use $(cat .ruby-version) --install
 		              bundle install
-		              bundle exec cap staging deploy
+		              bundle exec cap staging deploy --trace
                   '''
 			}
                     }
