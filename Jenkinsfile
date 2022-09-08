@@ -124,10 +124,16 @@ pipeline {
 		            dir("$DIR/deploytestdir") {
 		             // checkout scm
 		//withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-git', keyFileVariable: 'key', usernameVariable: 'unepwcmc-read')]) {
-                	sh '''#!/bin/bash -l
-			git clone https://github.com/Romok1/rom-gs-nuxt.git
-			git checkout testencoretemp
-			cd rom-gs-nuxt
+			checkout([$class: 'GitSCM',
+                                   branches: [[name: 'testencoretemp']],
+          			userRemoteConfigs: [[credentialsId:  'romtest',
+                               url: 'git@github.com:Romok1/rom-gs-nuxt.git']]])
+                	
+			//git clone https://github.com/Romok1/rom-gs-nuxt.git
+			//cd rom-gs-nuxt
+			//git checkout testencoretemp
+				    sh '''#!/bin/bash -l
+				    git checkout testencoretemp
 			git branch
 			ls
 		              rvm use $(cat .ruby-version) --install
