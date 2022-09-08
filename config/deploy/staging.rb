@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 set :stage, :staging
-set :branch, 'develop'
+set :branch, 'de'
 
-server 'web-supported-staging.linode.unep-wcmc.org', user: 'wcmc', roles: %w[app web db]
+server 'romoke.unep-wcmc.org', user: 'wcmc', roles: %w[app web db]
 
 set :application, 'gef-spatial'
-set :server_name, 'gef-spatial.web-supported-staging.linode.unep-wcmc.org'
+set :server_name, 'gef-spatial.romoke.unep-wcmc.org'
 set :sudo_user, 'wcmc'
 set :app_port, '80'
 
