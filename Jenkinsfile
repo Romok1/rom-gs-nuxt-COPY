@@ -231,7 +231,7 @@ sh '''#!/bin/bash
 } //sh "docker-compose --project-name=${JOB_NAME} down --volumes --rmi all --remove-orphans"
 
 def deleteDeployDir() {
-    sh "sudo rm -r $DIR/deploydir*"
+    sh "sudo rm -r $DIR/deploytestdir*"
 }
 
 def deleteWorkspace() {
