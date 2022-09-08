@@ -138,6 +138,8 @@ pipeline {
 			ls
 		              rvm use $(cat .ruby-version) --install
 		              bundle install
+			      eval $(ssh-agent -s)
+			      ssh-add ~/.ssh/id_ed25519
 		           bundle exec cap staging deploy --trace
                   '''
 			} //git checkout echo ${env.BRANCH_NAME}
