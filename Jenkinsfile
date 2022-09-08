@@ -115,7 +115,7 @@ pipeline {
     	  }
         stage("Deploy to Staging") { 
             when {
-                branch 'test-encore-temp'
+                branch 'testencoretemp'
             }
             steps { 
                	script {
@@ -125,7 +125,7 @@ pipeline {
 		              checkout scm
 		withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-git', keyFileVariable: 'key', usernameVariable: 'unepwcmc-read')]) {
                 	sh '''#!/bin/bash -l
-			git checkout test-encore-temp
+			git checkout testencoretemp
 		              rvm use $(cat .ruby-version) --install
 		              bundle install
 		              bundle exec cap staging deploy --trace
