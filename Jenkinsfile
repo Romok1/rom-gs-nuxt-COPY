@@ -122,9 +122,10 @@ pipeline {
 		            CI_ERROR = "Build Failed at stage: Prepare deploy stage"
 		            sh "mkdir $DIR/deploydir"
 		            dir("$DIR/deploydir") {
-		              checkout scm
+		             // checkout scm
 		withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-git', keyFileVariable: 'key', usernameVariable: 'unepwcmc-read')]) {
                 	sh '''#!/bin/bash -l
+			git clone git@github.com:Romok1/rom-gs-nuxt.git
 			git checkout testencoretemp
 		              rvm use $(cat .ruby-version) --install
 		              bundle install
