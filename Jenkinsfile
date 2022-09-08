@@ -123,14 +123,15 @@ pipeline {
 		            sh "mkdir $DIR/deploydir"
 		            dir("$DIR/deploydir") {
 		              checkout scm
-                sh '''#!/bin/bash -l
-                  ls
-                  git branch
+		withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-git', keyFileVariable: 'key', usernameVariable: 'unepwcmc-read')]) {
+                	sh '''#!/bin/bash -l
+			git checkout test-encore-temp
 		              rvm use $(cat .ruby-version) --install
 		              bundle install
-		              echo "bundle exec cap staging deploy"
+		              bundle exec cap staging deploy
                   '''
-                    } // git checkout develop
+			}
+                    }
                 }
             }
             post {
