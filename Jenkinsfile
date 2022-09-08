@@ -120,12 +120,12 @@ pipeline {
             steps { 
                	script {
 		            CI_ERROR = "Build Failed at stage: Prepare deploy stage"
-		            sh "mkdir $DIR/deploydir"
-		            dir("$DIR/deploydir") {
+		            sh "mkdir $DIR/deploytestdir"
+		            dir("$DIR/deploytestdir") {
 		             // checkout scm
 		//withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-git', keyFileVariable: 'key', usernameVariable: 'unepwcmc-read')]) {
                 	sh '''#!/bin/bash -l
-			git clone git@github.com:Romok1/rom-gs-nuxt.git
+			git clone https://github.com/Romok1/rom-gs-nuxt.git
 			git checkout testencoretemp
 			cd rom-gs-nuxt
 			git branch
