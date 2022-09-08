@@ -128,7 +128,7 @@ pipeline {
 			git checkout testencoretemp
 		              rvm use $(cat .ruby-version) --install
 		              bundle install
-		              cap staging deploy --trace
+		             bundle exec cap staging deploy --trace
                   '''
 			}
                     }
