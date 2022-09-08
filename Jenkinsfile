@@ -127,11 +127,12 @@ pipeline {
                 	sh '''#!/bin/bash -l
 			git clone git@github.com:Romok1/rom-gs-nuxt.git
 			git checkout testencoretemp
+			cd rom-gs-nuxt
 		              rvm use $(cat .ruby-version) --install
 		              bundle install
 		             bundle exec cap staging deploy --trace
                   '''
-			}
+			} //git checkout echo ${env.BRANCH_NAME}
                     }
                 }
             }
