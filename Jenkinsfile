@@ -56,6 +56,9 @@ pipeline {
 	            CI_ERROR = "Build Failed at stage: docker-compose build"
                     buildProject()
 			    sh "printenv"
+			    sh "echo "${BRANCH_NAME}""
+			    sh "echo "${env.BRANCH_NAME}""
+			    
 	        }
 	      }
         }
