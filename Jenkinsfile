@@ -229,9 +229,9 @@ def dockerImageCleanup() {
     sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
     sh "docker-compose --project-name=${JOB_NAME} down --volumes"
     sh '''#!/bin/bash
-	docker ps -a --no-trunc  | grep "${BRANCH_NAME}" | awk '{print $1}' | xargs -r --no-run-if-empty docker stop -f
-	docker ps -a --no-trunc  | grep "${BRANCH_NAME}" | awk '{print $1}' | xargs -r --no-run-if-empty docker rm -f
-	docker images --no-trunc | grep "${BRANCH_NAME}" | awk '{print $3}' | xargs -r --no-run-if-empty docker rmi -f
+	docker ps -a --no-trunc  | grep "${JOB_NAME}" | awk '{print $1}' | xargs -r --no-run-if-empty docker stop -f
+	docker ps -a --no-trunc  | grep "${JOB_NAME}" | awk '{print $1}' | xargs -r --no-run-if-empty docker rm -f
+	docker images --no-trunc | grep "${JOB_NAME}" | awk '{print $3}' | xargs -r --no-run-if-empty docker rmi -f
     '''
     //sh "docker images | grep ${BRANCH_NAME} -a -q | xargs docker rmi -f"
   //  sh	"docker image prune $(docker images | grep ${BRANCH_NAME}) --force -fa"
