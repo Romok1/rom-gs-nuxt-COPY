@@ -55,6 +55,7 @@ pipeline {
 	            script {
 	            CI_ERROR = "Build Failed at stage: docker-compose build"
                     buildProject()
+			    printenv
 	        }
 	      }
         }
@@ -82,7 +83,7 @@ pipeline {
             steps { 
 		  script {
 		   CI_ERROR = "Build Failed at stage: Prepare - Run yarn install"
-                    prepa
+                    prepare()
 	            	}
 	           }
         }
