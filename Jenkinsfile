@@ -55,7 +55,7 @@ pipeline {
 	            script {
 	            CI_ERROR = "Build Failed at stage: docker-compose build"
                     buildProject()
-			    printenv
+			    sh "printenv"
 	        }
 	      }
         }
