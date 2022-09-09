@@ -115,7 +115,7 @@ pipeline {
     	  }
         stage("Deploy to Staging") { 
             when {
-                branch 'testencoretemp'
+                branch 'dev'
             }
             steps { 
                	script {
