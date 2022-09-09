@@ -47,7 +47,7 @@ pipeline {
 	  stage("Build") {
             when {
                 anyOf {
-                    branch 'testencoretemp'
+                    branch 'feat/update-jenkins-citest'
                     branch 'develop'
                 }
             }
@@ -61,7 +61,7 @@ pipeline {
         stage("Test DB") {
             when {
                 anyOf {
-                    branch 'testencoretemp'
+                    branch 'feat/update-jenkins-citest'
                     branch 'develop'
                 }
             }
@@ -75,7 +75,7 @@ pipeline {
         stage("Prepare") {
             when {
                 anyOf {
-                    branch 'testencoretemp'
+                    branch 'feat/update-jenkins-citest'
                     branch 'develop'
                 }
             }
