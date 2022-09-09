@@ -82,7 +82,7 @@ pipeline {
             steps { 
 		  script {
 		   CI_ERROR = "Build Failed at stage: Prepare - Run yarn install"
-                    prepare() 
+                    prepa
 	            	}
 	           }
         }
