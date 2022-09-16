@@ -1,0 +1,31 @@
+<% title 'CITES ORS - Questionnaire Responses' %>
+<%= render 'administration/menu' %>
+
+<h2>Search responses</h2>
+<div class="span-24 last">
+  <div id="content_header">
+    <% info_tip_text = "" %>
+  </div>
+  <div class="span-24 last">
+    <fieldset>
+      <div class="row group padded">
+        <%= label_tag "Questionnaire" %>
+        <%= select :search, :questionnaire, @questionnaires.collect{|p| [h(p.title[0,90])+(p.title.size > 90 ? '...' : ''), p.id] }, { :include_blank => t('manage_delegates.select_a_q') } %>
+      </div>
+      <div class="row group padded">
+        <%= label_tag "Section" %>
+        <%= select :search, :section, [], { :include_blank => "Choose a section" }, { :validate => "{required:true}"} %>
+      </div>
+      <div class="row group padded">
+        <%= label_tag "Question" %>
+        <%= select :search, :question, [] , { :include_blank => "Choose a question" }, { :validate => "{required:true}"} %>
+      </div>
+    </fieldset>
+    <fieldset id="responses_loop_items" class="hide">
+      <legend>Looping items</legend>
+      <ul>
+      </ul>
+    </fieldset>
+    <div id="users_answers"></div>
+  </div>
+</div>

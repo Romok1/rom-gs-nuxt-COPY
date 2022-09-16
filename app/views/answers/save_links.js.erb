@@ -1,0 +1,38 @@
+$(function(){
+    <%- flash.each do |name, msg| -%>
+        flash_message("<%=h name%>", "<%=h msg %>");
+        <%- flash.delete(name) -%>
+    <%- end -%>
+    $("#add_links").dialog("close");
+    <% if @success -%>
+        var looping_identifier = '';
+
+        // Looping identifiers are not consistent between answers divs and questions divs
+        // and sometimes even between answers in general. A missing looping identifier can be 0 or nil.
+        // So the following if statement is to double check there's a #docs_list div to fetch
+        // considering that the looping identifier can be empty, so the div will be
+        // #docs_list_{answer_id} instead of #doc_list_#{answer_id}_0
+        <% if @answer.looping_identifier.present? %>
+          looping_identifier = "<%= @answer.looping_identifier == '0' ? '' : "_#{@answer.looping_identifier}" %>";
+        <% end %>
+        var div_identifier = "<%= @answer.question.id.to_s %>" + looping_identifier;
+        var $this_doc_list = $("#links_list_" + div_identifier);
+        if($this_doc_list.length == 0)
+        {
+            $("#answer_links_" + div_identifier).prepend("<div id='links_list_" + div_identifier + "'><p><%= t('submission_pages.links_you_have') %></p>" + "<ul></ul></div>");
+            $this_doc_list = $("#links_list_" + div_identifier);
+        }
+        var el = $("#links_list_" + div_identifier).find("ul");
+        el.children().remove();
+        <% @answer.answer_links.each do |answer_link| -%>
+            <% if !answer_link.marked_for_destruction? %>
+                <%# target=>_blank was specifically requested.. seriously =(%>
+                el.prepend("<li><%= escape_javascript( (link_to h(answer_link.title.present? ? answer_link.title : answer_link.url), answer_link.url, :target => "_blank")+ "#{if answer_link.description? then ": "+h(answer_link.description)end}") %></li>");
+            <% end -%>
+        <% end -%>
+        if(el.children().length == 0)
+            $this_doc_list.remove();
+        else
+            el.effect("highlight",{}, 2000);
+    <% end -%>
+});

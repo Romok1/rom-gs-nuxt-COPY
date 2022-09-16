@@ -1,0 +1,54 @@
+<%= render "users/options"%>
+
+<div class="span-24 last user_profile" id="content">
+  <div class="page-header">
+    <h1><%= t('manage_delegates.delegate_details') %></h1>
+  </div>
+
+  <table>
+    <tbody>
+      <tr>
+        <th><%= t('generic.name') %></th>
+        <td><%= @user_delegate.delegate.full_name.present? ? h(@user_delegate.delegate.full_name) : "-" %></td>
+      </tr>
+      <tr>
+        <th><%= t('generic.email') %></th>
+        <td><%= mail_to h(@user_delegate.delegate.email) %></td>
+      </tr>
+      <tr>
+        <th><%= t('generic.language') %></th>
+        <td><%= @user_delegate.delegate.language_full_name %></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div id="manage_delegates">
+    <div class="page-header">
+      <h3><%= t('generic.help') %></h3>
+    </div>
+    <%= help_text %>
+
+  </div>
+
+  <% if current_user.role?(:admin) || current_user.id == @user_delegate.user_id %>
+    <div class="page-header">
+      <h3><%= t('manage_delegates.delegated_q_t') %></h3>
+    </div>
+    <p><%= link_to t('manage_delegates.delegate_q'), new_user_delegate_delegation_path(@user_delegate), class: 'btn' %></p>
+  <% end %>
+
+  <%= render 'delegated_tasks_table' %>
+</div>
+
+<script type="text/javascript">
+  $(function(){
+      $(".show-details").click(function(e){
+        e.preventDefault();
+        $(this).parent().siblings('.delegation-details').toggle('slow');
+      });
+      $("#delegated_tasks_table").tablesorter({
+        sortList: [[0,0]],
+        widgets: ['zebra']
+      });
+    });
+</script>

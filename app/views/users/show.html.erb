@@ -1,0 +1,99 @@
+<% if @user && can?( :update, @user) %>
+  <%= link_to t("user_dashboard.edit_u"), edit_user_path(@user.id), class: "btn" %>
+<% end %>
+
+<% if @user && ( @user.role?(:admin) || @user.role?(:respondent) ) %>
+  <%= link_to t("manage_delegates.manage_delegates"), user_user_delegates_path(@user.id), class: "btn" %>
+<% end %>
+
+<div class="span-24 last user_profile" id="content">
+  <%= render :partial => "users/options" %>
+  <div class="page-header">
+    <h2><%= t("user_show.details")%></h2>
+  </div>
+
+
+
+  <table>
+    <tbody>
+      <tr>
+        <th width="10%"><%= t("generic.name") %>:</th>
+        <td><%=h @user.full_name %></td>
+      </tr>
+      <tr>
+        <th><%= t("generic.language") %>:</th>
+        <td><%=h @user.language_full_name %></td>
+      </tr>
+      <tr>
+        <th><%= t("generic.email") %>:</th>
+        <td><%=h @user.email %></td>
+      </tr>
+      <tr>
+        <th><%= t("generic.country") %>:</th>
+        <td><%=h @user.country %></td>
+      </tr>
+      <tr>
+        <th><%= t("generic.region") %>:</th>
+        <td><%=h @user.region %></td>
+      </tr>
+      <tr>
+        <th><%= t("generic.category") %>:</th>
+        <td><%=h (@user.category.present? ? @user.category : "Other") %></td>
+      </tr>
+      <% if current_user.role?(:admin) %>
+        <tr><th><%= t("generic.role_respondent") %>:</th>
+          <td><%= @user.roles.map{|r| r.name.titleize}.join(", ")%></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="respondents-list-delegations">
+    <div class="page-header">
+      <h2> Filtering fields </h2>
+    </div>
+    <div id="help_div" >
+        <table class="user_table">
+          <% unless @user.available_questionnaires.empty? %>
+          <thead>
+            <tr>
+              <th><%= t("generic.questionnaire") %></th>
+              <th><%= t("generic.filtering_fields") %></th>
+              <th><%= t("generic.value") %></th>
+            </tr>
+          </thead>
+          <tbody>
+              <% @user.available_questionnaires.each do |questionnaire| -%>
+                <% questionnaire.filtering_fields.each do |field| -%>
+                  <tr>
+                    <td><%= questionnaire.title%></td>
+                    <td><%= h(field.name)%></td>
+                    <td><%= @user.get_filtering_field_value(field) %></td>
+                  </tr>
+                <% end -%>
+              <% end -%>
+            <% else %>
+              <tr><%= "No available questionnaires" %></tr>
+          </tbody>
+          <% end %>
+        </table>
+    </div>
+  </div>
+
+  <% unless @user.available_questionnaires.empty? %>
+    <div class="span-24 last" id="questionnaires">
+      <%= render :partial => "home/submission", :locals => {
+        :questionnaires => @user.available_questionnaires } %>
+    </div>
+  <% end %>
+
+  <% if @user.is_delegate? %>
+    <div class='respondents-list-delegations'>
+      <div class="page-header">
+        <h2>Delegations</h2>
+      </div>
+      <%= render 'existing_delegations' %>
+    </div>
+  <% end %>
+
+</div>

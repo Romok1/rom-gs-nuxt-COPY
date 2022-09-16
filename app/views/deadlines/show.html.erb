@@ -1,0 +1,58 @@
+<div class="span-24 last" id="content">
+
+  <div class="page-header">
+    <h2><%=h @deadline.title %></h2>
+  </div>
+
+  <div id="content_header">
+    <% info_tip_text = "<p></p>"%>
+    <%= render :partial => "administration/menu", :locals => {
+      :header => ("Deadline " + info_tip("Deadline", info_tip_text)).html_safe,
+      :include_options => "questionnaires"} -%>
+  </div>
+  <div class="clear" id="q_dashboard" style="margin-bottom: 25px">
+    <div class="row padded">
+      <div class="col col-2">Questionnaire</div>
+      <div class="col col-10 border-left"><%= link_to @deadline.questionnaire.title, dashboard_questionnaire_path(@deadline.questionnaire) %> (<%= link_to "Questionnaire deadlines", questionnaire_deadlines_path(@deadline.questionnaire) %>)</div>
+    </div>
+
+    <div class="row padded">
+      <div class="col col-2">Title</div>
+      <div class="col col-10 border-left"><%=h @deadline.title %> (<%= link_to "Edit", edit_deadline_path(@deadline) %>)</div>
+    </div>
+
+    <div class="row padded">
+      <div class="col col-2">Due date</div>
+      <div class="col col-10 border-left"><%= @deadline.due_date.strftime("%d/%m/%Y") %></div>
+    </div>
+
+    <div class="row padded">
+      <div class="col col-2">Type</div>
+      <div class="col col-10 border-left"><%= @deadline.soft_deadline? ? "Soft" : "Hard" %></div>
+    </div>
+  </div>
+  <div class="page-header">
+  <h5>Associated reminders</h5>
+  </div>
+  <p><%= link_to "Associate reminders", new_deadline_alert_path(@deadline), class: 'btn' %></p>
+  <table class="tablesorter">
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Alert message</th>
+      <th>When</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% for alert in @deadline.alerts -%>
+        <tr>
+          <td><%=h alert.reminder.title %></td>
+          <td><%=h alert.reminder.body %></td>
+          <td><%= pluralize alert.reminder.days, 'day' %> before</td>
+          <td><%= link_to "Remove association", alert, :method => :delete, :confirm => "Are you sure you want to remove the association between the deadline and the reminder?" %></td>
+        </tr>
+    <% end -%>
+    </tbody>
+  </table>
+</div>

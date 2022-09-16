@@ -1,0 +1,162 @@
+<% title t('title') %>
+<% the_sections = {} -%>
+
+<%= render 'users/options' %>
+
+<% content_for :sidebar do %>
+  <div class="page-header">
+    <h4><%=h @questionnaire.value_in(:title, @authorization[:language]) %></h4>
+  </div>
+  <div id="tabs-container">
+    <ul>
+      <li><a class='questionnaire-introduction' href="#questionnaire"><%= t 'tab_details.q_details' %></a></li>
+      <%= render :partial => 'section_tabs', :locals => { :the_sections => the_sections, :delegation => @delegation } %>
+    </ul>
+  </div>
+<% end %>
+    <% if params[:respondent_id].present? %>
+       <div class="grey-box">
+         You are viewing the questionnaire of the respondent: <strong><%= User.find(params[:respondent_id]).full_name %></strong>
+       </div>
+    <% end %>
+
+    <%= render "sections/sticky_toolbar" %>
+
+    <div id="questionnaire_submission" class="span-24 last" data-respondent_id=<%=@respondent.try(:id)%>>
+  <div>
+    <div>
+      <%= raw (current_user && current_user.role?(:delegate) && current_user != @authorization[:user]) ? " | <a href='#' id='toggle_delegation_details'>#{t 'tab_details.delegation_sections'}</a>" : "" %>
+    </div>
+  </div>
+
+  <% if @delegation -%>
+      <%= render :partial => "delegations/delegation_details" %>
+  <% end -%>
+
+  <%= hidden_field_tag :active_section, "" %>
+  <%= hidden_field_tag :auto_save, "0" -%>
+  <%= hidden_field_tag :timed_save, "0" -%>
+  <%= hidden_field_tag :save_from_button, "0" %>
+
+  <div id="questionnaire">
+    <!-- This is rendering the introduction part of the submission -->
+    <%= render :partial => "submission_view" %>
+  </div><!-- /questionnaire -->
+  <% @sections_to_display_in_tab_loops_expanded.each do |section_loops_expanded| %>
+    <% section, loop_item, submission_state = *section_loops_expanded %>
+    <div id="section_content_<%= "#{section.id}_#{(loop_item ? "#{loop_item.id}" : "0")}" %>" class="section_content">
+    </div><!-- /section_content_id -->
+  <% end %>
+</div><!-- /questionnaire_submission -->
+<div id="add_document" title="<%= t('submission_pages.files_dialog_title') %>"></div>
+<div id="add_links" title="<%= t('submission_pages.links_dialog_title') %>"></div>
+<div id="delegate_section" title=<%= t("delegate_section.delegate_section") %>></div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#requests_dialog").dialog({autoOpen:false, resizable:false, modal:true, height: 'auto' });
+        $(function(){
+            $("#questionnaire_submission").tabs(
+            { fx: { height: 'toggle', opacity: 'toggle' },
+                select: function(){
+                <% if !@authorization[:is_closed] -%>
+                    if($(".dirty").length > 0 && $("#timed_save").val() == "0" && $("#auto_save").val() == "0" && $("#save_from_button").val() == "0")
+                    {
+                        $("#auto_save").val("1");
+                        $("#questionnaire").addClass("no_dialog");
+                        //$("form.sectionSubmission").submit().remove();
+                        saveDirtyAnswers();
+                    }
+                    $("#requests_dialog").dialog("open");
+                <% end -%>
+                },
+                ajaxOptions: {
+                    success: function(){
+                        $('html, body').animate({scrollTop:0}, 'slow');
+                        $("li.ui-state-focus").removeClass("ui-state-focus");
+                        $("#questionnaire").removeClass("no_dialog");
+                        $("#requests_dialog").dialog("close");
+                    },
+                    error: function(){
+                        alert("Something went wrong when fetching the necessary data. Please retry or contact your system administrator.")
+                    }
+                },
+                show: function(event,ui){
+                    if(ui.index == 0)
+                        $("#requests_dialog").dialog("close");
+                }
+            }
+                    ).addClass('ui-tabs-vertical ui-helper-clearfix');
+            $("#questionnaire_submission").removeClass('ui-corner-top').addClass('ui-corner-left');
+
+        <% @sections_to_display_in_tab_loops_expanded.each do |section_loops_expanded| %>
+          <% section, loop_item, submission_state = *section_loops_expanded %>
+          set_state_identifier(
+            '<%= "#{section.id} #{(loop_item ? "_#{loop_item.id}" : "")}" %>',
+            '<%= submission_state %>',
+            '<%= escape_javascript(t("questionnaire_feedback.state#{submission_state}"))%>'
+          );
+        <% end %>
+
+          QuestionnaireHandler.initialiseSections($('#tabs-container'), $('#questionnaire'));
+
+        $('.questionnaire-introduction').click(function(ev) {
+          ev.preventDefault();
+          $('#questionnaire').html("<%= escape_javascript render(:partial => 'submission_view') %>");
+        });
+
+        <% the_sections.each do |section_id, loop_item|-%>
+          <% the_state = UserSectionSubmissionState.submission_state_of(@authorization[:user].id, section_id, loop_item ? loop_item.id.to_s : nil) %>
+          set_state_identifier("<%= section_id + (loop_item ? "_#{loop_item.id}" : "") %>", "<%= the_state %>", '<%= escape_javascript(t("questionnaire_feedback.state#{the_state}"))%>');
+        <% end -%>
+
+        <% if @questionnaire.header.path.present? && File.exists?(@questionnaire.header.path) -%>
+          $("#title_div").empty().css("background-image", "url('<%= @questionnaire.header.url %>')")
+            .addClass("title_with_banner");
+           // .css("height","90px")
+            //.css('background-repeat', 'no-repeat')
+            //.css("width", "950px")
+            //.css("margin", "0")
+            //.css("margin-bottom", "4px")
+            //.css("clear", "both");
+        <% end -%>
+        });
+        myLib.questionnaire_submission.init();
+        myLib.text_areas.init();
+        $("a#top_submission_disabled").click(function(e){
+          e.preventDefault();
+          alert("<%= escape_javascript(t('s_details.submission_disabled'))%>");
+        });
+        <% if !@authorization[:is_closed] -%>
+            $("input.save_button").livequery('click', function(){
+                if($("#timed_save").val() == "0" && $("#auto_save").val() == "0" && $("#save_from_button").val() == "0")
+                {
+                    $("#timed_save").val("-1");
+                    $("#auto_save").val("-1");
+                    $("#save_from_button").val("1");
+
+                    $("#requests_dialog").dialog("open");
+                }
+                else
+                {
+                    $("#requests_dialog").dialog("close");
+                    return false;
+                }
+            });
+            timed_save();
+        <% end -%>
+    });
+</script>
+<% if @authorization[:translator_visible] %>
+  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+  <script type="text/javascript">
+      google.load("language","1");
+      var LANGUAGES = {
+        "<%=t('languages.arabic')%>" : 'ar',
+        "<%=t('languages.chinese')%>" : 'zh',
+        "<%=t('languages.english')%>" : 'en',
+        "<%=t('languages.french')%>" : 'fr',
+        "<%=t('languages.russian')%>" : 'ru',
+        "<%=t('languages.spanish')%>" : 'es'
+      };
+    </script>
+<% end %>

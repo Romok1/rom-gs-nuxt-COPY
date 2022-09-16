@@ -1,0 +1,27 @@
+$(function(){
+    //Add the flash notice message
+    <%- flash.each do |name, msg| -%>
+        flash_message("<%=h name%>", "<%=h msg %>");
+        <%- flash.delete(name) -%>
+    <%- end -%>
+    <% if !@errors -%>
+        var $active_table = $("#active_table");
+        if($active_table.length > 0)
+        {
+            $("#active_questionnaire_<%= @questionnaire.id.to_s %>").remove();
+            $('table tbody td.questionnaire_<%= @questionnaire.id.to_s %>').each(function(){
+                $(this).html('<%= escape_javascript( link_to fa_icon("play", alt: "Activate Questionnaire", title: "Activate Questionnaire", class: "background inverse success"), activate_questionnaire_path(@questionnaire), :class => "put") %>');
+            });
+        }
+        else{
+        $('#questionnaire_options_<%= @questionnaire.id.to_s %>')
+          .html("<%= escape_javascript( ( link_to fa_icon('users', alt: 'Manage Respondents', title: 'Manage Respondents', class: 'background inverse info'), questionnaire_authorized_submitters_path(@questionnaire)) +
+                                                                                          (link_to fa_icon('bar-chart', alt: 'Feedback Summary', title: 'Feedback Summary', class: 'background inverse info'), respondents_questionnaire_path(@questionnaire.id)) +
+
+
+
+
+                        (link_to fa_icon('play', alt: 'Activate Questionnaire', title: 'Activate Questionnaire', class: 'background inverse success'), activate_questionnaire_path(@questionnaire), :class => "put")) %>");
+        }
+    <% end -%>
+});

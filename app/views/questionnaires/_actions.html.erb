@@ -1,0 +1,13 @@
+<p>
+  <% if @questionnaire.inactive? -%>
+    <% if can?( :update, @questionnaire) -%>
+        <% info_tip_text = "<p>Displays a form where you can edit a questionnaire's core information.</p>"-%>
+        <%= link_to "Edit", edit_questionnaire_path(@questionnaire), :class => 'edit-btn edit-questionnaire-btn get li_tooltip btn btn-fixed-size',:title=>"Edit questionnaire - "+info_tip_text%>
+    <% end %>
+    <% if "preview" == controller.action_name %>
+      <%= render_close_preview_button("questionnaire", @questionnaire) %>
+    <% else %>
+      <%= render_preview_button("questionnaire", @questionnaire) %>
+    <% end %>
+  <% end -%>
+</p>

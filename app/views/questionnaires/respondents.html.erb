@@ -1,0 +1,172 @@
+<div class="page-header">
+  <h2>Respondents</h2>
+</div>
+
+<div class="span-24 last">
+  <div id="content_header">
+    <% info_tip_text = "<p>In this page you can see a table with the list of respondents of this questionnaire. You can access the authorization page by clicking in the 'Manage' link.</p>
+                        <p>From this page you can send message to a selection of users. You can select the users using the existing filters or by clicking in the check boxes on the left.</p>
+                        <p>You can go back to the questionnaire dashboard by clicking in its title.</p>"-%>
+                        <%= render :partial => "administration/menu", :locals => {:header => ("Questionnaire Respondents " + info_tip("Questionnaire's respondents", info_tip_text)).html_safe, :include_options => "questionnaires"} -%>
+  </div>
+
+  <div id="q_dashboard" class="span-24 last">
+    <div class="row padded">
+      <div class="col col-4">Title</div>
+      <div class="col col-8 border-left">
+        <%= respondents_page_link(@questionnaire.title, dashboard_questionnaire_path(@questionnaire)) %>
+      </div>
+    </div>
+    <div class="row padded">
+      <div class="col col-4">Creator</div>
+      <div class="col col-8 border-left">
+        <%= respondents_page_link(@questionnaire.user.full_name, user_path(@questionnaire.user)) %>
+      </div>
+    </div>
+    <div class="row padded">
+      <div class="col col-4">Date</div>
+      <div class="col col-8 border-left"><%= @questionnaire.questionnaire_date.mon.to_s + "/" + @questionnaire.questionnaire_date.year.to_s%></div>
+    </div>
+    <div class="row padded">
+      <div class="col col-4">Respondents</div>
+      <div class="col col-8 border-left">
+        <%= manage_respondents_filtering_fields %>
+      </div>
+    </div>
+    <div class="row group">
+      <div class="col col-4">Filtering fields</div>
+      <div class="col col-8 border-left"><%= @questionnaire.filtering_fields.map(&:name).join(', ') %></div>
+    </div>
+  </div>
+  <hr/>
+  <%= form_for @questionnaire, :as => :questionnaire, :url => send_multiple_deadline_warnings_questionnaire_path(@questionnaire), :html => {:method => :post, :class => "ajaxForm formtastic"} do |f| %>
+
+  <div class="datatable-filters">
+    <div class="datatable-filters__left">
+      <% if @questionnaire && current_user.role?(:admin) %>
+       Filter by
+        <%= select_tag :authorized_filter, options_for_select([['All',''],['Underway'],['Submitted']]) %>
+
+        <a href="#" id= "write_message" class="btn">Send message to selected users</a>
+      <% end %>
+    </div>
+    <div class="datatable-filters__right">
+      <input type="text" name="filter" id="filter" value="" placeholder="Type your search here... " size="25"/>
+      <a href="#" id="clear_search" class="btn">Clear Search</a><br>
+    </div>
+  </div>
+   <div id="message_container" class="hide clear">
+     <fieldset>
+       <div class="page-header">
+         <h5>Write your message</h5>
+       </div>
+       <ol>
+         <li>
+         <%= @questionnaire.questionnaire_fields.sort_by{ |a| a.is_default_language? ? 0 : 1 }.
+           map{|field| "<a href='#' class='display_lang btn' id='quest_#{field.language}'>#{field.language_english_name} #{field.is_default_language? ? "<i class='fa fa-caret-up'></i>" : "<i class='fa fa-caret-down'></i>"}</a> " }.
+           join(" | ").html_safe %>
+         <a href="#" class="show_all_lang_fields btn">Expand all</a>
+         <a href="#" class="hide_all_lang_fields btn">Collapse all</a>
+         </li>
+         <li>
+         <% @questionnaire.questionnaire_fields.sort_by{|a| a.is_default_language? ? 0 : 1}.each do |field| %>
+           <div class="<%= field.is_default_language? ? "" : "hide"%> lang_fields" id="fields_for_quest_<%= field.language %>">
+               <h5><%=h field.language_english_name %></h5>
+                <div class="row padded group">
+                  <div class="col col-1"><%= label_tag "subject_#{field.language}", "Subject" %></div>
+                  <div class="col col-9 border-left"><%= text_field_tag "subject_#{field.language}", h(field.email_subject), :size => 55 %></div>
+                </div>
+                <div class="row padded group">
+                  <div class="col col-1"><%= label_tag "body_#{field.language}", "Body" %></div>
+                  <div class="col col-9 border-left"><%= text_area_tag "body_#{field.language}", h(field.email) + "\n\n\n" + h(field.email_footer) + h(current_user.first_name) + " " + h(current_user.last_name) + "\n" + h(current_user.email), :cols => 55, :rows => 10 %></div>
+                </div>
+
+
+           </div>
+         <% end %>
+         </li>
+       </ol>
+       <p><%= f.submit "Send message" %></p>
+     </fieldset>
+   </div>
+ <div id="respondents_statistics" class="span-24 last">
+   <table>
+     <thead>
+       <tr>
+         <th><%= check_box_tag :select_all, nil, false, class: 'select-all-checkbox' %></th>
+         <th>Respondent name</th>
+         <th>Status</th>
+         <!--<th>Progress</th>-->
+         <th>Filtering field(s) value</th>
+         <th>Options</th>
+         <th>PDF</th>
+         <th>Short PDF</th>
+       </tr>
+     </thead>
+     <tbody>
+       <% @questionnaire.submitters.each do |submitter| -%>
+         <tr id="row_<%=submitter.id.to_s%>">
+           <td><%= check_box_tag "users["+submitter.id.to_s+"]", submitter.id.to_s, false, {:class => "checkboxes" }%></td>
+           <td><%= current_user.role?(:admin) ? link_to(h(submitter.full_name), user_path(submitter)) : submitter.full_name %></td>
+           <% auth = @questionnaire.authorized_submitters.find_by_user_id(submitter) %>
+           <td id="q_status_<%= submitter.id.to_s %>"><%= auth.status == 2 ? "Submitted #{if auth.requested_unsubmission? then "(Requested Unsubmission)" end}" : "Underway" %></td>
+           <!--<td><%#= @questionnaire.percentage_of_completion_for( submitter ) %>%</td>-->
+           <td>
+             <% if @questionnaire.filtering_fields -%>
+               <%= ( vals = submitter.get_filtering_fields_values_for(@questionnaire)).present? ? vals.join(', ') : "No values defined yet." %>
+             <% else -%>
+               No filtering field defined
+             <% end -%>
+           </td>
+           <td>
+             <% status = @questionnaire.authorized_submitters.find_by_user_id(submitter).status %>
+             <%#= link_to "Send deadline warning", questionnaire_send_deadline_warning_path(@questionnaire, submitter), :class => "get" %>
+             <% if status == 2 %>
+               <%= link_to "Revert submission", unsubmit_questionnaire_url(@questionnaire, {user_id: submitter.id}), :method => :put %>
+             <% else %>
+               <%= link_to "Edit", submission_questionnaire_path(@questionnaire, respondent_id: submitter.id) %>
+             <% end -%>
+           </td>
+           <td width="10%">
+             <% pdf_file = @questionnaire.pdf_files.find_by_user_id_and_is_long(submitter.id, true) -%>
+             <% if pdf_file.present? && File.file?(pdf_file.location) -%>
+               <%= link_to "#{image_tag('icons/page_white_acrobat.png', :alt => t('user_dashboard.pdf_download'), :title => t('user_dashboard.pdf_download'))} Download PDF".html_safe, questionnaire_download_user_pdf_path(@questionnaire, submitter) %>
+               (<%= t("user_dashboard.pdf_last_g")%>: <%= l(File.mtime(pdf_file.location), :format => :with_time) %>)
+               &nbsp;
+               <%= link_to t("user_dashboard.pdf_regenerate"), to_pdf_questionnaire_path(@questionnaire, :params => {:preview => false, :user => submitter}), :class => "get" %>
+             <% else -%>
+               <%= link_to t("user_dashboard.pdf_generate"), to_pdf_questionnaire_path(@questionnaire, :params => {:preview => false, :user => submitter}), :class => "get" %>
+             <% end -%>
+           </td>
+           <td width="10%">
+             <% short_pdf_file = @questionnaire.pdf_files.find_by_user_id_and_is_long(submitter.id, false) -%>
+             <% if short_pdf_file.present? && File.file?(short_pdf_file.location) -%>
+               <%= link_to "#{image_tag('icons/page_white_acrobat.png', :alt => t('user_dashboard.pdf_download'), :title => t('user_dashboard.pdf_download'))} Download PDF".html_safe, questionnaire_download_user_pdf_path(@questionnaire, submitter, :params => {:is_short => true}) %>
+               (<%= t("user_dashboard.pdf_last_g")%>: <%= l(File.mtime(short_pdf_file.location), :format => :with_time) %>)
+               &nbsp;
+               <%= link_to t("user_dashboard.pdf_regenerate"), to_pdf_questionnaire_path(@questionnaire, :params => {:preview => false, :user => submitter, :is_short => true}), :class => "get" %>
+             <% else -%>
+               <%= link_to t("user_dashboard.pdf_generate"), to_pdf_questionnaire_path(@questionnaire, :params => {:preview => false, :user => submitter, :is_short => true}), :class => "get" %>
+             <% end -%>
+           </td>
+         </tr>
+       <% end -%>
+
+     </tbody>
+   </table>
+ </div>
+<% end -%>
+</div>
+
+<script>
+    $(function(){
+        checkboxesSelectionHandlers();
+        enableSearch();
+        clearSearchFields();
+        $("#write_message").click(function(e){
+            e.preventDefault();
+            $("#message_container").toggle('slow');
+        });
+      myLib.generator_side_generic.init();
+    });
+</script>

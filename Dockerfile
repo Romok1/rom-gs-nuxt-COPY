@@ -1,40 +1,18 @@
-FROM ruby:3.1.0-bullseye
+FROM ruby:2.2.3
+RUN apt-get update && apt-get -yq install build-essential git wget libpq-dev nodejs imagemagick
 
-RUN apt-get update && apt-get install -qq -y --no-install-recommends build-essential postgresql postgresql-contrib libpq-dev libsqlite3-dev curl imagemagick nodejs
+ARG BUNDLER_VERSION=1.17.3
+ENV BUNDLER_VERSION=${BUNDLER_VERSION}
+RUN gem install bundler -v ${BUNDLER_VERSION} --no-document 
 
-RUN apt-get update && apt-get install -y nodejs yarn postgresql-client
+RUN mkdir /ors
+WORKDIR /ors
 
-RUN apt-get update && apt-get install -y \
-  libxml2-dev \
-  libxslt-dev \
-  zlib1g-dev \
-  && rm -rf /var/cache/apk/*
+ADD Gemfile /ors/Gemfile
+ADD Gemfile.lock /ors/Gemfile.lock
+RUN bundle install
 
-RUN	groupadd -r -g 1000 docker && \
-		useradd -r --create-home -u 1000 -g docker docker
+ADD . /ors
 
-COPY Gemfile /jenkact/Gemfile
-COPY Gemfile.lock /jenkact/Gemfile.lock
-
-WORKDIR /jenkact
-
-RUN chown -R docker:docker /jenkact/ && \
-  chmod +w /jenkact/Gemfile.lock
-
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
-
-USER docker
-
-RUN gem install bundler && \
-                bundle install
-
-RUN bundle exec rails db:migrate RAILS_ENV=test
-
-COPY --chown=docker:docker . /jenkact
-
-WORKDIR /jenkact
-
 CMD ["rails", "server", "-b", "0.0.0.0"]

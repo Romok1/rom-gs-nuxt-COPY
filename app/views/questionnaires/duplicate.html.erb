@@ -1,0 +1,95 @@
+<div class="page-header">
+  <h2>Duplicate Questionnaire</h2>
+</div>
+
+<%= render 'administration/menu' %>
+
+<div class="span-24 last">
+  <div id="content_header">
+  <% info_tip_text = "<p>This page allows you to create new questionnaires from existing questionnaires. There is an option to copy not only the structure of the questionnaire, but its answers as well.</p>"-%>
+  </div>
+  <p>
+    <%= fa_icon('info-circle', class: 'info-icon--blue') %> ORS does not currently support duplication of questionnaires that have already been duplicated. Please contact <a href="mailto:ORS_team@unep-wcmc.org">ORS_team@unep-wcmc.org</a> for more information.
+  </p>
+  <div class="span-15 colborder" id="duplicate_questionnaire">
+    <%= form_for( @questionnaire, :html => { :class => "formtastic normal", :id => "generator_form" }) do |f| -%>
+        <fieldset>
+          <ol>
+            <li>
+              <%= label_tag :questionnaire_source, "Available questionnaires #{info_tip("Questionnaire duplication", "Select a questionnaire to duplicate. Information about the selected questionnaire is displayed on the right.")}".html_safe %>
+              <%= select "questionnaire", "original_id", @questionnaires.sort{|a,b| a.title <=> b.title}.collect{|p| [p.title[0,50]+"...", p.id] }, { :include_blank => "Please select a questionnaire" } %>
+            </li>
+            <li>
+              <%= check_box_tag :copy_answers, 1, false %>
+              <%= label_tag :copy_answers, "Copy answers?" %>
+            </li>
+          </ol>
+        </fieldset>
+        <p><%= f.submit "Duplicate" -%></p>
+    <% end -%>
+  </div><!-- /content -->
+  <div class="span-7" id="show_pages">
+    <div class="page-header">
+      <h3>Questionnaires Details</h3>
+    </div>
+    <% @questionnaires.each do |questionnaire| -%>
+        <div id="questionnaire_<%= questionnaire.id %>" class="hide questionnaires_info">
+          <div class="row padded">
+            <div class="col col-5"><strong>Title:</strong> </div>
+            <div class="col col-7 border-left"><%=h questionnaire.title %></div>
+          </div>
+
+          <div class="row padded">
+            <div class="col col-5"><strong>Creator:</strong></div>
+            <div class="col col-7 border-left"><%= link_to h(questionnaire.user.full_name), user_path(questionnaire.user) %></div>
+          </div>
+
+          <div class="row padded">
+            <div class="col col-5"<strong>Date:</strong></div>
+            <div class="col col-7 border-left"> <%= questionnaire.questionnaire_date.mon.to_s + "/" + questionnaire.questionnaire_date.year.to_s%></div>
+          </div>
+
+          <div class="row padded">
+            <div class="col col-5"><strong>Total sections:</strong></div>
+            <div class="col col-7 border-left"> <%= pluralize(questionnaire.sections_count, 'section') %></div>
+          </div>
+
+          <div class="row padded">
+            <div class="col col-5"><strong>Total questions:</strong></div>
+            <div class="col col-7 border-left"> <%= pluralize( questionnaire.questions_count, 'question') %></div>
+          </div>
+
+          <div class="row padded">
+            <div class="col col-5"><strong>Total respondents:</strong></div>
+            <div class="col col-7 border-left">
+              <%=h questionnaire.authorized_submitters.count %> <%= link_to "view", respondents_questionnaire_path(questionnaire.id) %>
+            </div>
+          </div>
+
+          <div class="row padded">
+            <div class="col col-5"><strong>Administrator remarks:</strong></div>
+            <div class="col col-7 border-left"><%= raw Sanitize.clean(questionnaire.administrator_remarks, OrtSanitize::Config::ORT) -%></div>
+          </div>
+        </div>
+    <% end -%>
+  </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $("#questionnaire_original_id").change(function(){
+            var val = $(this).val();
+            var closedAny = false;
+            $(".questionnaires_info").each(function(){
+                if($(this).is(":visible"))
+                {
+                    $(this).slideUp("slow", function(){
+                        $("#questionnaire_"+val).slideDown("slow");
+                    });
+                    closedAny = true;
+                }
+            });
+            if(!closedAny)
+                $("#questionnaire_"+val).slideDown("slow");
+        })
+    })
+</script>

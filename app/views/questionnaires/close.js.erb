@@ -1,0 +1,12 @@
+$(function(){
+    //Add the flash notice message
+    <%- flash.each do |name, msg| -%>
+        flash_message("<%=h name%>", "<%=h msg %>");
+        <%- flash.delete(name) -%>
+    <%- end -%>
+    <% if @result -%>
+        $('#questionnaire_options_<%= @questionnaire.id.to_s %>')
+        .html("<%= escape_javascript( (link_to(fa_icon('bar-chart', title: 'Feedback Summary', class: 'background inverse info'), respondents_questionnaire_path(@questionnaire.id))) +
+                link_to(fa_icon('lock', :alt => "Open Questionnaire", :title => "Open Questionnaire", class: 'background inverse info'), open_questionnaire_path(@questionnaire), :class => "put")) %>");
+    <% end -%>
+});

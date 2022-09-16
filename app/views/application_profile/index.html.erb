@@ -1,0 +1,56 @@
+<h1> EDIT YOUR PROFILE </h1>
+
+<%= form_for @application_profile, :url => { :action => :update } , :html => { :multipart => true } do |f| %>
+
+  <fieldset>
+    <div class="row padded group" >
+      <%= f.label :title_en, "English Title" %>
+      <%= f.text_field :title_en %>
+    </div>
+    <div class="row padded group" >
+      <%= f.label :title_fr, "French Title" %>
+      <%= f.text_field :title_fr %>
+    </div>
+    <div class="row padded group" >
+      <%= f.label :title_es, "Spanish Title" %>
+      <%= f.text_field :title_es %>
+    </div>
+    <div class="row padded group" >
+      <%= f.label :short_title_en, "English Short Title" %>
+      <%= f.text_field :short_title_en %>
+    </div>
+    <div class="row padded group" >
+      <%= f.label :short_title_fr, "French Short Title" %>
+      <%= f.text_field :short_title_fr %>
+    </div>
+    <div class="row padded group" >
+      <%= f.label :short_title_es, "Spanish Short Title" %>
+      <%= f.text_field :short_title_es %>
+    </div>
+    <div class="row padded group" >
+      <%= f.label :sub_title_en, "English Sub Title" %>
+      <%= f.text_field :sub_title_en %>
+    </div>
+    <div class="row padded group" >
+      <%= f.label :sub_title_fr, "French Sub Title" %>
+      <%= f.text_field :sub_title_fr %>
+    </div>
+    <div class="row padded group" >
+      <%= f.label :sub_title_es, "Spanish Sub Title" %>
+      <%= f.text_field :sub_title_es %>
+    </div>
+    <div class="row padded group" >
+      <%= f.label :logo_url %>
+      <%= f.text_field :logo_url %>
+    </div>
+    <div class="row padded group" >
+      <%= f.label :logo %>
+      <%= f.file_field :logo %>
+    </div>
+    <div class="row padded group">
+      <%= f.label :show_sign_up %>
+      <%= f.check_box :show_sign_up %>
+    </div>
+  </fieldset>
+  <%= f.submit %>
+<% end %>

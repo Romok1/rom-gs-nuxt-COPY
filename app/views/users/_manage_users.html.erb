@@ -1,0 +1,37 @@
+<div id="options" class="clear">
+
+  <hr class="grey">
+  <div class="row group">
+    <div class="col col-1">
+      <h5>Users</h5>
+    </div>
+    <div class="col col-11">
+      <input type="text" name="filter" id="filter" value="" placeholder="Type your search here... " size="25"/>
+      <%= select_tag 'groups_list', options_from_collection_for_select(@groups, "name", "name"), {:include_blank => "Select a group" } %>
+      <a href="#" id="clear_search" class="btn">Clear Search</a><br>
+
+      <a href="#" id="add_new_user" class="btn">Add user</a>
+      <%= link_to "Add list of users", add_list_users_path, class: 'btn' %>
+      <a href="#" id="check_all" class="btn">Select All Users</a>
+      <a href="#" id="uncheck_all" class="btn">Deselect All Users</a>
+      <% if @questionnaire %>
+        <a href="#" id="check_authorized" class="btn">Authorized</a>
+        <a href="#" id="check_unauthorized" class="btn">Not authorized</a>
+        <a href="#" id="check_authorizing" class="btn">Authorizing</a>
+      <% end %>
+    </div>
+  </div>
+  <hr class="grey">
+  <div class="row group">
+    <div class="col col-1">
+      <h5>Actions</h5>
+    </div>
+    <div class="col col-11">
+      <% if @questionnaire %>
+        <button type="button" name="authorize" class="authorization_buttons btn">Authorize</button>
+        <button type="button" name="remove" class="authorization_buttons btn">De-authorize</button>
+      <% end %>
+    </div>
+  </div>
+  <hr class="grey">
+</div><!-- /options -->

@@ -1,0 +1,18 @@
+<div class="option modal-form-horizontal">
+  <li>
+    <%= f.label :doc, t('submission_pages.files_document') %>
+    <% if f.object.new_record? -%>
+      <%= f.file_field :doc, class: 'real-file-input' %>
+      <%= link_to t('submission_pages.choose_file'), '#', class: 'fake-file-input btn' %>
+      <span class="file-input-text"><%= t('submission_pages.no_file_chosen') %></span>
+    <% else -%>
+      <%= link_to h(f.object.doc_file_name), f.object.doc.url %>
+    <% end -%>
+  </li>
+  <li>
+    <%= f.label :description, t('submission_pages.attach_description') %>
+    <%= f.text_field :description, :size => 50  %>
+  </li>
+  <li><%= remove_child_link t('submission_pages.files_remove'), f -%></li>
+  <hr class="grey">
+</div>

@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  title: MyString
+  body: MyText
+  hours: 1
+
+two:
+  title: MyString
+  body: MyText
+  hours: 1
+
+# == Schema Information
+#
+# Table name: reminders
+#
+#  id         :integer          not null, primary key
+#  title      :text             not null
+#  body       :text
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  days       :integer
+#

@@ -1,0 +1,18 @@
+<p>
+<% if @section.questionnaire.inactive? %>
+  <% info_tip_text = "<p>Displays a form where you can edit this section's details.</p>"-%>
+  <%= link_to "Edit", edit_section_path(@section), :class => 'edit-btn edit-section-btn get li_tooltip btn btn-fixed-size', :title => "Edit section - " +info_tip_text %>
+  <% if "preview" != controller.action_name %>
+    <%= render_preview_button("section", @section) %>
+
+    <% info_tip_text = "<p>Takes you to a page where you can define a relation of dependency for this section. Defining which conditions must be met for it to be displayed.</p>"-%>
+    <%= link_to "Dependency", define_dependency_section_path(:id => @section.id), class: 'li_tooltip btn btn-secondary btn-fixed-size', title: "Define dependency - #{info_tip_text}" %>
+
+    <%= render_add_button("sub_section", @section.questionnaire) %>
+    <%= render_add_button("question", @section.questionnaire) %>
+  <% else %>
+    <%= render_close_preview_button("section", @section) %>
+  <% end %>
+<% end %>
+
+</p>

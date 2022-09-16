@@ -1,0 +1,32 @@
+<div class="page-header">
+  <h2>New Questionnaire</h2>
+</div>
+
+<%= render :partial => "administration/menu", :locals => {:header => "New Questionnaire", :include_options => "questionnaires"} -%>
+<%= form_for( @questionnaire, :html => { :multipart => true, :class => "formtastic normal", :id => "generator_form" }) do |f| -%>
+  <% if @questionnaire.errors.any? %>
+    <div id="errorExplanation">
+      <ul id='error_messages'>
+        <% @questionnaire.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div id="error_container" class="error_container" style="display:none;">
+    <h5>There are some errors in your form submission, please see details below</h5>
+    <ul id="error_messages"></ul>
+  </div>
+  <%= render :partial => "questionnaires/form", :locals => {:f => f} -%>
+  <p><%= f.submit "Add Questionnaire" -%></p>
+  <div class="error_container" style="display:none;">
+    <h5>There are errors in your form submission, please see details above the form!</h5>
+  </div>
+<% end -%>
+
+<script type="text/javascript">
+    $(window).load(function(){
+        myLib.text_areas.init();
+    });
+</script>

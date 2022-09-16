@@ -1,0 +1,53 @@
+<div class="span-24 last" id="content">
+  <div id="content_header">
+    <% info_tip_text = "<p>This page presents you with a list of all the loop sources that are connected to this questionnaire.
+                        From this page you can add new loop sources or manage existing loop sources.</p>"%>
+    <%= render :partial => "administration/menu", :locals => {
+      :header => ("Questionnaire loop sources " + info_tip("Questionnaire's loop sources", info_tip_text)).html_safe,
+      :include_options => "questionnaires"} -%>
+  </div>
+  <div class="page-header">
+    <h2>Manage Loop Sources</h2>
+  </div>
+
+     Questionnaire: <%= link_to @questionnaire.title, dashboard_questionnaire_path(@questionnaire) %>
+  <p>
+    <%= link_to "New Loop Source", new_questionnaire_loop_source_path(@questionnaire), class: 'btn' %>
+  </p>
+
+  <table id="loop_sources_index" class="tablesorter">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Loop item types</th>
+      <th>Used in sections</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% for loop_source in @loop_sources %>
+        <tr>
+          <td><%=h(loop_source.name) %></td>
+          <% if loop_source.loop_item_type.present? -%>
+              <td><%= loop_source.loop_item_type.self_and_descendants.sort!{|a,b| a.level <=>b.level}.map{|a| a.is_filtering_field? ? "<strong>"+a.name+"</strong>":a.name}.join(" > ").html_safe %></td>
+          <% else -%>
+              <td><%= "This loop source doesn't have any loop item types" %></td>
+          <% end -%>
+          <td><%= loop_source.sections.size %></td>
+          <td>
+            <%= link_to "Show", loop_source %> |
+            <%= link_to "Remove", loop_source_path(loop_source), :method => :delete, :confirm => "Are you sure you want to delete this loop source?\n Any related elements will be modified accordingly" + (loop_source.questionnaire.source_questionnaire.present? ? " and any associated answers will be deleted." : ".") %>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<script type="text/javascript">
+    <% if !@loop_sources.empty? -%>
+    $("#loop_sources_index").tablesorter({
+        sortList: [[0,0]], widthFixed: true, widgets: ['zebra'],
+        headers: { 3: { sorter: false }}
+    });
+    <% end -%>
+</script>

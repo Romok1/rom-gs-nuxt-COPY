@@ -1,0 +1,51 @@
+<div class="span-24 last" id="content">
+<div class="page-header">
+  <h2>Reminder: <%= @reminder.title %></h2>
+</div>
+  <div id="content_header">
+    <% info_tip_text = "<p></p>"%>
+    <%= render :partial => "administration/menu", :locals => {:header => "Reminder " + info_tip("Reminder", info_tip_text), :include_options => "administration"} -%>
+  </div>
+  <div class="clear" id="q_dashboard" style="margin-bottom: 25px">
+    <div class="row padded group">
+      <div class="col col-3">Title</div>
+      <div class="col col-9 border-left"><%=h @reminder.title %></div>
+    </div>
+    <div class="row padded group">
+      <div class="col col-3">Alert</div>
+      <div class="col col-9 border-left"><%= pluralize @reminder.days, 'day' %></div>
+    </div>
+    <div class="row padded group">
+      <div class="col col-3">Alert message</div>
+      <div class="col col-9 border-left"><%= h @reminder.body %></div>
+    </div>
+  </div>
+  <div class="page-header">
+    <h5>Associated deadlines</h5>
+  </div>
+
+  <table class="tablesorter">
+    <thead>
+        <tr>
+          <th>Title</th>
+          <th>Due date</th>
+          <th>Questionnaire</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for deadline in @reminder.deadlines -%>
+            <tr>
+              <td>
+                <%= link_to h(deadline.title), deadline %>
+              </td>
+              <td>
+                <%= deadline.due_date.strftime("%d/%m/%Y") %>
+              </td>
+              <td>
+                <%= link_to h(deadline.questionnaire.title), deadline.questionnaire %>
+              </td>
+            </tr>
+        <% end -%>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,101 @@
+<%title 'Bern Convention ORS - Administration' -%>
+<%= render 'administration/menu' %>
+
+<div class="span-24 last" id="content">
+
+  <div id="content_header">
+    <% info_tip_text = "<p>This page shows you a list with all the questionnaires that exist in the system, sorted by activation date. You can click on the headers to sort differently.</p>
+        <p>Clicking on the name of a questionnaire will take you to its dashboard where you can see more information about it.</p>
+        <p>In this page there are different actions to execute on each of the questionnaires. More information on those can be read in the info of 'Options' column header, from the table.</p>
+        <p>Here you can also obtain a CSV file with all the answers of the respondents of a questionnaire.</p>" %>
+
+      <div class="page-header">
+      <h2>Manage Questionnaires</h2>
+      </div>
+  </div>
+
+  <div class='downloads'>
+    <%= link_to 'Download empty text answers report (CSV)', empty_text_answers_report_path %>
+    <% info_tip_text = 'Download a CSV file containing a list of questions with empty text answer and at least a delegate answer' %>
+    <%= info_tip('Empty text answers download', info_tip_text) %>
+  </div>
+
+  <table id="questionnaires_index" class="tablesorter">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Created</th>
+      <th>Created by</th>
+      <!--      <th>Updated At</th> -->
+      <!--      <th>Updated By</th> -->
+      <th>Active</th>
+      <th>Activated</th>
+      <% info_tip_text = "<p>The available actions are:</p><p>" + fa_icon('users', class: 'background inverse info') + " Takes you to the Manage Respondents page, where you can grant or take access from a
+               user to a questionnaire.</p><p>" + fa_icon('bar-chart', class: 'background inverse info') + " Takes you to a page where you can see the state of completion of a questionnaire for each of its respondents</p>
+               <p>" + fa_icon('unlock-alt', class: 'background inverse info') + "Indicates a questionnaire is open and lets you close a questionnaire, so that the respondents will not be able to make further changes to their answers.</p>
+               <p>" + fa_icon('lock', class: 'background inverse info') + " Indicates that a questionnaire is closed.</p>
+               <p>" + fa_icon('stop', class: 'background inverse error') + " Deactivates a questionnaire, making it available for editing and unavailable for the respondents to fill in their answers.</p>
+               <p>" + fa_icon('play', class: 'background inverse success') + " Activates a questionnaire, making it available for respondents to fill in their answers.</p>" -%>
+      <th>Actions <%= info_tip("Actions", info_tip_text) %></th>
+      <% info_tip_text = "<p>This engine allows you to obtain a CSV file with all the answers of a questionnaire, by its different respondents. Before being able to download  the file it will have to be generated. To do so you should click on 'Generate'.
+                        The generation of the CSV file takes place in the background and once it is finished you will be notified by e-mail.</p>
+                        <p>After being generated the file will then be available for download in this same page and you will be able to do so by clicking the 'Get file'.</p><p>The file can be
+                        re-generated to include your most recent changes, you can do so by clicking on the 'Regenerate' link. The date displayed refers to the last time the file was generated. Regeneration of a CSV file will
+                        erase the previously generated file.</p>"-%>
+      <th>CSV <%= info_tip("CSV File", info_tip_text) %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @questionnaires.each do |questionnaire| %>
+        <tr>
+          <td style="width:250px"><%= link_to h(questionnaire.title), dashboard_questionnaire_path(questionnaire) %></td>
+          <td><%= questionnaire.created_at.strftime('%m/%d/%Y')%></td>
+          <td><%= link_to h(questionnaire.user.full_name), user_path(questionnaire.user) %></td>
+          <!-- <td>< %= questionnaire.updated_at.to_formatted_s(:long_ordinal) %></td>
+          <td>< %= link_to h(questionnaire.last_editor.full_name), user_path(questionnaire.last_editor) %>
+          </td>-->
+          <td><%= questionnaire.active? ? "Yes" : "No" %></td>
+          <td><%= questionnaire.active? ? questionnaire.activated_at.strftime('%m/%d/%Y') : "-" %></td>
+          <td id="questionnaire_options_<%= questionnaire.id.to_s %>">
+            <%= ( (link_to fa_icon('users', alt: 'Manage Respondents', title: 'Manage Respondents', class: 'background inverse info'), questionnaire_authorized_submitters_path(questionnaire)))  unless questionnaire.closed? %>
+            <%= link_to fa_icon('bar-chart', alt: 'Feedback Summary', title: 'Feedback Summary', class: 'background inverse info'), respondents_questionnaire_path(questionnaire.id) -%>
+            <%= questionnaire.active? ? ((link_to fa_icon('unlock-alt', :title => 'Close questionnaire', :alt => 'Close questionnaire', class: 'background inverse info'), close_questionnaire_path(questionnaire.id),  :class => "put" ) +
+            (link_to fa_icon('stop', alt: "Deactivate", title: "Deactivate Questionnaire", class: 'background inverse error'), deactivate_questionnaire_path(questionnaire.id), :class => :put)) :
+            questionnaire.closed? ? (link_to(fa_icon('lock', :alt => "Open Questionnaire", :title => "Open Questionnaire", class: 'background inverse info'), open_questionnaire_path(questionnaire), :class => "put")) : (link_to fa_icon('play', alt: 'Activate Questionnaire', title: 'Activate Questionnaire', class: 'background inverse success'), activate_questionnaire_path(questionnaire), :class => "put") %>
+          </td>
+          <td>
+            <a href="#" class="information-tooltip-trigger"><%= fa_icon 'download' %> Download</a>
+
+            <div class="information-tooltip hide">
+              <% if questionnaire.csv_file.present? && File.file?(questionnaire.csv_file.location) -%>
+                  <%= link_to download_csv_questionnaire_path(questionnaire) do %>
+                    <%= fa_icon 'download' %> Download file
+                  <% end %>
+                  <p>Last generated at <%= File.mtime(questionnaire.csv_file.location).strftime('%H:%M on %m/%d/%Y') %></p>
+              <% end -%>
+                <strong>Generate New</strong>
+                <hr class="grey">
+              <%= fa_icon 'file-text-o' %> <%= link_to "comma separated", to_csv_questionnaire_path(questionnaire, :separator => ','), :class => "get" %><br>
+              <%= fa_icon 'file-text-o' %> <%= link_to "semicolon separated", to_csv_questionnaire_path(questionnaire, :separator => ';'), :class => "get"   %>
+            </div>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <div id="pager_div" class="pager">
+    <form>
+      <%= image_tag 'pager/first.png', :class => "first", :title => "first", :alt =>"first"%>
+      <%= image_tag 'pager/prev.png', :class => "prev", :title => "previous", :alt=>"previous"%>
+      <input type="text" class="pagedisplay"/>
+      <%= image_tag 'pager/next.png', :class => "next", :title => "next", :alt => "next" %>
+      <%= image_tag 'pager/last.png', :class => "last", :title => "last", :alt => "last"%>
+      <select class="pagesize">
+        <option selected="selected"  value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option  value="40">40</option>
+      </select>
+    </form>
+  </div>
+</div><!-- /content -->
