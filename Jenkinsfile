@@ -17,7 +17,7 @@ pipeline {
     environment {
         SLACK_TEAM_DOMAIN = "wcmc"
         SLACK_TOKEN = credentials('slack-token-test-jenkinsci')
-        SLACK_CHANNEL = "#test-jenkinsci""
+        SLACK_CHANNEL = "#test-jenkinsci"
         COMPOSE_FILE = "docker-compose.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
 	SNYK_URL = "https://app.snyk.io/org/olaiyafunmmi/projects"
