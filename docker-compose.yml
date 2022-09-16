@@ -8,13 +8,6 @@ services:
       - ors-bundler_gems:/usr/local/bundle
     ports:
       - "3000:3000"
-        #environment:
-            #REDIS_HOST: redis
-       #REDIS_PORT: 6379
-       #POSTGRES_DB: db
-       ##DB_HOST: db
-       ##DB_PASSWORD: postgres
-       ##DB_USER: postgres
     depends_on:
       - db
       - redis
@@ -32,8 +25,8 @@ services:
       - ors-pgdatadb:/var/lib/postgresql/data
       - ./entrypoints/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
-       POSTGRES_DB: db
-       #POSTGRES_HOST: db
+       #POSTGRES_DB: db
+       POSTGRES_HOST: db
        POSTGRES_USER: postgres
        POSTGRES_PASSWORD: postgres
  
@@ -42,12 +35,9 @@ services:
     command: redis-server
     ports:
       - "6379"
-        #environment:
-            #REDIS_URL: url
-       #REDIS_URL: redis://redis:6379/1
-       #REDIS_URL: redis://127.0.0.1:6379/1
     volumes:
        - ors-redis:/data
+  
   sidekiq:
      build: .
      volumes:
@@ -58,9 +48,6 @@ services:
      command: bash -c "bundle exec sidekiq"
      environment:
        REDIS_URL: redis://redis:6379/1
-       #REDIS_URL_SIDEKIQ: redis://redis:6379/1
-       #REDIS_URL_SIDEKIQ: redis://127.0.0.1:6379/1
-       #REDIS_URL_SIDEKIQ: url
 
 volumes:
   ors-pgdatadb:
