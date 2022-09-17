@@ -164,8 +164,8 @@ def buildProject() {
     sh 'docker-compose -f ${COMPOSE_FILE} --project-name=${JOB_NAME} build --pull'
 }
 
-def prepareDatabase() {
-    COMMAND = "rake db:drop db:create db:migrate db:seed"
+def prepareDatabase() { //db:seed
+    COMMAND = "rake db:drop db:create db:migrate"
     sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
 }
 
