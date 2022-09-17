@@ -165,12 +165,12 @@ def buildProject() {
 }
 
 def prepareDatabase() {
-    COMMAND = "rake db:drop db:create db:migrate"
+    COMMAND = "rake db:drop db:create db:migrate db:seed"
     sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
 }
 
-def runIntegrationTest() { //bundle exec
-    COMMAND = "bundle exec rake test:integration"
+def runIntegrationTest() { //bundle exec. :integration
+    COMMAND = "rake test"
     sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
 }
 
