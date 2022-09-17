@@ -52,6 +52,14 @@ pipeline {
 		}
 	    }
         }
+	stage("Integration test") {
+            steps { 
+		script {
+		    CI_ERROR = "Failed Stage: Run Rake Integration test"
+                    runIntegrationTest() 
+		}
+	    }
+        }
 	    stage('Scan for vulnerabilities') {
            when{
                 expression {
@@ -158,6 +166,11 @@ def buildProject() {
 
 def prepareDatabase() {
     COMMAND = "rake db:drop db:create db:migrate"
+    sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
+}
+
+def runIntegrationTest() { //bundle exec
+    COMMAND = "rake test:integration"
     sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
 }
 
