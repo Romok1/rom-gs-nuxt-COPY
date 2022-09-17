@@ -63,7 +63,7 @@ pipeline {
 	    stage('Scan for vulnerabilities') {
            when{
                 expression {
-                    return env.BRANCH_NAME ==~ /(develop|test-*|((build|ci|feat|fix|perf|test)\/.*))/
+                    return env.BRANCH_NAME ==~ /(develop|test-*|test*|((build|ci|feat|fix|perf|test)\/.*))/
                 }
             }
                steps {
@@ -167,6 +167,7 @@ def buildProject() {
 def prepareDatabase() { //db:seed
     COMMAND = "rake db:drop db:create db:migrate"
     sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
+	sh "docker-compose --project-name=${JOB_NAME} run web rake db:test"
 }
 
 def runIntegrationTest() { //bundle exec. :integration
