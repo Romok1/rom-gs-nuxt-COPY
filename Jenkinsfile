@@ -170,7 +170,7 @@ def prepareDatabase() { //db:seed
 }
 
 def runIntegrationTest() { //bundle exec. :integration
-    COMMAND = "bundle exec rake test" //.../bin/rails test
+    COMMAND = "bundle exec /bin/rails test" //.../bin/rails test
     sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
 }
 
