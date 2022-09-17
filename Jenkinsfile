@@ -63,7 +63,7 @@ pipeline {
 	    stage('Scan for vulnerabilities') {
            when{
                 expression {
-                    return env.BRANCH_NAME ==~ /(develop|((build|ci|feat|fix|perf|test)\/.*))/
+                    return env.BRANCH_NAME ==~ /(develop|((build|ci|feat|fix|perf|test|test-)\/.*))/
                 }
             }
                steps {
@@ -170,7 +170,7 @@ def prepareDatabase() {
 }
 
 def runIntegrationTest() { //bundle exec
-    COMMAND = "rake test:integration"
+    COMMAND = "bundle exec rake test:integration"
     sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
 }
 
