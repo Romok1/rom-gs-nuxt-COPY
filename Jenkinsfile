@@ -23,6 +23,7 @@ pipeline {
 	SNYK_URL = "https://app.snyk.io/org/olaiyafunmmi/projects"
 	jenkinsConsoleUrl = "$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"
         DIR = "$JENKINS_HOME/workspace"
+	    Deploy_link = "${remote-build-url}"
     }
     stages {
         stage ('Start') {
@@ -66,7 +67,7 @@ pipeline {
 	    stage('Scan for vulnerabilities') {
            when{
                 expression {
-                    return env.BRANCH_NAME ==~ /(develop|test-*|test*|((build|ci|feat|fix|perf|test)\/.*))/
+                    return env.BRANCH_NAME ==~ /(develop|test-ors-temp|((build|ci|feat|fix|perf|test)\/.*))/
                 }
             }
                steps {
@@ -91,7 +92,7 @@ pipeline {
     	  }
         stage("Deploy to Staging") {
             when {
-                branch 'test-ors-temp'
+                branch 'zzzzzzz'
             }
             steps { 
                	script {
@@ -103,7 +104,7 @@ pipeline {
 		      		git checkout test-ors-temp
 		      		rvm use $(cat .ruby-version) --install
 		      		bundle install
-		      		cap cms-ort:staging deploy --dry-run
+		      		echo "cap cms-ort:staging deploy --dry-run"
                     	'''
                     } // eval $(ssh-agent) ssh-add /tmp/id_deploy
                 }
@@ -139,7 +140,7 @@ pipeline {
                 token: "${env.SLACK_TOKEN}",
                 channel: "${env.SLACK_CHANNEL}",
                 color: "good",
-                message: "Job:  ${env.JOB_NAME}\n Build: ${env.BUILD_NUMBER} -- Completed for [${env.JOB_NAME}]\n Status: *SUCCESS* \n Result: Pipeline has finished build successfully for - - ${currentBuild.fullDisplayName} :white_check_mark:\n Run Duration: [${currentBuild.durationString}]\n View Build: [(<${JOB_DISPLAY_URL} | View >)]\n Logs path and Details: [(<${jenkinsConsoleUrl} | here >)] \n"
+                message: "Job:  ${env.JOB_NAME}\n Build: ${env.BUILD_NUMBER} -- Completed for [${env.JOB_NAME}]\n Status: *SUCCESS* \n Result: Pipeline has finished build successfully for - - ${currentBuild.fullDisplayName} :white_check_mark:\n Deploy Option: For deploy to staging and production, Login : [(<${Deploy_link} | here >)] to manually trigger this deploy build remotely.\n Run Duration: [${currentBuild.durationString}]\n View Build: [(<${JOB_DISPLAY_URL} | View >)]\n Logs path and Details: [(<${jenkinsConsoleUrl} | here >)] \n"
             )
         }
         failure {
