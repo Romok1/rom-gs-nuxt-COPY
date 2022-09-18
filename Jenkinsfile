@@ -53,6 +53,9 @@ pipeline {
 	    }
         }
 	stage("Integration test") {
+		 when {
+                branch 'zzzzzz'
+            }
             steps { 
 		script {
 		    CI_ERROR = "Failed Stage: Run Rake Integration test"
@@ -97,14 +100,12 @@ pipeline {
 		    dir("$DIR/deploy-ors") {
 		   	checkout scm
          		sh '''#!/bin/bash -l
-				eval $(ssh-agent)
-			     	ssh-add /tmp/id_deploy
 		      		git checkout test-ors-temp
 		      		rvm use $(cat .ruby-version) --install
 		      		bundle install
-		      		echo "bundle exec cap staging deploy --dry-run"
+		      		cap cms-ort:staging deploy --dry-run
                     	'''
-                    }
+                    } // eval $(ssh-agent) ssh-add /tmp/id_deploy
                 }
             }
             post {
