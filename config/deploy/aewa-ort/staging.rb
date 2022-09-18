@@ -1,9 +1,9 @@
 set :stage, :staging
-set :branch, "master"
+set :branch, "test-ors-temp"
 
-server "ort-staging.linode.unep-wcmc.org", user: "wcmc", roles: %w{app web db}
+server "romoke-test.unep-wcmc.org", user: "wcmc", roles: %w{app web db}
 
-set :domain, "ort-staging.linode.unep-wcmc.org"
+set :domain, "romoke-test.unep-wcmc.org"
 
 set :server_name, "#{fetch(:application)}.#{fetch(:domain)}"
 
