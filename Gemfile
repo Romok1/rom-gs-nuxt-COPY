@@ -10,6 +10,11 @@ gem 'mimemagic', '0.3.9'
 gem 'pg'
 gem 'foreigner'
 
+#rom
+gem 'rbnacl', '4.0'
+gem 'bcrypt_pbkdf', '2.0'
+ 
+ 
 gem 'json'
 
 gem 'jquery-rails', '2.1.4'
