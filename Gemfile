@@ -11,9 +11,9 @@ gem 'pg'
 gem 'foreigner'
 
 #rom , '>= 3.2', '>= 5.0 ..... , '>= 1.0', '>= 2.0'
-gem 'rbnacl', '3.4.0' 
+gem 'rbnacl', '3.0.1' 
 gem 'bcrypt_pbkdf'
-gem 'rbnacl-libsodium', '~> 1.0', '>= 1.0.15'
+gem 'rbnacl-libsodium', '1.0.15'
  
  
 gem 'json'
