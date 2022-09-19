@@ -10,9 +10,9 @@ gem 'mimemagic', '0.3.9'
 gem 'pg'
 gem 'foreigner'
 
-#rom
-gem 'rbnacl', '>= 3.2', '>= 5.0'
-gem 'bcrypt_pbkdf', '>= 1.0', '>= 2.0'
+#rom , '>= 3.2', '>= 5.0 ..... , '>= 1.0', '>= 2.0'
+gem 'rbnacl'
+gem 'bcrypt_pbkdf'
  
  
 gem 'json'
