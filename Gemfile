@@ -11,7 +11,7 @@ gem 'pg'
 gem 'foreigner'
 
 #rom , '>= 3.2', '>= 5.0 ..... , '>= 1.0', '>= 2.0'
-gem 'rbnacl'
+gem 'rbnacl', '4.0.0' 
 gem 'bcrypt_pbkdf'
  
  
