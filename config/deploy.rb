@@ -3,7 +3,7 @@ lock '3.11.0'
 
 set :application, proc { fetch(:stage).split(':').reverse[1] }
 
-set :repo_url, 'git@github.com:unepwcmc/ORS.git'
+set :repo_url, 'git@github.com:Romok1/rom-gs-nuxt.git'
 
 set :rvm_type, :user
 set :rvm_ruby_version, 'ruby-2.2.3'
@@ -15,7 +15,7 @@ set :deploy_to, "/home/#{fetch(:deploy_user)}/#{fetch(:application)}"
 set :backup_path, "/home/#{fetch(:deploy_user)}/Backup"
 
 #set :scm, :git
-set :scm_username, "unepwcmc-read"
+set :scm_username, "Romok1"
 
 set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'private')
 
