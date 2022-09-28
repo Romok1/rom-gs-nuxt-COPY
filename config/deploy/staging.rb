@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 set :stage, :staging
-set :branch, :test/encorefinal
+set :branch, :testencorefinal
 # IMPORTANT - when deploying to an alternative staging, the credentials will be reset to
 # the use the normal staging url. This will need to be reset to the alternative url manually
 # and the server restarted using cap staging deploy:restart
