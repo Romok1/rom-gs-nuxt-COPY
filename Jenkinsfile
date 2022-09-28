@@ -123,11 +123,11 @@ pipeline {
 		            dir("$DIR/deployenc") {
 		        checkout scm
          		sh '''#!/bin/bash -l
-				eval $(ssh-agent)
-			     	ssh-add ~/.ssh/id_rom
 		      		git checkout test-encore-final
 		      		rvm use $(cat .ruby-version) --install
 		      		bundle install
+				eval $(ssh-agent)
+			     	ssh-add ~/.ssh/id_rom
 		           bundle exec cap staging deploy --trace
                   '''
 			} //ssh-add /tmp/id_deploy
