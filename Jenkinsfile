@@ -128,7 +128,7 @@ pipeline {
 		      		git checkout test-encore-final
 		      		rvm use $(cat .ruby-version) --install
 		      		bundle install
-		           bundle exec cap staging deploy --dry-run
+		           bundle exec cap staging deploy --dry-run --trace
                   '''
 			} //ssh-add /tmp/id_deploy
                     //}
