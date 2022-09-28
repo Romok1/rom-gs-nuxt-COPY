@@ -4,7 +4,7 @@ RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs po
 # Define versions
 ENV NVM_VERSION=0.25.4
 ENV NODE_VERSION=12.18.3
-ARG BUNDLER_VERSION=2.3.18
+ARG BUNDLER_VERSION=1.17.3
 ENV BUNDLER_VERSION=${BUNDLER_VERSION}
 
 # Install nvm with node and npm
@@ -34,11 +34,6 @@ RUN bundle _${BUNDLER_VERSION}_ install -j 4
 
 COPY package*.json yarn.lock ./
 RUN yarn install
-
-#COPY config/database-jenkinsci.yml /encore/config/database.yml
-
-#ARG rails_master_key
-#RUN RAILS_MASTER_KEY=$rails_master_key
 
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
