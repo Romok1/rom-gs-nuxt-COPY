@@ -46,7 +46,7 @@ pipeline {
 	  stage("Build") {
             when {
                 anyOf {
-                    branch 'test-encore-final'
+                    branch 'testencorefinal'
                     branch 'develop'
                 }
             }
@@ -60,7 +60,7 @@ pipeline {
         stage("Test DB") {
             when {
                 anyOf {
-                    branch 'test-encore-final'
+                    branch 'testencorefinal'
                     branch 'develop'
                 }
             }
@@ -74,7 +74,7 @@ pipeline {
         stage("Prepare") {
             when {
                 anyOf {
-                    branch 'test-encore-final'
+                    branch 'testencorefinal'
                     branch 'develop'
                 }
             }
@@ -88,7 +88,7 @@ pipeline {
         stage('Scan for vulnerabilities') {
             when {
                 anyOf {
-                    branch 'test-encore-final'
+                    branch 'testencorefinal'
                     branch 'develop'
                 }
             }
@@ -114,7 +114,7 @@ pipeline {
     	  }
         stage("Deploy to Staging") { 
             when {
-                branch 'test-encore-final'
+                branch 'testencorefinal'
             }
             steps { 
                	script {
