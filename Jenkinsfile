@@ -128,7 +128,7 @@ pipeline {
 		      		git checkout test-encore-final
 		      		rvm use $(cat .ruby-version) --install
 		      		bundle install
-		           bundle exec cap staging deploy --dry-run"
+		           bundle exec cap staging deploy --dry-run
                   '''
 			} //ssh-add /tmp/id_deploy
                     //}
@@ -216,9 +216,8 @@ def dockerImageCleanup() {
 	docker ps -a --no-trunc  | grep "test-encore-final" | awk '{print $1}' | xargs -r --no-run-if-empty docker stop -f
 	docker ps -a --no-trunc  | grep "test-encore-final" | awk '{print $1}' | xargs -r --no-run-if-empty docker rm -f
 	docker images --no-trunc | grep "test-encore-final" | awk '{print $3}' | xargs -r --no-run-if-empty docker rmi -f
-	docker rmi -f $(docker images | grep '^<none>' | awk '{print $3}') | xargs -r --no-run-if-empty docker rmi -f
     '''    
-} 
+} //docker rmi -f $(docker images | grep '^<none>' | awk '{print $3}') | xargs -r --no-run-if-empty docker rmi -f
 
 def deleteDeployDir() {
     sh "sudo rm -r $DIR/deployenc*"
