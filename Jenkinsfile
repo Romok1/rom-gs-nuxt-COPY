@@ -14,7 +14,6 @@ pipeline {
         durabilityHint('PERFORMANCE_OPTIMIZED')
         // Disallow concurrent executions of the Pipeline. Can be useful for preventing simultaneous accesses to shared resources
         disableConcurrentBuilds()
-        overrideIndexTriggers(true)
     }
     triggers {
         // Accepts a cron-style string to define a regular interval at which Jenkins should check for new source changes 
@@ -47,7 +46,7 @@ pipeline {
 	  stage("Build") {
             when {
                 anyOf {
-                    branch 'testencoretemp'
+                    branch 'test-encore-final'
                     branch 'develop'
                 }
             }
@@ -61,7 +60,7 @@ pipeline {
         stage("Test DB") {
             when {
                 anyOf {
-                    branch 'testencoretemp'
+                    branch 'test-encore-final'
                     branch 'develop'
                 }
             }
@@ -75,7 +74,7 @@ pipeline {
         stage("Prepare") {
             when {
                 anyOf {
-                    branch 'testencoretemp'
+                    branch 'test-encore-final'
                     branch 'develop'
                 }
             }
@@ -89,7 +88,7 @@ pipeline {
         stage('Scan for vulnerabilities') {
             when {
                 anyOf {
-                    branch 'testencoretemp'
+                    branch 'test-encore-final'
                     branch 'develop'
                 }
             }
@@ -115,34 +114,23 @@ pipeline {
     	  }
         stage("Deploy to Staging") { 
             when {
-                branch 'dev'
+                branch 'test-encore-final'
             }
             steps { 
                	script {
 		            CI_ERROR = "Build Failed at stage: Prepare deploy stage"
-		            sh "mkdir $DIR/deploytestdir"
-		            dir("$DIR/deploytestdir") {
-		             // checkout scm
-		//withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-git', keyFileVariable: 'key', usernameVariable: 'unepwcmc-read')]) {
-			checkout([$class: 'GitSCM',
-                                   branches: [[name: 'testencoretemp']],
-          			userRemoteConfigs: [[credentialsId:  'romtest',
-                               url: 'git@github.com:Romok1/rom-gs-nuxt.git']]])
-                	
-			//git clone https://github.com/Romok1/rom-gs-nuxt.git
-			//cd rom-gs-nuxt
-			//git checkout testencoretemp
-				    sh '''#!/bin/bash -l
-				    git checkout testencoretemp
-			git branch
-			ls
-		              rvm use $(cat .ruby-version) --install
-		              bundle install
-			      eval $(ssh-agent -s)
-			      ssh-add ~/.ssh/id_ed25519
-		           bundle exec cap staging deploy --trace
+		            sh "mkdir $DIR/deployenc"
+		            dir("$DIR/deployenc") {
+		        checkout scm
+         		sh '''#!/bin/bash -l
+				eval $(ssh-agent)
+			     	ssh-add ~/.ssh/id_rom
+		      		git checkout test-encore-final
+		      		rvm use $(cat .ruby-version) --install
+		      		bundle install
+		           bundle exec cap staging deploy --dry-run"
                   '''
-			} //git checkout echo ${env.BRANCH_NAME}
+			} //ssh-add /tmp/id_deploy
                     //}
                 }
             }
@@ -168,9 +156,6 @@ pipeline {
 		              if (currentBuild.currentResult == 'SUCCESS') { 
 		                CI_ERROR = "NA" 
 		            }
-              	//if (env.BRANCH_NAME == 'test-encore-temp') {
-                //deleteDeployDir()
-              	//}
 		 dockerImageCleanup()
                 }
         }
@@ -201,7 +186,7 @@ pipeline {
 }
 def buildProject() {
     sh 'echo "Building Project.............."'
-	sh "echo ${rails_key} > config/master.key"
+    sh "echo ${rails_key} > config/master.key"
     sh "cp .env-example .env"
     sh "cp config/database-jenkinsci.yml config/database.yml"
     sh "cp config/sidekiq-jenkins.yml config/sidekiq.yml"
@@ -215,7 +200,6 @@ def prepareDatabase() {
 
 def prepare() {
     sh "docker-compose --project-name=${JOB_NAME} run web yarn install"
-    // sh "docker-compose --project-name=${JOB_NAME} run web yarn lint"
 }
 
 def runRspecTests() {
@@ -229,16 +213,15 @@ def dockerImageCleanup() {
     sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
     sh "docker-compose --project-name=${JOB_NAME} down --volumes"
     sh '''#!/bin/bash
-	docker ps -a --no-trunc  | grep "${BRANCH_NAME}" | awk '{print $1}' | xargs -r --no-run-if-empty docker stop -f
-	docker ps -a --no-trunc  | grep "${BRANCH_NAME}" | awk '{print $1}' | xargs -r --no-run-if-empty docker rm -f
-	docker images --no-trunc | grep "${BRANCH_NAME}" | awk '{print $3}' | xargs -r --no-run-if-empty docker rmi -f
-    '''
-    //sh "docker images | grep ${BRANCH_NAME} -a -q | xargs docker rmi -f"
-  //  sh	"docker image prune $(docker images | grep ${BRANCH_NAME}) --force -fa"
-} //sh "docker-compose --project-name=${JOB_NAME} down --volumes --rmi all --remove-orphans"   docker rmi -f $(docker images | grep '^<none>' | awk '{print $3}')
+	docker ps -a --no-trunc  | grep "test-encore-final" | awk '{print $1}' | xargs -r --no-run-if-empty docker stop -f
+	docker ps -a --no-trunc  | grep "test-encore-final" | awk '{print $1}' | xargs -r --no-run-if-empty docker rm -f
+	docker images --no-trunc | grep "test-encore-final" | awk '{print $3}' | xargs -r --no-run-if-empty docker rmi -f
+	docker rmi -f $(docker images | grep '^<none>' | awk '{print $3}') | xargs -r --no-run-if-empty docker rmi -f
+    '''    
+} 
 
 def deleteDeployDir() {
-    sh "sudo rm -r $DIR/deploytestdir*"
+    sh "sudo rm -r $DIR/deployenc*"
 }
 
 def deleteWorkspace() {
