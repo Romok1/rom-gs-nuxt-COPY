@@ -123,7 +123,10 @@ pipeline {
 		            dir("$DIR/deployenc") {
 		        checkout scm
          		sh '''#!/bin/bash -l
-		      		git checkout test-encore-final
+		      		git checkout testencorefinal
+				git branch 
+				ls
+				cat config/staging.rb
 		      		rvm use $(cat .ruby-version) --install
 		      		bundle install
 				eval $(ssh-agent)
