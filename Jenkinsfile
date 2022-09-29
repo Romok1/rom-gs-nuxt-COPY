@@ -127,10 +127,10 @@ pipeline {
 		      		rvm use $(cat .ruby-version) --install
 		      		bundle install
 				eval $(ssh-agent)
-			     	ssh-add ~/.ssh/id_rom
+			     	ssh-add ~/.ssh/id_ed25519
 		           bundle exec cap staging deploy --trace
                   '''
-			} //ssh-add /tmp/id_deploy
+			} //ssh-add /tmp/id_deploy.  id_rom
                     //}
                 }
             }
