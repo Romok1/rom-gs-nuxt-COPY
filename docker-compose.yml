@@ -14,7 +14,8 @@ services:
     env_file: '.env'
 
   database:
-    image: postgres:13.7
+    #image: postgres:13.7
+    image: postgres
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       timeout: 45s
