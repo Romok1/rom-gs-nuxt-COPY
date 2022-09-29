@@ -108,7 +108,7 @@ pipeline {
     	  }
         stage("Deploy to Staging") { 
             when {
-                branch 'testencorefinal'
+                branch 'testencorefinalmain'
             }
             steps { 
                	script {
@@ -117,7 +117,7 @@ pipeline {
 		            dir("$DIR/deployenc") {
 		        checkout scm
          		sh '''#!/bin/bash -l
-		      		git checkout testencorefinal
+		      		git checkout testencorefinalmain
 				git branch 
 				ls
 				cat config/staging.rb
@@ -127,8 +127,7 @@ pipeline {
 			     	ssh-add ~/.ssh/id_rsaPEM
 		           bundle exec cap staging deploy --trace
                   '''
-			} //ssh-add /tmp/id_deploy.  id_rom. id_ed25519
-                    //}
+			}
                 }
             }
             post {
@@ -184,7 +183,7 @@ pipeline {
 def buildProject() {
     sh 'echo "Building Project.............."'
     sh "echo ${rails_key} > config/master.key"
-    sh "cp .env-example .env"
+    sh "cp .env-jenkinsci .env"
     sh "cp config/database-jenkinsci.yml config/database.yml"
     sh "cp config/sidekiq-jenkins.yml config/sidekiq.yml"
     sh 'docker-compose -f ${COMPOSE_FILE} --project-name=${JOB_NAME} build --pull'
@@ -210,9 +209,9 @@ def dockerImageCleanup() {
     sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
     sh "docker-compose --project-name=${JOB_NAME} down --volumes"
     sh '''#!/bin/bash
-	docker ps -a --no-trunc  | grep "test-encore-final" | awk '{print $1}' | xargs -r --no-run-if-empty docker stop -f
-	docker ps -a --no-trunc  | grep "test-encore-final" | awk '{print $1}' | xargs -r --no-run-if-empty docker rm -f
-	docker images --no-trunc | grep "test-encore-final" | awk '{print $3}' | xargs -r --no-run-if-empty docker rmi -f
+	docker ps -a --no-trunc  | grep "testencorefinalmain" | awk '{print $1}' | xargs -r --no-run-if-empty docker stop -f
+	docker ps -a --no-trunc  | grep "testencorefinalmain" | awk '{print $1}' | xargs -r --no-run-if-empty docker rm -f
+	docker images --no-trunc | grep "testencorefinalmain" | awk '{print $3}' | xargs -r --no-run-if-empty docker rmi -f
     '''    
 }
 
