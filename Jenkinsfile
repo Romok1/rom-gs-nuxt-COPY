@@ -1,9 +1,3 @@
-//if (currentBuild.getBuildCauses().toString().contains('BranchIndexingCause') || currentBuild.getBuildCauses().toString().contains('Branch event')) {
- // print "INFO: Build skipped due to trigger being Branch Indexing"
- // currentBuild.result = 'ABORTED' // optional, gives a better hint to the user that it's been skipped, rather than the default which shows it's successful
-//  return
-//}
-
 pipeline {
     agent any
     options {
@@ -46,7 +40,7 @@ pipeline {
 	  stage("Build") {
             when {
                 anyOf {
-                    branch 'testencorefinal'
+                    branch 'testencorefinalmain'
                     branch 'develop'
                 }
             }
@@ -60,7 +54,7 @@ pipeline {
         stage("Test DB") {
             when {
                 anyOf {
-                    branch 'testencorefinal'
+                    branch 'testencorefinalmain'
                     branch 'develop'
                 }
             }
@@ -74,7 +68,7 @@ pipeline {
         stage("Prepare") {
             when {
                 anyOf {
-                    branch 'testencorefinal'
+                    branch 'testencorefinalmain'
                     branch 'develop'
                 }
             }
@@ -88,7 +82,7 @@ pipeline {
         stage('Scan for vulnerabilities') {
             when {
                 anyOf {
-                    branch 'testencorefinal'
+                    branch 'testencorefinalmain'
                     branch 'develop'
                 }
             }
@@ -220,7 +214,7 @@ def dockerImageCleanup() {
 	docker ps -a --no-trunc  | grep "test-encore-final" | awk '{print $1}' | xargs -r --no-run-if-empty docker rm -f
 	docker images --no-trunc | grep "test-encore-final" | awk '{print $3}' | xargs -r --no-run-if-empty docker rmi -f
     '''    
-} //docker rmi -f $(docker images | grep '^<none>' | awk '{print $3}') | xargs -r --no-run-if-empty docker rmi -f
+}
 
 def deleteDeployDir() {
     sh "sudo rm -r $DIR/deployenc*"
