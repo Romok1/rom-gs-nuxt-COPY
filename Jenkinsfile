@@ -207,7 +207,7 @@ def dockerImageCleanup() {
     sh "docker stop `docker ps -a -q -f status=exited` &> /dev/null || true &> /dev/null"
     sh "docker-compose --project-name=${JOB_NAME} down --volumes &> /dev/null || true &> /dev/null"
     sh '''#!/bin/bash
-	docker ps -a --no-trunc  | grep "get-app-test" | awk '{print $1}' | xargs -r --no-run-if-empty docker stop -f
+	docker ps -a --no-trunc  | grep "get-app-test" | awk '{print $1}' | xargs -r --no-run-if-empty docker stop
 	docker ps -a --no-trunc  | grep "get-app-test" | awk '{print $1}' | xargs -r --no-run-if-empty docker rm -f
 	docker images --no-trunc | grep "get-app-test" | awk '{print $3}' | xargs -r --no-run-if-empty docker rmi -f
     '''    
