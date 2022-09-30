@@ -118,14 +118,12 @@ pipeline {
 		        checkout scm
          		sh '''#!/bin/bash -l
 		      		git checkout testencorefinalmain
-				git branch 
-				ls
-				cat config/staging.rb
+				cat config/deploy/staging.rb
 		      		rvm use $(cat .ruby-version) --install
 		      		bundle install
 				eval $(ssh-agent)
 			     	ssh-add ~/.ssh/id_rsaPEM
-		           bundle exec cap staging deploy --trace
+		          echo "bundle exec cap staging deploy --trace"
                   '''
 			}
                 }
