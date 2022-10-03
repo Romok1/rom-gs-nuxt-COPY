@@ -66,7 +66,12 @@ gem 'traco'
 gem "recaptcha", require: "recaptcha/rails"
 
 gem 'ed25519', '~> 1.2'
-gem 'bcrypt_pbkdf', '~> 1'
+#gem 'bcrypt_pbkdf', '~> 1'
+#gem 'net-ssh', '>= 4.0.0'
+
+gem 'rbnacl', '< 5.0', :require => false
+gem 'rbnacl-libsodium', :require => false
+gem 'bcrypt_pbkdf', '< 2.0', :require => false
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

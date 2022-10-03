@@ -280,6 +280,10 @@ GEM
       thor (>= 0.14.6, < 2.0)
     rainbow (2.0.0)
     rake (10.0.3)
+    rbnacl (3.4.0)
+      ffi
+    rbnacl-libsodium (1.0.15.1)
+      rbnacl (>= 3.0.1)
     rdoc (3.12.2)
       json (~> 1.4)
     recaptcha (4.9.0)
@@ -375,7 +379,7 @@ DEPENDENCIES
   authlogic
   awesome_nested_set
   axlsx!
-  bcrypt_pbkdf (~> 1)
+  bcrypt_pbkdf (< 2.0)
   byebug
   cancan
   capistrano (~> 3.11.0)
@@ -419,6 +423,8 @@ DEPENDENCIES
   rails (= 3.2.22)
   rails-secrets
   rake (= 10.0.3)
+  rbnacl (< 5.0)
+  rbnacl-libsodium
   recaptcha
   redis
   redis-session-store
