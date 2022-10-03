@@ -123,7 +123,7 @@ pipeline {
 		      		bundle install
 				eval $(ssh-agent)
 			     	ssh-add ~/.ssh/id_rsaPEM
-		          echo "bundle exec cap staging deploy --trace"
+		          bundle exec cap staging deploy --trace
                   '''
 			}
                 }
