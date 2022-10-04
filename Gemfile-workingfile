@@ -2,10 +2,20 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.22'
 gem 'rake', '10.0.3'
+# The previous version of mimemagic was pulled on 20/03/21 
+# and licensing changed to GPL2.
+# 0.3.10 seems to hit issues with axlsx
+gem 'mimemagic', '0.3.9'
 
 gem 'pg'
 gem 'foreigner'
 
+#rom , '>= 3.2', '>= 5.0 ..... , '>= 1.0', '>= 2.0'
+#gem 'rbnacl', '3.0.1' 
+#gem 'bcrypt_pbkdf'
+#gem 'rbnacl-libsodium', '1.0.15'
+ 
+ 
 gem 'json'
 
 gem 'jquery-rails', '2.1.4'
@@ -55,6 +65,13 @@ gem 'traco'
 
 gem "recaptcha", require: "recaptcha/rails"
 
+gem 'ed25519', '~> 1.2'
+#gem 'bcrypt_pbkdf', '~> 1'
+#gem 'net-ssh', '>= 4.0.0'
+
+gem 'rbnacl', '< 5.0', :require => false
+gem 'rbnacl-libsodium', :require => false
+gem 'bcrypt_pbkdf', '< 2.0', :require => false
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
