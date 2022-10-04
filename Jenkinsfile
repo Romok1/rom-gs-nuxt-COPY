@@ -23,7 +23,7 @@ pipeline {
 	SNYK_URL = "https://app.snyk.io/org/olaiyafunmmi/projects"
 	jenkinsConsoleUrl = "$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"
         DIR = "$JENKINS_HOME/workspace"
-	    Deploy_link = credentials("remote-build-url") //"${remote-build-url}"
+	    Deploy_link = credentials("remote-ors-deploy") //"${remote-build-url}"   "remote-ors-deploy" credentials("remote-build-url")
     }
     stages {
         stage ('Start') {
