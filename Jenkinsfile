@@ -40,7 +40,7 @@ pipeline {
 	  stage("Build") {
             when {
                 anyOf {
-                    branch 'testencorefinalmain'
+                    branch 'testencoreinterim'
                     branch 'develop'
                 }
             }
@@ -54,7 +54,7 @@ pipeline {
         stage("Test DB") {
             when {
                 anyOf {
-                    branch 'testencorefinalmain'
+                    branch 'testencoreinterim'
                     branch 'develop'
                 }
             }
@@ -68,7 +68,7 @@ pipeline {
         stage("Prepare") {
             when {
                 anyOf {
-                    branch 'testencorefinalmain'
+                    branch 'testencoreinterim'
                     branch 'develop'
                 }
             }
