@@ -180,12 +180,11 @@ pipeline {
 }
 def buildProject() {
     sh 'echo "Building Project.............."'
-    sh "echo ${rails_key} > config/master.key"
     sh "cp .env-jenkinsci .env"
     sh "cp config/database-jenkinsci.yml config/database.yml"
     sh "cp config/sidekiq-jenkins.yml config/sidekiq.yml"
-    sh 'docker-compose -f ${COMPOSE_FILE} --project-name=${JOB_NAME} build --pull'
-}
+    sh "docker-compose -f ${COMPOSE_FILE} --project-name=${JOB_NAME} build --pull --build-arg RAILS_MASTER_KEY=${rails_key}"
+} //sh "echo ${rails_key} > config/master.key"
 
 def prepareDatabase() {
     COMMAND = "bundle exec rake db:drop db:create db:migrate"
