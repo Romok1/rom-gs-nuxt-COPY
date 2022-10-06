@@ -31,15 +31,13 @@ COPY Gemfile /encore/Gemfile
 COPY Gemfile.lock /encore/Gemfile.lock
 RUN bundle _${BUNDLER_VERSION}_ install -j 4
 
-
 COPY package*.json yarn.lock ./
 RUN yarn install
 
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
-EXPOSE 3000
- 
 ADD . /encore
 
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+
+EXPOSE 3000
 CMD ["rails","server","-b","0.0.0.0"]
