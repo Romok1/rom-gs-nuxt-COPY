@@ -1,0 +1,49 @@
+var template = $("<%= escape_javascript(render('form')) %>");
+
+$("#new-distribution-label").text("<%=
+   if @distribution.new_record?
+    "Add new"
+   else
+     "Edit"
+   end %> distribution location");
+
+var distributionReferences = new DistributionReferences({el: template.find('#search ul')});
+
+$('#admin-new-distribution-form').html(template);
+
+$('#reference_id').select2({
+  placeholder: 'Type reference citation',
+  minimumInputLength: 3,
+  ajax: {
+    url: '/admin/references/autocomplete',
+    dataType: 'json',
+    quietMillis: 100,
+    data: function(query){
+      return {
+        query: query
+      };
+    },
+    results: function(data) {
+      var results = [];
+      $.each(data, function(i, e) {
+        return results.push({
+          id: e.id,
+          text: e.value
+        });
+      });
+      return {
+        results: results
+      };
+    }
+  }
+});
+
+
+
+$('#admin-new-distribution-form .distribution').select2();
+$('#new-distribution').modal('show');
+
+$('.nav-tabs.distribution-references a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+});

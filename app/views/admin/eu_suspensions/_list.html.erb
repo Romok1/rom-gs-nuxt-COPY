@@ -1,0 +1,49 @@
+<thead>
+  <th>Taxon</th>
+  <th>Effective from</th>
+  <th>Suspension Regulation</th>
+  <th>Country or Territory</th>
+  <th>Type</th>
+  <th>Term</th>
+  <th>Source</th>
+  <th>Notes</th>
+  <th>Current</th>
+  <th>Actions</th>
+  <th>Info</th>
+</thead>
+<tbody>
+  <% collection.each do |eu_suspension| -%>
+    <tr class="<%= if eu_suspension.is_current then "current_listing" end %>">
+      <td>
+        <%= link_to eu_suspension.taxon_concept.full_name,
+          admin_taxon_concept_eu_suspensions_path(
+            eu_suspension.taxon_concept) %>
+      </td>
+      <td><%= eu_suspension.start_date_formatted %></td>
+      <td><%= eu_suspension.start_event.name %></td>
+      <td><%= eu_suspension.geo_entity && eu_suspension.geo_entity.name_en %></td>
+      <td>
+        <%= eu_suspension.eu_decision_type.name %>
+        <%= '(' + eu_suspension.eu_decision_type.tooltip + ')' if eu_suspension.
+          eu_decision_type.tooltip.present? %>
+      </td>
+      <td><%= eu_suspension.term && eu_suspension.term.code %></td>
+      <td><%= eu_suspension.source && eu_suspension.source.code %></td>
+      <td><%= eu_suspension.notes %></td>
+      <td><%= true_false_icon(eu_suspension.is_current) %></td>
+      <td>
+        <%= link_to edit_icon,
+          edit_admin_taxon_concept_eu_suspension_path(eu_suspension.taxon_concept, eu_suspension)
+        %>
+        <%= link_to delete_icon,
+          admin_taxon_concept_eu_suspension_path(eu_suspension.taxon_concept, eu_suspension),
+          data: { confirm: "Warning: you are about to delete data. Are you sure?" }, :method => :delete
+        %>
+      </td>
+      <td>
+        <%= tracking_info(eu_suspension) %>
+        <%= internal_notes(eu_suspension) %>
+      </td>
+    </tr>
+  <% end -%>
+</tbody>

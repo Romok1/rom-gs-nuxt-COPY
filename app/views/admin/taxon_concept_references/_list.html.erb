@@ -1,0 +1,74 @@
+<% if @taxon_concept.taxon_concept_references || @taxon_concept.inherited_standard_taxon_concept_references %>
+  <table class="table table-striped table-hover">
+    <thead>
+      <th>
+        Standard References
+      </th>
+      <th>
+        Excluded taxa
+      </th>
+      <th>
+        Inherited?
+      </th>
+    </thead>
+    <tbody>
+      <% @taxon_concept.standard_taxon_concept_references.each do |taxon_reference | %>
+        <tr>
+          <td>
+            <p class="reference-citation"><%= link_to taxon_reference .citation,
+            admin_references_url(:query => taxon_reference .citation) %></p>
+          </td>
+          <td>
+            <a rel="tooltip" href="#"
+              data-original-title="<%= excluded_taxon_concepts_tooltip(taxon_reference) %>">
+              <%= taxon_reference.excluded_taxon_concepts_ids.length %>
+            </a>
+          </td>
+          <td>
+            <%= true_false_icon(taxon_reference['original_taxon_concept_id'].try(:to_i) != @taxon_concept.id) %>
+            <% unless taxon_reference.taxon_concept_id == @taxon_concept.id %>
+              (<%= link_to taxon_reference.taxon_concept.full_name,
+                admin_taxon_concept_taxon_concept_references_url(taxon_reference.taxon_concept) %>)
+            <% end %>
+          </td>
+        </tr>
+        <br>
+      <% end %>
+    </tbody>
+  </thead>
+  <table class="table table-striped table-hover">
+    <thead>
+      <th>
+        Reference
+      </th>
+      <th>
+        Actions
+      </th>
+    </thead>
+    <tbody>
+      <% @taxon_concept.taxon_concept_references.
+        joins(:reference).
+        order('"references".citation ASC').each do |tc_ref| %>
+        <% ref = tc_ref.reference %>
+        <tr>
+          <td>
+            <p class="reference-citation"><%= ref.citation %></p>
+          </td>
+          <td>
+            <%= link_to edit_icon,
+              edit_admin_taxon_concept_taxon_concept_reference_url(@taxon_concept, tc_ref),
+              :remote => true %>
+            <% if can? :destroy, tc_ref %>
+              <%= link_to delete_icon,
+                admin_taxon_concept_taxon_concept_reference_url(@taxon_concept, tc_ref),
+                data: { confirm: "Warning: you are about to delete data. Are you sure?" },
+                :method => :delete %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  No references defined.
+<% end %>

@@ -1,0 +1,202 @@
+<strong class="title">EU DECISIONS</strong>
+{{#unless euDecisions}}
+  <p class="empty">There are no current suspensions or opinions for this {{#tolower rankName}}{{/tolower}}.</p>
+{{else}}
+  <table summary="data table">
+    <thead>
+      <tr>
+        <th class="col14">DATE</th>
+        <th class="col14">COUNTRY</th>
+        <th class="col14">EU DECISIONS</th>
+        <th class="col2">SRG HISTORY</th>
+        <th class="col15">NOTES</th>
+        <th class="col8">DOCUMENT</th>
+      </tr>
+    </thead>
+    <tbody {{bind-attr class="controller.euDecisionsExpanded:historic_expanded"}}>
+      {{#each decision in currentEuDecisions}}
+        <tr class="current">
+          <td>{{decision.start_date}}
+            {{#if decision.original_start_date}}
+              <br>(valid since {{decision.original_start_date}})
+            {{/if}}
+          </td>
+          <td>{{decision.geo_entity.name}}</td>
+          <td>
+              {{#if decision.eu_decision_type.description}}
+                <div class="link-holder">
+                  <a class="legal-links">{{decision.eu_decision_type.name}}</a>
+                  <div class="popup-holder">
+                    <div class="popup">
+                      {{decision.eu_decision_type.description}}
+                    </div>
+                  </div>
+                </div>
+              {{else}}
+                {{decision.eu_decision_type.name}}
+              {{/if}}
+          </td>
+          <td>
+            {{#if decision.srg_history }}
+              {{#if decision.srg_history.description}}
+                <div class="link-holder">
+                  <a class="legal-links">{{decision.srg_history.name}}</a>
+                  <div class="popup-holder">
+                    <div class="popup">
+                      {{decision.srg_history.description}}
+                    </div>
+                  </div>
+                </div>
+              {{else}}
+                {{decision.srg_history.name}}
+              {{/if}}
+            {{/if}}
+          </td>
+          <td>
+            {{#if decision.subspecies_info}}
+              {{{decision.subspecies_info}}}<br />
+            {{/if}}
+            {{decision.term.name}} {{#if decision.source.code}}{{decision.source.code}} - {{decision.source.name}}{{/if}} <br />
+            {{#if decision.notes}}
+              {{{decision.notes}}}
+              <br /><br />
+            {{/if}}
+            {{{decision.nomenclature_note_en}}}
+          </td>
+          <td class="last">
+            {{#if isSignedIn }}
+              {{#if decision.intersessional_decision_id}}
+                <a class="legal-links" href="https://speciesplus.net/api/v1/documents/{{unbound decision.intersessional_decision_id}}">
+                  Intersessional decision
+                </a>
+              {{/if}}
+              {{#if decision.private_url}}
+                <a class="legal-links" href="{{unbound decision.private_url}}">
+                  {{decision.start_event.name}}
+                </a>
+              {{else}}
+                {{#if decision.start_event.url}}
+                  <a class="legal-links" href="{{unbound decision.start_event.url}}">
+                    {{decision.start_event.name}}
+                  </a>
+                {{/if}}
+              {{/if}}
+            {{else}}
+              {{#if decision.start_event.name }}
+                <a class="legal-links" href="{{unbound decision.start_event.url}}">
+                  {{decision.start_event.name}}
+                </a>
+              {{else}}
+                Intersessional decision
+              {{/if}}
+            {{/if}}
+          </td>
+        </tr>
+      {{else}}
+        <tr class="current">
+          <td colspan=6>There are no current decisions in place for this {{#tolower controllers.taxonConcept.rankName}}{{/tolower}}.</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  {{#if historicEuDecisions}}
+    <div {{bind-attr class=":historic controller.euDecisionsExpanded::hidden"}}>
+      <table summary="data table">
+        <thead>
+          <tr>
+            <th class="col14">&nbsp;</th>
+            <th class="col14">&nbsp;</th>
+            <th class="col14">&nbsp;</th>
+            <th class="col14">&nbsp;</th>
+            <th class="col15">&nbsp;</th>
+            <th class="col8">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each decision in historicEuDecisions}}
+            <tr>
+              <td>{{decision.start_date}}</td>
+              <td>{{decision.geo_entity.name}}</td>
+              <td>
+                {{#if decision.eu_decision_type.description}}
+                  <div class="link-holder">
+                    <a class="legal-links">{{decision.eu_decision_type.name}}</a>
+                    <div class="popup-holder">
+                      <div class="popup">
+                        {{decision.eu_decision_type.description}}
+                      </div>
+                    </div>
+                  </div>
+                {{else}}
+                  {{decision.eu_decision_type.name}}
+                {{/if}}
+              </td>
+              <td>
+                {{#if decision.srg_history }}
+                  {{#if decision.srg_history.description}}
+                    <div class="link-holder">
+                      <a class="legal-links">{{decision.srg_history.name}}</a>
+                      <div class="popup-holder">
+                        <div class="popup">
+                          {{decision.srg_history.description}}
+                        </div>
+                      </div>
+                    </div>
+                  {{else}}
+                    {{decision.srg_history.name}}
+                  {{/if}}
+                {{/if}}
+              </td>
+              <td>
+                {{#if decision.subspecies_info}}
+                  {{{decision.subspecies_info}}}<br />
+                {{/if}}
+                {{decision.term.name}} {{#if decision.source.code}}{{decision.source.code}} - {{decision.source.name}}{{/if}} <br />
+                {{#if decision.notes}}
+                  {{{decision.notes}}}
+                  <br /><br />
+                {{/if}}
+                {{{decision.nomenclature_note_en}}}
+              </td>
+              <td class="last">
+                {{#if isSignedIn }}
+                  {{#if decision.intersessional_decision_id}}
+                    <a class="legal-links" href="https://speciesplus.net/api/v1/documents/{{unbound decision.intersessional_decision_id}}">
+                      Intersessional decision
+                    </a>
+                  {{/if}}
+                  {{#if decision.private_url}}
+                    <a class="legal-links" href="{{unbound decision.private_url}}">
+                      {{decision.start_event.name}}
+                    </a>
+                  {{else}}
+                    {{#if decision.start_event.url}}
+                      <a class="legal-links" href="{{unbound decision.start_event.url}}">
+                        {{decision.start_event.name}}
+                      </a>
+                    {{/if}}
+                  {{/if}}
+                {{else}}
+                  {{#if decision.start_event.name }}
+                    <a class="legal-links" href="{{unbound decision.start_event.url}}">
+                      {{decision.start_event.name}}
+                    </a>
+                  {{else}}
+                    Intersessional decision
+                  {{/if}}
+                {{/if}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <div {{bind-attr class=":btn-hloder euDecisionsExpanded:expanded"}}>
+      {{#if controller.euDecisionsExpanded}}
+        <a class="link active" {{action 'contractList' 'eu_decisions' 'euDecisionsExpanded'}}>HIDE HISTORY</a>
+      {{else}}
+        <a class="link" {{action 'expandList' 'eu_decisions' 'euDecisionsExpanded'}}>SHOW HISTORY</a>
+      {{/if}}
+    </div>
+  {{/if}}
+{{/unless}}

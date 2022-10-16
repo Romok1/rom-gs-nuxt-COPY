@@ -1,0 +1,118 @@
+fr:
+  cites_title: "Base de Données sur le Commerce CITES"
+  cites_description: "La base de données sur le commerce CITES, gérée par le Centre mondial de surveillance continue de la conservation de la nature du PNUE (PNUE-WCMC) au nom du Secrétariat CITES"
+  cites_sub_title: "Veuillez saisir votre recherche ci-dessous"
+  errors:
+    no_data_1: "Votre recherche n'a retourné aucune donnée"
+    no_data_2: "S'il vous plaît sélectionner autres variables"
+    csv_limit_exceeded_1: "Votre recherche a retourné un sous-ensemble trop grand (plus d’1 million d'enregistrements). Vous devez limiter la sélection temporelle (l’intervalle d’années) et sélectionner au moins un pays importateur/exportateur ou un taxon"
+    csv_limit_exceeded_2: "Vous devez limiter la gamme des années et selectionner au moins un pays importateur/exportateur ou un taxon"
+    web_limit_exceeded_1: "Vue en ligne n'est pas disponible pour les grands sous-ensembles"
+    web_limit_exceeded_2: "Vous pouvez télécharger les résultats en format CSV"
+  warnings:
+    net_trade_1: "S'il vous plaît lire attentivement:"
+    net_trade_2: "Le commerce net est le résultat de la soustraction des réexportations d'un pays de ses importations. Par conséquent, si votre sélection de données concerne seulement des importations ou des exportations des pays spécifiés, vous ne pouvez pas calculer les importations ou les exportations nettes. Vous pouvez uniquement obtenir des importations ou exportations brutes."
+
+  year_text: "Période"
+  year_tip: "Sélectionnez les années de début (De) et de fin (A) pour votre recherche. Il est conseillé de limiter votre demande de données à une période de 5 années maximum"
+  export_text: "Pays d'exportation"
+  export_tip: "Entrez le nom du/des pays que vous souhaitez inclure dans votre rapport de sortie final. Pour incluire les données de tous les pays, laissez 'Tous les Pays' sélectionné"
+  import_text: "Pays importateurs"
+  import_tip: "Entrez le nom du/des pays que vous souhaitez inclure dans votre rapport de sortie final. Pour incluire les données de tous les pays, laissez 'Tous les Pays' sélectionné"
+  source_text: "Source"
+  source_tip: "Entrez le source/les sources (par ex. 'W- Prélevés dans la nature') que vous souhaitez inclure dans votre rapport de sortie final. Pour incluire les données de tous les sources, laissez 'Tous les Sources' sélectionné"
+  purpose_text: "But"
+  purpose_tip: "Entrez le but/les buts (par ex. 'T- Transaction commerciale' ou 'S- Fins scientifiques') que vous souhaitez inclure dans votre rapport de sortie final. Pour incluire les données de tous buts, laissez 'Tous les Buts' sélectionné"
+  trade_text: "Termes du Commerce"
+  trade_tip: "Entrez le terme/les termes (par ex. 'vivant' ou 'peau') que vous souhaitez inclure dans votre rapport de sortie final. Pour incluire les données de tous les termes, laissez 'Tous les Termes' sélectionné"
+  taxon_text: "Recherche par taxon"
+  taxon_tip: "Pour récupérer des données pour une espèce spécifique, tapez le nom l’espèce. Pour récupérer des données pour toutes les espèces dans un niveau taxonomique supérieur particulier (par exemple genre, famille, ordre, classe etc.)  tapez le nom et sélectionnez un niveau taxonomique supérieur dans le menu déroulant ci-dessous. Pour sélectionner tous les taxons, laissez ces sections vides. Il est conseillé de limiter votre demande de données à un taxon spécifique en raison du volume important de données (une limite de 1 million de lignes est imposée  pour les téléchargements de données)."
+  taxon_title: "Recherche par taxon:"
+  taxon_search: "Recherche par espèce ou taxon supérieur"
+  genus_title: "Sélectionnez un genre"
+
+  all_countries: "Tous les Pays"
+  all_sources: "Toutes les Sources"
+  all_purposes: "Tous les Buts"
+  all_terms: "Tous les Termes"
+
+  search_selection: "Critères de recherche sélectionnés:"
+  search: "Rechercher"
+  reset: "Réinitialiser"
+  reselect: "Resélectionner les Données"
+  continue: "Continuer"
+
+  download: "Télécharger"
+  db_guide: "Un Guide d'Utilisation de la Base de Données sur le Commerce CITES"
+  tabulation_guide: "Un Guide pour Interpréter les Sorties de Tabulations Comparatives"
+  trade_guide: "Un Guide pour Interpréter les Sorties du Commerce Brut/Net"
+  translation_in_progress_html: Une version mise à jour du ‘Guide d’utilisation de la base de données sur le commerce CITES’ a été publiée en <a href="/cites_trade_guidelines/en-CITES_Trade_Database_Guide.pdf">anglais</a> (traductions en cours).
+
+  reports: "RAPPORTS"
+  report: "rapport"
+  select_output: "Sélectionnez le type de sortie:"
+  select_report: "Sélectionnez le type de rapport:"
+  comparative_tabulations: "Tabulations Comparatives"
+  trade_tabulations: "Tabulations du Commerce Brut/Net"
+  get_report: "Obtenir le rapport"
+  new_search: "Nouvelle Recherche"
+
+  from: "De"
+  to: "A"
+  species: "Espèce"
+
+  gross_exports: "Exportations Brutes"
+  gross_imports: "Importations Brutes"
+  net_exports: "Exportations Nettes"
+  net_imports: "Importations Nettes"
+  comma_separated: "séparés par des virgules"
+  semicolon_separated: "séparés par des points-virgules"
+  csv_separator_tip: "Vous avez des difficultés à visualiser la sortie ? Essayez de changer le type de sortie .csv pour « séparés par des virgules »."
+
+  table_title:
+    gross_imports: "Rapport de la Importations Brutes"
+    gross_exports: "Rapport de la Exportations Brutes"
+    net_imports: "Rapport de la Importations Nettes"
+    net_exports: "Rapport de la Exportations Nettes"
+    comptab: "Rapport de la Tabulation Comparative"
+
+  full_db_download: "Téléchargement de la Base de Données sur le Commerce CITES entière (version 2022.1)"
+  full_db_download_available: "Intégralité de la Base de Données sur le Commerce CITES disponible à télécharger (version 2022.1)"
+  download_here: "Télécharger ici"
+  file_size: "Taille du fichier"
+
+  id_manual_cover:
+    header: Liste des espèces CITES
+    title: Entrées du Manuel d’Identification CITES
+    taxon_label: Résultats pour
+    date_label: Date de téléchargement
+    website_label: Site web de la Liste des espèces CITES
+    checklist_url: http://checklist.cites.org/#/fr
+    disclaimer_left: "
+      <p>
+        Le Manuel d’Identification CITES est un recueil de fiches techniques conçues pour aider à identifier les différentes espèces de faune et de flore à l’aide de dessins, de photographies, de cartes et de descriptions concises. Les fiches du manuel ont été publiées sur une période de 29 ans, de 1980 à 2009. Leur contenu est fourni tel que publié à l’origine, et à ce titre, aucune garantie n’est donnée quant à l’exhaustivité ou à l’exactitude du contenu. Des matériaux d’identification ne sont pas disponibles pour toutes les espèces, et peuvent particulièrement manquer pour celles inscrites aux Annexes de la CITES après 2009.
+      </p>
+      <p>
+        Il est à noter que l’inscription aux Annexes et la taxonomie des taxons décrits dans les matériaux disponibles peuvent avoir changé depuis leur publication d’origine. Pour obtenir des informations sur la taxonomie et les listes CITES actuelles, veuillez consulter le site principal de la Liste des espèces CITES (et les téléchargements dédiés aux listes/noms taxonomiques) et Species+.
+      </p>
+      <p>
+        Le manuel contient des matériaux disponibles dans les trois langues de travail de la Convention (anglais, français et espagnol), mais ceux en français et espagnol ne sont disponibles que pour un nombre réduit de taxons. Dans la mesure du possible, les matériaux sont fournis dans la langue choisie, mais s’ils ne sont pas disponibles en français ou espagnol, ils sont fournis en anglais.
+      <p>
+        Cette publication peut être reproduite à des fins éducatives ou non lucratives sans autorisation spéciale, à condition que sa source soit indiquée avec la citation correcte. Toute reproduction de la publication (ou de toute image ou illustration y figurant) à des fins commerciales est uniquement permise avec l'autorisation expresse et écrite du Secrétariat CITES.
+      </p>
+    "
+    disclaimer_right: "
+      <p>
+        Les demandes d’autorisation, comprenant une déclaration d’intention et de l’étendue de la reproduction, doivent être envoyées à info@cites.org, o adressées au Secrétariat CITES, Palais des Nations, Avenue de la Paix 8-14, CH-1211 Genève 10, Suisse.
+      </p>
+      <p>
+        Les appellations géographiques utilisées dans ces publications n’impliquent aucune opinion de la part des compilateurs, du Secrétariat CITES ou du Programme des Nations Unies pour l’environnement (PNUE) quant au statut juridique d’un pays, territoire ou région, ou au tracé de leurs frontières ou limites.
+      </p>
+      <p>
+        Ce projet a été financé par l'Union européenne dans le cadre d'un projet de l’accord de coopération du programme GPGC CE-PNUE, attribué au Secrétariat CITES.
+      </p>
+    "
+    citation_label: Citation
+    citation_text: "Programme des Nations Unies pour l'environnement - Centre mondial pour le suivi de la conservation (Comps.) 2020. Liste des espèces CITES – Manuel d’Identification CITES. Secrétariat CITES, Genève, Suisse, et UNEPWCMC, Cambridge, Royaume Uni. Consulté le %{date}."
+    copyright_label: Copyright
+    copyright_text: 2020 Secrétariat de la Convention sur le commerce international des espèces de faune et de flore sauvages menacées d'extinction

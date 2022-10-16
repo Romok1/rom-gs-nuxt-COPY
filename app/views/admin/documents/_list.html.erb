@@ -1,0 +1,64 @@
+<thead>
+  <th>Design.</th>
+  <th>Type</th>
+  <th>Date</th>
+  <% unless @event %>
+    <th>Event</th>
+  <% end %>
+  <th width="30%">Title</th>
+  <th width="15%">Countries</th>
+  <th width="15%">Taxa</th>
+  <th>Public</th>
+  <th>Lng</th>
+  <th width="5%">Actions</th>
+  <th width="5%">Info</th>
+</thead>
+<tbody>
+  <% collection.each do |document| -%>
+    <tr class="<%= if document.is_public? then "current_listing" end %>">
+      <td><%= document.designation_name %></td>
+      <td><%= document.document_type.sub(/^Document::/, '') %></td>
+      <td><%= document.date_formatted %></td>
+      <% unless @event %>
+        <td><%= link_to document.event.name, admin_event_documents_path(document.event) if document.event %></td>
+      <% end %>
+      <td><%= link_to document.title, admin_document_url(document), {
+        rel: 'tooltip', :'data-title' => document.becomes(Document).filename.url
+      } %></td>
+      <td>
+        <% if document.geo_entity_names.length > 0 %>
+          <%= link_to "#{document.geo_entity_names.length} countries", '#', {
+            rel: 'tooltip',
+            'data-html' => true,
+            'data-title' => document.geo_entity_names.join(', ').html_safe
+          } %>
+        <% else %>
+          0 countries
+        <% end %>
+      </td>
+      <td>
+        <% if document.taxon_names.length > 0 %>
+          <%= link_to "#{document.taxon_names.length} taxa", '#', {
+            rel: 'tooltip',
+            'data-html' => true,
+            'data-title' => document.taxon_names.join(', ').html_safe
+          } %>
+        <% else %>
+          0 taxa
+        <% end %>
+      </td>
+      <td><%= true_false_icon(document.is_public) %></td>
+      <td><%= document.attributes['language'] %> </td>
+      <td>
+        <%= link_to edit_icon,
+          (@event ? edit_admin_event_document_path(@event, document) : edit_admin_document_path(document))
+        %>
+        <%= link_to delete_icon,
+          (@event ? admin_event_document_path(@event, document) : admin_document_path(document)),
+          data: {confirm: 'Warning: you are about to delete data. Are you sure?'}, method: :delete
+        %>
+      </td>
+      <td><%= tracking_info(document) %></td>
+    </tr>
+  <% end -%>
+</tbody>

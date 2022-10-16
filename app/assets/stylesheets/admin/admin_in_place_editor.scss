@@ -1,0 +1,47 @@
+ul.dropdown-menu {
+  z-index: 1100
+}
+
+.editableform-loading {
+  background: image-url('loading.gif') center center no-repeat;
+  height: 20px;
+}
+
+.popover.editable-container {
+  width: 300px;
+
+  .form-inline.editableform {
+    margin: 0;
+  }
+
+  .editable-input, .editable-buttons {
+    display: inline;
+  }
+
+  .editable-input {
+    margin-right: 10px;
+  }
+}
+
+.modal-body {
+  textarea {
+    width: 400px;
+    height: 100px;
+  }
+}
+
+input.annotation, textarea.annotation {
+  width: 80%;
+}
+
+.trade-stats-table {
+  td, th {
+    border: 1px solid #ddd;
+  }
+  th {text-align: left}
+}
+
+span.formatting-info {
+  font-size: 12px;
+  font-weight: normal;
+}

@@ -1,0 +1,53 @@
+<thead>
+  <th width="5%">iso_code3</th>
+  <th width="5%">iso_code1</th>
+  <th width="15%">Name (EN)</th>
+  <th width="15%">Name (ES)</th>
+  <th width="15%">Name (FR)</th>
+  <th width="10%">Actions</th>
+</thead>
+<tbody>
+
+  <% collection.each do |language| -%>
+    <tr>
+      <td>
+        <a href="#" class="editable editable-click editable-required" data-type="text" data-resource="language" data-name="iso_code3"
+          data-placeholder="Required" data-original-title="Enter the language iso_code3"
+          data-url="<%= resource_url(language) %>" data-pk="<%= language.id %>">
+          <%= language.iso_code3 %>
+        </a>
+      </td>
+      <td>
+        <a href="#" class="editable editable-click editable-required" data-type="text" data-resource="language" data-name="iso_code1"
+          data-placeholder="Required" data-original-title="Enter the language iso_code1"
+          data-url="<%= resource_url(language) %>" data-pk="<%= language.id %>">
+          <%= language.iso_code1 %>
+        </a>
+      </td>
+      <td>
+        <a href="#" class="editable editable-click" data-type="text" data-resource="language" data-name="name_en"
+          data-original-title="Enter the name in English"
+          data-url="<%= resource_url(language) %>" data-pk="<%= language.id %>">
+          <%= language.name_en %>
+        </a>
+      </td>
+      <td>
+        <a href="#" class="editable editable-click" data-type="text" data-resource="language" data-name="name_es"
+          data-original-title="Enter the name in Spanish"
+          data-url="<%= resource_url(language) %>" data-pk="<%= language.id %>">
+          <%= language.name_es %>
+        </a>
+      </td>
+      <td>
+        <a href="#" class="editable" data-type="text" data-resource="language" data-name="name_fr"
+          data-original-title="Enter the name in French"
+          data-url="<%= resource_url(language) %>" data-pk="<%= language.id %>">
+          <%= language.name_fr %>
+        </a>
+      </td>
+      <td>
+        <%= link_to delete_icon, resource_url(language), data: { confirm: "Warning: you are about to delete data. Are you sure?" }, :method => :delete %>
+      </td>
+    </tr>
+  <% end -%>
+</tbody>

@@ -1,0 +1,37 @@
+<a href="#" {{action "close"}} class="close">close</a>
+<form action="#">
+  <fieldset>
+    <strong class="title">DOWNLOAD SPECIES LISTS</strong>
+    <ul class="tabset">
+      <li>
+          {{#view Species.ToggleButton option="cites" valueBinding="controller.designation"}}
+            CITES
+          {{/view}}
+      </li>
+      <li>
+          {{#view Species.ToggleButton option="eu" valueBinding="controller.designation"}}
+            EU
+          {{/view}}
+      </li>
+      <li class="last-child">
+          {{#view Species.ToggleButton option="cms" valueBinding="controller.designation"}}
+            CMS
+          {{/view}}
+      </li>
+    </ul>
+
+    {{view Species.DownloadsForCites isVisibleBinding="controller.designationIsCites"}}
+    {{view Species.DownloadsForEu isVisibleBinding="controller.designationIsEu"}}
+    {{view Species.DownloadsForCms isVisibleBinding="controller.designationIsCms" controllerBinding="controllers.downloadsForCmsListings"}}
+
+    <div class="csv_options_holder">
+      <a {{action 'showHideCsvOptions'}} title="The csv files can be downloaded using commas or semicolons as separators. The default separator is, when possible, automatically based on the computer's default regional settings. Users can change that setting here.">Trouble viewing outputs?</a>
+
+      <div id="csv_options">
+        {{view Ember.RadioButton name="csv_separator" selectionBinding="csvSeparator" value="comma"}} Comma Separated
+        {{view Ember.RadioButton name="csv_separator" selectionBinding="csvSeparator" value="semicolon"}} Semicolon Separated
+      </div> 
+    </div>
+
+  </fieldset>
+</form>

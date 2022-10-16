@@ -1,0 +1,26 @@
+<%= form_for :taxon_relationship, :url => collection_url(:type => params[:type]), :remote => true do |f| %>
+  <%= error_messages_for(@taxon_relationship) %>
+  <%= f.hidden_field :taxon_concept_id, :value => @taxon_concept.id %>
+  <%= f.hidden_field :other_taxon_concept_id %>
+  <ul class="relationship_parts">
+    <li id="left">
+      <div class="elements">
+        <strong><%= @taxon_concept.taxonomy.name %></strong><br />
+        <span><%= "#{@taxon_concept.full_name} #{@taxon_concept.data["rank_name"].upcase}" %></span><br />
+      </div>
+    </li>
+    <li>
+    <%= f.select :taxon_relationship_type_id, options_from_collection_for_select(
+      @taxon_relationship_types, :id, :name,
+      @taxon_relationship ? @taxon_relationship.try(:taxon_relationship_type_id) : @taxon_relationship_types.find_by_name(params[:type]||"EQUAL_TO").try(:id)
+    ) %>
+      <a id="swap-taxa" class="btn btn-block" href="#"><i class='icon-refresh'></i> Swap</a>
+    </li>
+    <li id="right">
+      <div class="elements">
+        <%= select_tag :taxonomy_id, options_from_collection_for_select(@form_taxonomies, :id, :name), :class => "taxonomy_selector" %><br />
+        <input type="text" class="tr-autocomplete"><br />
+      </div>
+    </li>
+  </ul>
+<% end %>

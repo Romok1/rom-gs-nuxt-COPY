@@ -1,0 +1,44 @@
+<h2>
+  Validation rules
+</h2>
+
+<a href="/admin/taxon_concept_term_pairs">Manage trade codes pairings</a>
+
+<h3>List of active rules</h3>
+<table>
+<thead>
+  <th>Type</th>
+  <th>Column names</th>
+  <th>Scope</th>
+  <th>Valid values view</th>
+  <th>Format RE</th>
+  <th>Run order</th>
+  <th>Is primary</th>
+</thead>
+<tbody>
+
+  {{#each controller}}
+  <tr>
+    <td>{{type}}</td>
+    <td>
+      <ul>
+      {{#each columnName in columnNames}}
+        <li>{{columnName}}</li>
+      {{/each}}
+      </ul>
+    </td>
+    <td>
+      <ul>
+        {{#each scopePart in controller.scopeArray}}
+          <li>{{scopePart}}</li>
+        {{/each}}
+      </ul>
+    </td>
+    <td>{{validValuesView}}</td>
+    <td>{{formatRe}}</td>
+    <td>{{runOrder}}</td>
+    <td>{{isPrimary}}</td>
+  </tr>
+  {{/each}}
+</tbody>
+</table>

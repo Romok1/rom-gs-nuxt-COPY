@@ -1,0 +1,76 @@
+<thead>
+  <th width="10%">Iso code 2</th>
+  <th width="10%">Iso code 3</th>
+  <th>Type</th>
+  <th width="15%">Name (EN)</th>
+  <th width="15%">Name (ES)</th>
+  <th width="15%">Name (FR)</th>
+  <th width="5%">Current</th>
+  <th width="10%">Actions</th>
+</thead>
+<tbody>
+  <% collection.each do |geo_entity| -%>
+    <tr>
+      <td>
+        <a href="#" class="editable editable-click editable-required" data-type="text" data-resource="geo_entity" data-name="iso_code2"
+          data-placeholder="Required" data-original-title="Enter the geo_entity iso_code2"
+          data-url="<%= resource_url(geo_entity) %>" data-pk="<%= geo_entity.id %>">
+          <%= geo_entity.iso_code2 %>
+        </a>
+      </td>
+      <td>
+        <a href="#" class="editable editable-click editable-required"
+          data-type="text" data-resource="geo_entity" data-name="iso_code3"
+          data-placeholder="Required"
+          data-original-title="Enter the geo_entity iso_code3"
+          data-url="<%= resource_url(geo_entity) %>"
+          data-pk="<%= geo_entity.id %>">
+          <%= geo_entity.iso_code3 %>
+        </a>
+      </td>
+      <td>
+        <a href="#" id="geo-entity-type-<%= geo_entity.id %>"
+          class="editable editable-click editable-required editable-geo-entity-type" data-type="select"
+          data-resource="geo_entity" data-name="geo_entity_type_id"
+          data-placeholder="Required"
+          data-original-title="Enter the geo_entity type"
+          data-url="<%= resource_url(geo_entity) %>"
+          data-pk="<%= geo_entity.id %>">
+          <%= geo_entity.geo_entity_type.name %>
+        </a>
+      </td>
+      <td>
+        <a href="#" class="editable editable-click editable-required" data-type="text" data-resource="geo_entity" data-name="name_en"
+          data-original-title="Enter the name in English"
+          data-url="<%= resource_url(geo_entity) %>" data-pk="<%= geo_entity.id %>">
+          <%= geo_entity.name_en %>
+        </a>
+      </td>
+      <td>
+        <a href="#" class="editable editable-click" data-type="text" data-resource="geo_entity" data-name="name_es"
+          data-original-title="Enter the name in Spanish"
+          data-url="<%= resource_url(geo_entity) %>" data-pk="<%= geo_entity.id %>">
+          <%= geo_entity.name_es %>
+        </a>
+      </td>
+      <td>
+        <a href="#" class="editable" data-type="text" data-resource="geo_entity" data-name="name_fr"
+          data-original-title="Enter the name in French"
+          data-url="<%= resource_url(geo_entity) %>" data-pk="<%= geo_entity.id %>">
+          <%= geo_entity.name_fr %>
+        </a>
+      </td>
+      <td>
+        <a href="#" class="editable editable-required editable-is-current" data-type="checklist" data-resource="geo_entity" data-name="is_current" data-value="<%= geo_entity.is_current ? 1 : 0 %>"
+          data-original-title="Is current?"
+          data-url="<%= resource_url(geo_entity) %>" data-pk="<%= geo_entity.id %>">
+          <%= geo_entity.is_current ? 'current' : 'not current' %>
+        </a>
+      </td>
+      <td>
+        <%= link_to delete_icon, resource_url(geo_entity), data: { confirm: "Warning: you are about to delete data. Are you sure?" }, :method => :delete %>
+        <%= link_to 'Relations', admin_geo_entity_geo_relationships_url(geo_entity), :title => "Edit geo entity relationships" %>
+      </td>
+    </tr>
+  <% end -%>
+</tbody>

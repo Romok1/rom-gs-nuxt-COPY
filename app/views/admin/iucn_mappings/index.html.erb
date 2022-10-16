@@ -1,0 +1,23 @@
+<div class="admin-header">
+  <h1>IUCN Mappings</h1>
+</div>
+
+<p style="clear:both;">
+  <% ["ALL", 'SYNONYMS', 'ACCEPTED', "MATCHING", "NON_MATCHING", "FULL_MATCH",
+    "NAME_MATCH"].each do |op| %>
+    <strong><%= op.titleize %>:</strong> <%= @totals[op.downcase.to_sym] %>
+    <% if !params[:show] || params[:show] != op %>
+      <%= link_to 'View', admin_iucn_mappings_path(:show => op) %>
+    <% end %>
+    <br />
+  <% end %>
+</p>
+<p>
+  <%= link_to "Download as CSV", admin_exports_download_path(
+    :data_type => 'IucnMappings'
+    )%>
+</p>
+<%= admin_table %>
+
+<%= paginate collection %>
+

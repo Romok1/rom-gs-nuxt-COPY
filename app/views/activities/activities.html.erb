@@ -1,0 +1,40 @@
+<%= include_gon %>
+<h2>Break down of user actions</h2>
+<p>Chart showing the number of searches and taxon concept page views grouped by week.</p>
+<div id="chart"></div>
+
+<script>
+  var chart = c3.generate({
+    bindto: '#chart',
+    data: {
+      columns: [
+        gon.taxon_concept,
+        gon.search
+      ]
+    },
+    axis: {
+      x: {
+        type: "category",
+        categories: gon.weeks
+      }
+    }
+});
+</script>
+<script>
+  $('.c3-axis-x g.tick text').on('click', function() {
+    location.pathname = '/activities/' + this.innerHTML;
+  });
+</script>
+
+<h2>Top taxa in Species+</h2>
+
+<% if @start_week %>
+  <p>Data for the week of <%= @start_week %></p>
+<% end %>
+
+<%= render partial: 'topn_species', locals: {
+  taxonomy: 'CITES', topn_species: @toptens_cites
+} %>
+<%= render partial: 'topn_species', locals: {
+  taxonomy: 'CMS', topn_species: @toptens_cms
+} %>

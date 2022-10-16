@@ -1,0 +1,45 @@
+<thead>
+  <th>Year</th>
+  <th>Suspension Regulation</th>
+  <th>Country or Territory</th>
+  <th>Type</th>
+  <th>Term</th>
+  <th>Source</th>
+  <th>Notes</th>
+  <th>Current</th>
+  <th>Actions</th>
+  <th>Info</th>
+</thead>
+<tbody>
+  <% collection.each do |suspension| -%>
+    <tr class="<%= if suspension.is_current then "current_listing" end %>">
+      <td><%= suspension.year %></td>
+      <td><%= link_to suspension.start_event.name,
+          admin_eu_suspension_regulations_path(:query => suspension.start_event.description) %>
+      </td>
+      <td><%= suspension.geo_entity && suspension.geo_entity.name_en %></td>
+      <td>
+        <%= suspension.eu_decision_type.name %>
+        <%= '(' + suspension.eu_decision_type.tooltip + ')' if suspension.
+          eu_decision_type.tooltip.present? %>
+      </td>
+      <td><%= suspension.term && suspension.term.code %></td>
+      <td><%= suspension.source && suspension.source.code %></td>
+      <td><%= suspension.notes %></td>
+      <td><%= true_false_icon(suspension.is_current) %></td>
+      <td>
+        <%= link_to edit_icon,
+          edit_admin_taxon_concept_eu_suspension_path(@taxon_concept, suspension)
+        %>
+        <%= link_to delete_icon,
+          admin_taxon_concept_eu_suspension_path(@taxon_concept, suspension),
+          data: { confirm: "Warning: you are about to delete data. Are you sure?" }, :method => :delete
+        %>
+      </td>
+      <td>
+        <%= tracking_info(suspension) %>
+        <%= internal_notes(suspension) %>
+      </td>
+    </tr>
+  <% end -%>
+</tbody>

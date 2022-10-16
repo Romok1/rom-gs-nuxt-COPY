@@ -1,0 +1,41 @@
+<div class="page-header">
+  <h1>Annual report upload <small>SANDBOX</small></h1>
+  {{summary}}
+</div>
+
+{{ partial 'trade/flash' }}
+
+<div class="sandbox-header">
+  <div class="row-fluid">
+    {{#view tagName='span' class='pull-right' isVisibleBinding='sandboxShipmentsSubmitting'}}
+      <img src="/loading.gif"> Submitting...
+    {{/view}}
+    <button {{action submitShipments}}
+      {{bind-attr class="hasPrimaryErrors:disabled :pull-right :btn :btn-danger"}}
+      {{bind-attr disabled="hasPrimaryErrors"}}>
+      Submit shipments
+    </button>
+  </div>
+</div>
+
+<div class="accordion">
+  {{view Trade.ValidationErrorsView
+    heading="Validation errors"
+    errorType="active"
+    content=validationErrors
+    collapsed=false
+  }}
+
+  {{view Trade.ValidationErrorsView
+    heading="Ignored validation errors"
+    errorType="ignored"
+    content=ignoredValidationErrors
+    collapsed=true
+  }}
+</div>
+
+<div class='loading-shipments'>
+  <img src="/loading.gif"> Loading...
+</div>
+
+{{ outlet }}

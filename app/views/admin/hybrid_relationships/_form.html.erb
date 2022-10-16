@@ -1,0 +1,21 @@
+<% form_url = if @hybrid_relationship.new_record? %>
+  <% admin_taxon_concept_hybrid_relationships_url(@taxon_concept) %>
+<% else %>
+  <% admin_taxon_concept_hybrid_relationship_url(@taxon_concept, @hybrid_relationship) %>
+<% end %>
+<%= form_for [:admin, @taxon_concept, @hybrid_relationship], :url => form_url, :remote => true do |f| %>
+  <%= error_messages_for(@hybrid_relationship) %>
+  <%= f.hidden_field :taxon_relationship_type_id %>
+  <div class="control-group">
+    <label class="control-label">Select existing hybrid:</label>
+    <div class="controls">
+      <%= f.text_field :other_taxon_concept_id, {
+        :class => 'taxon-concept',
+        :'data-name' => @hybrid_relationship.other_taxon_concept.try(:full_name),
+        :'data-name-status' => @hybrid_relationship.other_taxon_concept.try(:name_status),
+        :'data-name-status-filter' => ['H'],
+        :'data-taxonomy-id' => @taxon_concept.taxonomy_id
+      } %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,31 @@
+<td class="event-col">{{meetingTitle}}</td>
+<td class='event-date-col'>{{date}}</td>
+<td class='title-col'>
+
+  <a {{bind-attr class=":legal-links isLongTitle:tooltip"}} {{action "startDownload" on="click"}} target="_blank">
+
+    {{#if isLongTitle}}
+      {{truncate fullTitle}}
+    {{/if}}
+    <span>
+      {{fullTitle}}
+    </span>
+</a>
+</td>
+<td class='language-col'>
+  {{#if moreThanOneLanguage}}
+    {{view Ember.Select content=languages selection=language}}
+  {{else}}
+    {{language}}
+  {{/if}}
+</td>
+<td class='countries-col'>{{documents-tooltip data=doc.geo_entity_names type='countries'}}</td>
+<td class='taxon-col'>{{documents-tooltip data=doc.taxon_names type='taxa'}}</td>
+{{#if proposalOutcome}}
+  <td class='outcome-col'>{{unbound doc.proposal_outcome}}</td>
+{{/if}}
+<td class='download-col'>
+  {{#unless doc.is_link}}
+    <input type="checkbox">
+  {{/unless}}
+</td>

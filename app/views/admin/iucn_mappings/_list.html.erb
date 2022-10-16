@@ -1,0 +1,37 @@
+<thead>
+  <th>Id</th>
+  <th>Class</th>
+  <th>Taxon Concept (status)</th>
+  <th>Author year</th>
+  <th>IUCN Name</th>
+  <th>IUCN ID</th>
+  <th>IUCN Author</th>
+  <th>IUCN Category</th>
+  <th>Details</th>
+  <th>No matches</th>
+</thead>
+<tbody>
+  <% collection.each do |map| -%>
+    <% tc = map.taxon_concept %>
+    <tr class="<%= map.details["match"].try(:downcase) if map.details.present? %>">
+      <td><%= tc && tc.id %></td>
+      <td><%= tc && tc.data["class_name"] %></td>
+      <td><%= tc && link_to("#{tc.full_name} (#{tc.name_status})",
+        admin_taxon_concept_names_path(tc)) %></td>
+      <td><%= tc && tc.author_year %></td>
+      <td><%= map.iucn_taxon_name %></td>
+      <td><%= map.iucn_taxon_id %></td>
+      <td><%= map.iucn_author %></td>
+      <td><%= map.iucn_category %></td>
+      <td>
+        <%= map.details["match"] if map.details.present? %>
+        <% accepted = map.accepted_name %>
+        <% if accepted %>
+          (<%= link_to accepted.full_name,
+            admin_taxon_concept_names_path(accepted) %>)
+        <% end %>
+      </td>
+      <td><%= map.details["no_matches"] if map.details.present? %></td>
+    </tr>
+  <% end -%>
+</tbody>

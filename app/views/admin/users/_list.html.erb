@@ -1,0 +1,54 @@
+<thead>
+  <th width="20%">Name</th>
+  <th width="20%">Email</th>
+  <th width="5%">CITES Auth</th>
+  <th width="20%">Organisation</th>
+  <th width="20%">Country</th>
+  <th width="10%">Role</th>
+  <th width="5%">Active</th>
+  <th>Actions</th>
+</thead>
+<tbody>
+  <% collection.each do |user| -%>
+    <tr>
+      <td>
+        <a href="#" class="editable editable-click editable-required" data-type="text" data-resource="user" data-name="name"
+          data-placeholder="Required" data-original-title="Enter the user's name"
+          data-url="<%= resource_url(user) %>" data-pk="<%= user.id %>">
+          <%= user.name %>
+        </a>
+        <%= if user == current_user then " (you)" end %>
+      </td>
+      <td>
+          <a href="#" class="editable editable-click editable-required" data-type="text" data-resource="user" data-name="email"
+            data-placeholder="Required" data-original-title="Enter the user's email"
+            data-url="<%= resource_url(user) %>" data-pk="<%= user.id %>">
+            <%= user.email %>
+          </a>
+      </td>
+      <td>
+        <%= true_false_icon(user.is_cites_authority) %>
+      </td>
+      <td>
+        <%= user.organisation %>
+      </td>
+      <td>
+        <%= user.geo_entity.try(:name) %>
+      </td>
+      <td>
+        <%= user.role_for_display %>
+      </td>
+      <td>
+        <%= true_false_icon(user.is_active) %>
+      </td>
+      <td>
+        <% if can?(:update, user) %>
+          <%= link_to edit_icon, edit_resource_url(user), :remote => true %>
+        <% end %>
+        <% if can?(:destroy, user) %>
+          <%= link_to delete_icon, resource_url(user), data: { confirm: "Warning: you are about to delete data. Are you sure?" }, :method => :delete %>
+        <% end %>
+      </td>
+    </tr>
+  <% end -%>
+</tbody>

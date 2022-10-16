@@ -1,0 +1,178 @@
+h1 span{
+  font-size: 14px;
+  font-weight: normal;
+}
+
+
+.header {
+  margin-bottom: 10px;
+
+  h1 {
+    margin: 0 0 15px;
+    &.cites_eu {
+      border-bottom: 5px solid #7EAC44;
+    }
+    &.cms {
+      border-bottom: 5px solid #1637D7;
+    }
+  }
+}
+
+.new_listing_change table,
+.edit_listing_change table,
+table.listing-change {
+  width: 50%;
+
+  tr {
+    text-align: left;
+
+    td {
+      padding-right: 25px;
+    }
+  }
+}
+
+textarea.annotation {
+  height: 4em;
+}
+
+textarea {
+  &.quota,
+  &.cites_suspension,
+  &.eu_opinion,
+  &.eu_suspension {
+    height: 5em;
+    width: 430px;
+  }
+}
+
+input.annotation, textarea.annotation {
+  width: 80%;
+}
+
+.new_listing_change,
+.edit_listing_change {
+  p {
+    margin: 20px 0;
+  }
+
+  .inline {
+    display: inline;
+
+    & ~ input[type="checkbox"] {
+      margin: 0;
+    }
+  }
+}
+
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+
+.reference_search_form {
+  .fields {
+    span {
+      font-weight: bold;
+    }
+
+    input[type="checkbox"] {
+      margin: 0;
+    }
+
+    label {
+      display: inline;
+    }
+
+    .remove_nested_fields {
+      margin-right: 20px;
+    }
+  }
+}
+
+.reference-citation {
+    padding-left: 22px ;
+    text-indent: -22px ;
+}
+
+tr.current_listing {
+  td {
+    background-color: lightgreen !important;
+  }
+}
+
+span.author-year {
+  font-size: 11px;
+}
+
+#new-quota,
+#new-cites_suspension {
+  &.modal {
+    width: 700px;
+  }
+}
+
+ul.relationship_parts{
+  list-style-type: none;
+  overflow: hidden;
+}
+.relationship_parts li{
+  width: 225px;
+  float: left;
+  margin-right: 15px;
+}
+
+/* Custom Modal sizes */
+#new-taxon_relationship{ /* modal window */
+  width: 780px;
+  margin-left: -390px; /* half the width */
+}
+
+#taxon-concept-search{
+  margin-top: 25px;
+}
+
+#search_params_taxonomy_id {
+  width: 150px;
+}
+
+#search_params_name_status {
+  width: 100px;
+}
+
+#new-taxon_concept_reference{
+  width: 950px;
+  margin-left: -475px;
+}
+
+#new-distribution, #edit-distribution {
+  width: 850px;
+  margin-left: -425px;
+}
+
+#new-eu_opinion.modal, #new-eu_suspension.modal {
+  width: 900px;
+  margin-left: -450px;
+}
+
+#admin-new-taxon_concept_reference-form ul.typeahead.dropdown-menu, #admin-new-distribution-form ul.typeahead.dropdown-menu {
+  width: 650px;
+
+  li {
+    font-size: 12px;
+
+    a {
+      white-space: normal;
+    }
+  }
+}
+
+.internal-notes-meta {
+  color: #666;
+  font-size: 11px;
+}
+
+.internal-notes-type {
+  color: #666;
+  text-transform: uppercase;
+}

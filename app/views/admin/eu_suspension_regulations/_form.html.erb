@@ -1,0 +1,29 @@
+<%= form_for [:admin, @eu_suspension_regulation], :remote => true do |f| %>
+
+  <%= error_messages_for(@eu_suspension_regulation) %>
+
+  <%= f.hidden_field :designation_id %>
+  <label>Number</label><%= f.text_field :name %><br />
+  <label>Description</label><%= f.text_area :description %><br />
+  <label>Effective from</label>
+  <%= f.text_field :effective_at, :class => "datepicker",
+    :value => @eu_suspension_regulation.effective_at_formatted
+  %>
+  <label>Is current <%= f.check_box :is_current %></label>
+
+  <% if @eu_suspension_regulation.new_record? %>
+    <label>Copy eu suspensions from:</label>
+    <%= f.select :eu_suspensions_event_id,
+      options_from_collection_for_select(
+        @eu_suspension_regulations_for_dropdown, :id, :name
+      ),
+      { :include_blank => true }
+    %>
+  <% end %>
+  <label>End date</label><%= f.text_field :end_date, :class => "datepicker",
+    :value => @eu_suspension_regulation.end_date_formatted
+  %>
+  <label>URL</label><%= f.text_area :url %><br />
+  <label>Multilingual URL</label><%= f.text_area :multilingual_url %><br />
+  <label>Extended description</label><%= f.text_area :extended_description %><br />
+<% end %>

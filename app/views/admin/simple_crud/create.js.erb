@@ -1,0 +1,8 @@
+$('.modal').modal('hide');
+$('#admin-in-place-editor').html("<%= escape_javascript(render('list')) %>");
+window.adminEditor.initEditors();
+<% if @errors %>
+  window.adminEditor.alertError("<%= @errors %>");
+<% else %>
+  window.adminEditor.alertSuccess("Operation successful");
+<% end %>

@@ -1,0 +1,68 @@
+<thead>
+  <th>Number</th>
+  <th>Description</th>
+  <th>Effective from</th>
+  <th>Current</th>
+  <th>End date</th>
+  <th>URL</th>
+  <th>No of EU Suspensions</th>
+  <th width="10%">Actions</th>
+  <th width="5%">Info</th>
+</thead>
+<tbody>
+  <% collection.each do |eu_suspension_regulation| -%>
+    <tr class="<%= if eu_suspension_regulation.is_current? then "current_listing" end %>">
+      <td>
+        <a href="#" class="editable editable-click editable-required"
+          data-type="text" data-resource="eu_suspension_regulation" data-name="name"
+          data-placeholder="Required" data-original-title="Enter the EU Suspension Regulation's name"
+          data-url="<%= resource_url(eu_suspension_regulation) %>" data-pk="<%= eu_suspension_regulation.id %>">
+          <%= eu_suspension_regulation.name %>
+        </a>
+      </td>
+      <td>
+        <a href="#" class="editable editable-click editable-required"
+          data-type="text" data-resource="eu_suspension_regulation" data-name="description"
+          data-placeholder="Required" data-original-title="Enter the EU Suspension Regulation's description"
+          data-url="<%= resource_url(eu_suspension_regulation) %>" data-pk="<%= eu_suspension_regulation.id %>">
+          <%= eu_suspension_regulation.description %>
+        </a>
+      </td>
+      <td><%= eu_suspension_regulation.effective_at_formatted %></td>
+      <td><%= true_false_icon(eu_suspension_regulation.is_current) %></td>
+      <td><%= eu_suspension_regulation.end_date_formatted %></td>
+      <td>
+        <%= link_to_unless(
+          eu_suspension_regulation.url.blank?,
+          '<i class="icon-share" title="Go to URL"></i>'.html_safe,
+          eu_suspension_regulation.url
+        ) { '' } %>
+        <%= link_to_unless(
+          eu_suspension_regulation.multilingual_url.blank?,
+          '<i class="icon-share" title="Go to multilingual URL"></i>'.html_safe,
+          eu_suspension_regulation.multilingual_url
+        ) { '' } %>
+      </td>
+      <td>
+        <%= link_to eu_suspension_regulation.eu_suspensions.count,
+          admin_eu_suspension_regulation_eu_suspensions_url(eu_suspension_regulation) %>
+      </td>
+      <td>
+        <%= link_to edit_icon, edit_resource_url(eu_suspension_regulation), :remote => true %>
+        <%= link_to delete_icon, resource_url(eu_suspension_regulation),
+          data: { confirm: "Warning: you are about to delete data. This might take a long time, depending on the number of associated objects. Are you sure?" }, :method => :delete
+        %>
+        <% if eu_suspension_regulation.is_current? %>
+          <%= link_to '<i class="icon-ban-circle" title="Set not current"></i>'.html_safe,
+            deactivate_admin_eu_suspension_regulation_url(eu_suspension_regulation),
+            data: { confirm: 'Warning: you are about to modify a batch of data. Are you sure?' }, :method => :post, :remote => true %>
+        <% else %>
+          <%= link_to '<i class="icon-cog" title="Set current"></i>'.html_safe,
+            activate_admin_eu_suspension_regulation_url(eu_suspension_regulation),
+            data: { confirm: 'Warning: you are about to modify a batch of data. Are you sure?' }, :method => :post, :remote => true %>
+      <% end %>
+      </td>
+      <td><%= tracking_info(eu_suspension_regulation) %></td>
+    </tr>
+  <% end -%>
+</tbody>

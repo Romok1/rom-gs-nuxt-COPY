@@ -1,0 +1,10 @@
+<div class="admin-header">
+  <h1>EU Suspension Regulation</h1>
+</div>
+
+<%= admin_simple_search %>
+<p><strong><%= link_to @eu_suspension_regulation.description,
+  admin_eu_suspension_regulations_path(:query => @eu_suspension_regulation.description) %></strong></p>
+<%= admin_table %>
+
+<%= paginate collection %>

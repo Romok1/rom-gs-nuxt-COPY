@@ -1,0 +1,39 @@
+<div id="footer">
+  <div class="holder">
+    <div class="logos">
+      <ul class="sponsor">
+        <li>
+          <a href="http://www.cites.org">
+            <%= image_tag "species/logo-CITES.png", alt: "CITES logo", width: "77", height: "44" %>
+          </a>
+        </li>
+        <li>
+          <a href="http://www.cms.int">
+            <%= image_tag "species/logo-CMS.png", alt: "CMS logo", width: "31", height: "44" %>
+          </a>
+        </li>
+        <li>
+          <a href="http://www.unep.org">
+            <img src="https://s3.amazonaws.com/wcmc.logo/UN-Environment-+logo+2017+grey.svg" alt="UNEP logo" width="65" height="44" />
+          </a>
+        </li>
+        <li>
+          <a href="http://ec.europa.eu/environment/cites/home_en.htm">
+            <%= image_tag "species/logo-EU.png", alt: "EU logo", width: "65", height: "44" %>
+          </a>
+        </li>
+      </ul>
+      <div class="power-by">
+        <a href="http://www.unep-wcmc.org">
+          <span class='power-by-title'>POWERED BY</span>
+          <img src="https://s3.amazonaws.com/wcmc.logo/UN-Environment-WCMC+logo+2017+grey.svg" alt="Powered by logo" width="100" height="40" />
+        </a>
+      </div>
+    </div>
+    <% unless current_user %>
+      <div class="login-link">
+        <a href="#login_modal"><i class="fa fa-sign-in"></i> EU Member Login</a>
+      </div>
+    <% end %>
+  </div>
+</div>

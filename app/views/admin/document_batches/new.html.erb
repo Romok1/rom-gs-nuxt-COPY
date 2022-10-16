@@ -1,0 +1,61 @@
+<div class="admin-header clearfix">
+  <h1>Batch upload</h1>
+</div>
+
+<%= nested_form_for @document_batch,
+  url: (@event ? admin_event_document_batch_url(@event) : admin_document_batch_url),
+  html: {multipart: true, class: 'form-horizontal'} do |f| %>
+  <%= error_messages_for(@document_batch) %>
+  <%= f.hidden_field :event_id %>
+
+  <div class="control-group">
+    <label for="language_id" class="control-label">Language</label>
+    <div class="controls">
+      <%= f.select :language_id,
+        options_for_select(
+          @languages.map { |l| [l.name, l.id] },
+          @document_batch.language_id
+        )
+      %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <div class="control-group">
+      <label for="date" class="control-label">Date</label>
+      <div class="controls">
+        <%= f.text_field :date, :value => @document_batch.date, :class => "datepicker" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="is_public" class="control-label">Is public</label>
+    <div class="controls">
+      <%= f.check_box :is_public %>
+    </div>
+  </div>
+
+  <div id="document-form-template" class="hidden">
+    <label class="file-name control-label"></label>
+    <select>
+      <%= options_for_select(@document_types) %>
+    </select>
+    <input type="hidden">
+  </div>
+ 
+  <div class="control-group">
+    <label class="control-label">Documents</label>
+    <div class="controls">
+      <%= file_field_tag "document_batch[files][]", multiple: true, id: 'file-upload' %>
+      <div id="document-form-collection"></div>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <div class="controls">
+      <%= f.submit 'Upload', class: 'btn btn-primary' %>
+    </div>
+  </div>
+
+<% end %>

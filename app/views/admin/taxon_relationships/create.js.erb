@@ -1,0 +1,9 @@
+<% if @taxon_relationship_type.name != params[:type] %>
+    window.location = '<%= admin_taxon_concept_taxon_relationships_path(@taxon_concept, :type => @taxon_relationship_type.name) %>';
+<% else %>
+    $('.modal').modal('hide');
+  $('#admin-in-place-editor').html("<%= escape_javascript(render('list')) %>");
+  window.adminEditor.initEditors();
+  window.adminEditor.alertSuccess("Operation successful");
+<% end %>
+

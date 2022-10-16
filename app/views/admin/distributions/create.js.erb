@@ -1,0 +1,5 @@
+$('.modal').modal('hide');
+$('.distributions-list').html("<%= escape_javascript(render('list')) %>");
+window.adminEditor.initModals();
+window.adminEditor.alertSuccess("Operation successful");
+$("[rel='tooltip']").tooltip();

@@ -1,0 +1,78 @@
+<%= nested_form_for [:admin, @taxon_concept, @distribution],  :remote => true, :html => { :class => "form-horizontal" } do |f| %>
+  <%= error_messages_for(@distribution) %>
+
+  <div class="control-group">
+    <label class="control-label">Country or Territory</label>
+    <div class="controls">
+      <%= f.select :geo_entity_id,
+        options_from_collection_for_select(
+          @geo_entities,
+          :id,
+          :name_en,
+          @distribution.geo_entity_id
+        ), { },
+        { :class => 'distribution', :style => "width: 450px"}
+      %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">Tags</label>
+    <div class="controls">
+      <%= f.select :tag_list,
+        options_from_collection_for_select(
+          @tags,
+          :name,
+          :name,
+          @distribution.tag_list
+        ), {},
+        { :multiple => true, :class => 'distribution', :style => "width: 450px"}
+      %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">Internal notes</label>
+    <div class="controls">
+      <%= f.text_area :internal_notes, :value => @distribution.internal_notes %>
+    </div>
+  </div>
+
+  <h4>References</h4>
+
+  <ul class="nav nav-tabs distribution-references">
+    <li class="active"><a href="#search">Search for a reference</a></li>
+    <li><a href="#new">Create new or manage references</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane fade in active" id="search">
+      <div class="control-group">
+        <label>Search by citation:</label>
+        <div class="controls">
+          <%= text_field_tag 'reference[id]', nil, :class => 'input-xxlarge' %>
+        </div>
+      </div>
+      <ul class="distribution_references"></ul>
+    </div>
+
+    <div class="tab-pane fade" id="new">
+      <%= f.fields_for :references do |ff| %>
+        <div class="control-group">
+          <label>Citation</label>
+          <div class="controls">
+            <%= ff.text_field :citation, :disabled => !ff.object.new_record?, :class => "input-xxlarge" %>
+          </div>
+        </div>
+
+        <p>
+          <%= ff.link_to_remove "Remove reference" %>
+        </p>
+
+        <hr>
+      <% end %>
+
+      <%= f.link_to_add "Add a reference", :references %>
+    </div>
+  </div>
+<% end %>

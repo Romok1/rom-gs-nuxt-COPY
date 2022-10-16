@@ -1,0 +1,98 @@
+<strong class="title">CITES LISTING</strong>
+{{#unless citesListings}}
+  {{#if citesListingsIsLoading}}
+    {{ partial 'species/spinner'}}
+  {{else}}
+  <p class="empty">This {{#tolower rankName}}{{/tolower}} is not currently listed in the CITES Appendices.</p>
+  {{/if}}
+{{else}}
+  <table summary="data table">
+    <thead>
+      <tr>
+        <th class="col2">APPENDIX</th>
+        <th class="col2">COUNTRY</th>
+        <th class="col2">DATE</th>
+        <th class="col6">NOTES</th>
+      </tr>
+    </thead>
+    <tbody {{bind-attr class="controller.citesListingsExpanded:historic_expanded"}}>
+      {{#each listing in currentCitesListings}}
+        <tr class="current">
+          <td>
+            <div class="cites_appendix {{unbound listing.change_type}}_{{unbound listing.species_listing_name}}">
+              <span>{{unbound listing.species_listing_name}}</span>
+              {{#unless listing.is_addition}}
+                <span class="subscript">{{listing.change_type}}</span>
+              {{/unless}}
+            </div>
+          </td>
+          <td>{{unbound listing.party_full_name}}</td>
+          <td>{{unbound listing.effective_at_formatted}}</td>
+          <td class="last">
+            {{#if listing.subspecies_info}}
+              {{{listing.subspecies_info}}}<br />
+            {{/if}}
+
+            {{#if listing.is_inclusion}}
+              {{ partial 'species/taxon_concept/inclusion_listing_note' }}
+            {{else}}
+              {{ partial 'species/taxon_concept/listing_note' }}
+            {{/if}}
+          </td>
+        </tr>
+      {{else}}
+        <tr class="current">
+          <td colspan=4>This {{#tolower controllers.taxonConcept.rankName}}{{/tolower}} is not currently listed in the CITES Appendices.</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  {{#if historicCitesListings}}
+    <div {{bind-attr class=":historic controller.citesListingsExpanded::hidden"}}>
+      <table>
+        <thead>
+          <tr>
+            <th class="col2">&nbsp;</th>
+            <th class="col2">&nbsp;</th>
+            <th class="col2">&nbsp;</th>
+            <th class="col6">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each listing in historicCitesListings}}
+            <tr>
+              <td>
+                <div class="cites_appendix {{unbound listing.change_type}}_{{unbound listing.species_listing_name}}">
+                  <span>{{listing.species_listing_name}}</span>
+                  {{#unless listing.is_addition}}
+                    <span class="subscript">{{listing.change_type}}</span>
+                  {{/unless}}
+                </div>
+              </td>
+              <td>{{unbound listing.party_full_name}}</td>
+              <td>{{unbound listing.effective_at_formatted}}</td>
+              <td class="last">
+                {{#if listing.subspecies_info}}
+                  {{{unbound listing.subspecies_info}}}<br /><br />
+                {{/if}}
+
+                {{#if listing.is_inclusion}}
+                  {{ partial 'species/taxon_concept/inclusion_listing_note' }}
+                {{else}}
+                  {{ partial 'species/taxon_concept/listing_note' }}
+                {{/if}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <div {{bind-attr class=":btn-hloder citesListingsExpanded:expanded"}}>
+      {{#if controller.citesListingsExpanded}}
+        <a class="link active" {{action 'contractList' 'cites_listings' 'citesListingsExpanded'}}>HIDE HISTORY</a>
+      {{else}}
+        <a class="link" {{action 'expandList' 'cites_listings' 'citesListingsExpanded'}}>SHOW HISTORY</a>
+      {{/if}}
+    </div>
+  {{/if}}
+{{/unless}}

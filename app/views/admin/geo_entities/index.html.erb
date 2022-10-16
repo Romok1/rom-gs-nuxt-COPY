@@ -1,0 +1,23 @@
+<%= admin_title %>
+
+<script>
+  window.geoEntityTypes = <%= @geo_entity_types_for_dropdown.to_json.html_safe %>
+</script>
+
+<div style="clear:both"></div>
+
+<ul class="nav nav-pills">
+  <% GeoEntityType.dict.each do |geo_entity_type| %>
+    <li class="<%= (@geo_entity_type.name == geo_entity_type ? 'active' : '') %>">
+      <%= link_to geo_entity_type.titleize,
+        collection_url(:type => geo_entity_type)
+      %>
+    </li>
+  <% end %>
+</ul>
+<%= admin_new_modal %>
+<%= admin_simple_search %>
+
+<%= admin_table %>
+
+<%= paginate collection %>

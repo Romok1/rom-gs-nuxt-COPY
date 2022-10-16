@@ -1,0 +1,216 @@
+<div class="navbar-inner">
+  <div class="container">
+    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </a>
+    <div class="nav-collapse">
+      <ul class="nav">
+        <% if current_user %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Species+ Admin
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <%= link_to "Trade DB Management Tool", trade_root_path %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+        <% if current_user %>
+          <li class="<%= if controller_name == 'taxon_concepts' then 'active' end%>"><a href="/admin">Home</a></li>
+        <% end %>
+
+        <% if current_user && current_user.is_manager_or_secretariat? %>
+          <% controller_matches = ["taxonomies", "ranks", "designations", "change_types",
+              "species_listings", "geo_entities", "languages", "tags", "purposes", "sources",
+              "terms", "units"] %>
+          <li class="dropdown <%=
+              if controller_matches.include?(controller_name) then 'active' end%>">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Core Data
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="<%= if controller_name == 'taxonomies' then 'active' end%>">
+                <%= link_to 'Taxonomies', admin_taxonomies_path %>
+              </li>
+              <li class="<%= if controller_name == 'ranks' then 'active' end%>">
+                <%= link_to 'Ranks', admin_ranks_path %>
+              </li>
+              <li class="<%= if controller_name == 'designations' then 'active' end%>">
+                <%= link_to 'MEAs', admin_designations_path %>
+              </li>
+              <li class="<%= if controller_name == 'instruments' then 'active' end%>">
+                <%= link_to 'Instruments', admin_instruments_path %>
+              </li>
+              <li class="<%= if controller_name == 'species_listings' then 'active' end%>">
+                <%= link_to 'Species listings', admin_species_listings_path %>
+              </li>
+              <li class="<%= if controller_name == 'change_types' then 'active' end%>">
+                <%= link_to 'Change types', admin_change_types_path %>
+              </li>
+              <li class="<%= if controller_name == 'eu_decision_types' then 'active' end%>">
+                <%= link_to 'EU decision types', admin_eu_decision_types_path %>
+              </li>
+              <li class="<%= if controller_name == 'srg_histories' then 'active' end%>">
+                <%= link_to 'Srg Histories', admin_srg_histories_path %>
+              </li>
+              <li class="<%= if controller_name == 'languages' then 'active' end%>">
+                <%= link_to 'Languages', admin_languages_path %>
+              </li>
+              <li class="<%= if controller_name == 'geo_entities' then 'active' end%>">
+                <%= link_to 'Geo entities', admin_geo_entities_path %>
+              </li>
+              <li class="<%= if controller_name == 'tags' then 'active' end%>">
+                <%= link_to 'Tags', admin_tags_path %>
+              </li>
+              <% controller_matches = ["purposes", "sources", "terms", "units"] %>
+              <li class="<%= if controller_matches.include?(controller_name) then 'active' end%>">
+                <%= link_to 'Trade Codes', admin_purposes_path %>
+              </li>
+              <% controller_matches = ["term_trade_codes_pairs", "taxon_concept_term_pairs"] %>
+              <li class="<%= if controller_matches.include?(controller_name) then 'active' end%>">
+                <%= link_to 'Trade Codes Pairings', admin_taxon_concept_term_pairs_path %>
+              </li>
+            </ul>
+          </li>
+          <% controller_matches = ["cites_cops", "cites_suspension_notifications",
+            "cites_hash_annotations", "eu_regulations", "eu_hash_annotations", "events"] %>
+            <li class="dropdown <%= if controller_matches.include?(controller_name) then 'active' end %>">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Events
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="<%= if controller_name == 'cites_cops' then 'active' end%>">
+                <%= link_to 'CITES CoPs', admin_cites_cops_path %>
+              </li>
+              <li class="<%= if controller_name == 'cites_suspension_notifications' then 'active' end%>">
+                <%= link_to 'CITES Suspension Notifications', admin_cites_suspension_notifications_path %>
+              </li>
+              <li class="<%= if controller_name == 'cites_acs' then 'active' end%>">
+                <%= link_to 'CITES Animals Committee', admin_cites_acs_path %>
+              </li>
+              <li class="<%= if controller_name == 'cites_pcs' then 'active' end%>">
+                <%= link_to 'CITES Plants Committee', admin_cites_pcs_path %>
+              </li>
+              <li class="<%= if controller_name == 'eu_regulations' then 'active' end%>">
+                <%= link_to 'EU Annex Regulations', admin_eu_regulations_path %>
+              </li>
+              <li class="<%= if controller_name == 'eu_suspension_regulations' then 'active' end%>">
+                <%= link_to 'EU Suspension Regulations', admin_eu_suspension_regulations_path %>
+              </li>
+              <li class="<%= if controller_name == 'eu_implementing_regulations' then 'active' end%>">
+                <%= link_to 'EU Implementing Regulations', admin_eu_implementing_regulations_path %>
+              </li>
+              <li class="<%= if controller_name == 'eu_council_regulations' then 'active' end%>">
+                <%= link_to 'EU Council Regulations', admin_eu_council_regulations_path %>
+              </li>
+              <li class="<%= if controller_name == 'ec_srgs' then 'active' end%>">
+                <%= link_to 'European Commission SRG', admin_ec_srgs_path %>
+              </li>
+
+              <li class="dropdown-submenu">
+                <a tabindex="-1" href="#">Historical events</a>
+                <ul class="dropdown-menu">
+                  <li class="<%= if controller_name == 'cites_tcs' then 'active' end%>">
+                    <%= link_to 'CITES Technical Committee', admin_cites_tcs_path %>
+                  </li>
+                 <li class="<%= if controller_name == 'cites_extraordinary_meetings' then 'active' end%>">
+                    <%= link_to 'CITES Extraordinary Meetings', admin_cites_extraordinary_meetings_path %>
+                  </li>
+                </ul>
+              </li>
+              <li class="divider"></li>
+              <li class="<%= if controller_name == 'cites_hash_annotations' then 'active' end%>">
+                <%= link_to 'CITES hash annotations', admin_cites_hash_annotations_path %>
+              </li>
+              <li class="<%= if controller_name == 'eu_hash_annotations' then 'active' end%>">
+                <%= link_to 'EU hash annotations', admin_eu_hash_annotations_path %>
+              </li>
+              <li class="divider"></li>
+              <li class="<%= if controller_name == 'nomenclature_changes' then 'active' end%>">
+                <%= link_to 'Nomenclature changes', admin_nomenclature_changes_path %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+
+        <% if current_user %>
+          <li class="<%= if controller_name == 'references' then 'active' end%>"><%= link_to 'References', admin_references_path %></li>
+        <% end %>
+
+        <% if current_user && current_user.is_manager_or_secretariat? %>
+          <% controller_matches = ["cites_suspensions"] %>
+          <li class="dropdown <%= if controller_matches.include?(controller_name) then 'active' end %>">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Batch Updates
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="<%= if controller_name == 'cites_suspensions' then 'active' end%>">
+                <%= link_to 'CITES Suspensions', admin_cites_suspensions_path %>
+              </li>
+              <li class="<%= if controller_name == 'quotas' then 'active' end%>">
+                <%= link_to 'CITES Quotas', admin_quotas_path %>
+              </li>
+              <li class="<%= if controller_name == 'eu_regulations' then 'active' end%>">
+                <%= link_to 'EU Annexes', admin_eu_regulations_path %>
+              </li>
+              <li class="<%= if controller_name == 'eu_suspension_regulations' then 'active' end%>">
+                <%= link_to 'EU Suspensions', admin_eu_suspension_regulations_path %>
+              </li>
+              <li class="<%= if controller_name == 'documents' then 'active' end%>">
+                <%= link_to 'Documents', admin_documents_path %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+
+        <% if current_user && current_user.is_manager_or_contributor_or_secretariat? %>
+          <% controller_matches = ["exports"] %>
+          <li class="dropdown <%= if controller_matches.include?(controller_name) then 'active' end %>">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Stats & Downloads
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to 'Data Downloads', admin_exports_path %></li>
+              <li><%= link_to 'Species DB Statistics', admin_stats_path %></li>
+              <li><%= link_to 'Trade DB Statistics', trade_stats_path %></li>
+              <% if current_user && !current_user.is_secretariat? %>
+                <li><%= link_to 'IUCN Taxon Mapping', admin_iucn_mappings_path %></li>
+                <li><%= link_to 'CMS Taxon Mapping', admin_cms_mappings_path %></li>
+                <li><%= link_to 'Species+ Events Tracking', admin_ahoy_events_path %></li>
+                <li><%= link_to 'Species+ Visits Tracking', admin_ahoy_visits_path %></li>
+                <li><%= link_to 'Species+ Activity Page', activities_path %></li>
+              <% end %>
+
+              <% if current_user && current_user.is_manager_or_secretariat? %>
+                <li><%= link_to 'API Usage', api_usage_overview_path %></li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+        <% if user_signed_in? %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="icon-cog"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Log out #{current_user.name}", destroy_user_session_path, :method => :delete %></li>
+              <li><%= link_to "Account", edit_user_registratione_path(current_user) %></li>
+              <% if current_user.is_manager? %>
+                <li><%= link_to 'Manage Users', admin_users_path %></li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

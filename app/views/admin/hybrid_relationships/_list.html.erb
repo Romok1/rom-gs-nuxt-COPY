@@ -1,0 +1,14 @@
+<% @hybrid_relationships.each do |rel| %>
+  <%= link_to rel.other_taxon_concept.full_name,
+    admin_taxon_concept_names_url(rel.other_taxon_concept) %>
+  <%= link_to edit_icon,
+    edit_admin_taxon_concept_hybrid_relationship_url(@taxon_concept, rel),
+    :remote => true %>
+  <% if can? :destroy, rel %>
+    <%= link_to delete_icon,
+      admin_taxon_concept_hybrid_relationship_url(@taxon_concept, rel),
+      data: { confirm: "Warning: you are about to delete data. Are you sure?" },
+      :method => :delete %>
+  <% end %>
+  <br>
+<% end %>

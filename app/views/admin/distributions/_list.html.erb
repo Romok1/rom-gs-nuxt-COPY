@@ -1,0 +1,51 @@
+<table class="table table-striped table-hover">
+  <thead>
+    <th>
+      Country or Territory
+    </th>
+    <th>
+      Tags
+    </th>
+    <th>
+      References
+    </th>
+    <th>
+      Actions
+    </th>
+    <th>
+      Info
+    </th>
+  </thead>
+  <tbody>
+  <% @distributions.each do |d| %>
+    <tr>
+      <td>
+        <%= d.geo_entity.name %>
+      </td>
+      <td>
+        <%= tag_list(d.tag_list) %>
+      </td>
+      <td>
+        <ul class="unstyled">
+          <% d.references.each do |r| %>
+            <li class="reference-citation"><%= link_to r.citation,
+            admin_references_url(:query => r.citation) %></li>
+          <% end %>
+        </ul>
+      </td>
+      <td>
+        <%= link_to edit_icon, edit_admin_taxon_concept_distribution_url(@taxon_concept, d), :remote => true %>
+        <% if can? :destroy, d %>
+          <%= link_to delete_icon, admin_taxon_concept_distribution_url(@taxon_concept, d),
+          data: { confirm: "Warning: you are about to delete data. Are you sure?" },
+          :method => :delete %>
+        <% end %>
+      </td>
+      <td>
+        <%= tracking_info(d) %>
+        <%= internal_notes(d) %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

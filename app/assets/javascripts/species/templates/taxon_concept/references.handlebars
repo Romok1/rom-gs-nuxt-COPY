@@ -1,0 +1,72 @@
+<div id="tab1">
+  <div class="block block02">
+    <strong class="title">
+      {{#if controllers.taxonConcept.isCms }}
+        CMS STANDARD REFERENCE
+      {{else}}
+        CITES STANDARD REFERENCE
+      {{/if}}
+    </strong>
+    {{#unless controllers.taxonConcept.standardReferences}}
+      <p class="empty">
+        {{#if controllers.taxonConcept.isCms }}
+          Information on CMS Standard References will be displayed once an automated web feed from the
+          CMS species database has been implemented.
+        {{else}}
+          There is no CITES Standard Reference for this species.
+        {{/if}}
+      </p>
+    {{else}}
+      <table summary="data table">
+        <tbody>
+          {{#each reference in controllers.taxonConcept.standardReferences}}
+          <tr>
+            <td>{{{reference.citation}}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{/unless}}
+  </div>
+  {{#if controllers.taxonConcept.references}}
+    <div class="block block02 add">
+      <strong class="title">OTHER TAXONOMIC REFERENCES</strong>
+      <table summary="data table">
+        <tbody>
+          {{#each reference in controllers.taxonConcept.references}}
+            {{#unless reference.is_standard}}
+            <tr>
+              <td>{{{reference.citation}}}</td>
+            </tr>
+            {{/unless}}
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  {{/if}}
+  <div class="block add">
+    <strong class="title">DISTRIBUTION REFERENCES</strong>
+    {{#if controllers.taxonConcept.distributionReferences}}
+      <table summary="data table">
+        <thead>
+          <tr>
+            <th class="col11">COUNTRY</th>
+            <th class="col12">REFERENCES</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each ref in controllers.taxonConcept.distributionReferences}}
+            <tr class="current">
+              <td>{{ref.country}}</td>
+              <td>
+                {{#stringToArray ref.country_references splitter="; "}}
+                  <span class="distrib_reference">{{{this}}}</span>
+                {{/stringToArray}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{/if}}
+  </div>
+</div>

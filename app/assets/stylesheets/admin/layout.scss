@@ -1,0 +1,87 @@
+@import "bootstrap";
+
+body { padding-top: 40px; }
+
+.admin-header {
+  clear:both;
+
+  h1 {
+    color: #999;
+    float:left;
+    width: 55%;
+  }
+  h3 {
+    float: left;
+    width: 50%;
+  }
+  .action-buttons {
+    float:right;
+    text-align: right;
+    width: 50%;
+    line-height: 40px;
+    margin: 10px 0;
+  }
+}
+
+.search-btn {
+  vertical-align: top;
+}
+
+.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-botton .container {
+  width: 970px;
+}
+
+form.documents {
+  border-top: 1px solid #eee;
+  .row-fluid {
+    margin: 20px;
+    &:last-child {
+      margin-top: 40px;
+    }
+  }
+  label {
+    display: inline-block;
+  }
+}
+
+.tooltip-inner {
+  text-align: left;
+}
+
+// used to allineate the button with the inputs
+#event-link {
+  margin-bottom: 10px;
+}
+
+.controls.nested {
+  margin-left: 0;
+}
+
+.row-fluid {
+  margin: 20px;
+}
+
+.btn.filter {
+  margin-bottom: 10px;
+}
+
+.align-on-select {
+  padding-left: 10px !important;
+}
+
+.nc-tag{
+  width: 50%;
+}
+
+form ol {
+  counter-reset: listCounter;
+  list-style-type: none;
+  .fields > li { counter-increment: listCounter; }
+  .fields > li:before {
+    content: "Taxon " counter(listCounter) ".";
+  }
+}
+
+.new-scientific-name-eg {
+  display: inline-block;
+}

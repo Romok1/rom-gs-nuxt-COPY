@@ -1,0 +1,5 @@
+{{#if needsConfirmation}}
+<button {{action "showConfirmation"}} {{bind-attr class="left::pull-right :btn :btn-primary"}}>{{title}}</button>
+{{else}}
+  <button {{action "confirm"}} {{bind-attr class="left::pull-right :btn :btn-primary"}}>{{title}}</button>
+{{/if}}

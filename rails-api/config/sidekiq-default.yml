@@ -1,9 +1,0 @@
-:concurrency: 5
-production:
- :concurrency: 25
- :logfile: ./log/sidekiq_default_production.log
-staging:
- :concurrency: 25
- :logfile: ./log/sidekiq_default_staging.log
-:queues:
-  - grip_default

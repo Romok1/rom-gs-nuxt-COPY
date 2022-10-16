@@ -1,0 +1,29 @@
+<h1>Annual Report Upload</h1>
+
+<form id="fileupload" action="/trade/annual_report_uploads" method="POST" enctype="multipart/form-data">
+  <label>Trading country</label>
+  {{view Ember.Select
+      name = "annual_report_upload[trading_country_id]"
+      contentBinding = "controllers.geoEntities.content"
+      optionLabelPath = "content.name"
+      optionValuePath = "content.id"
+  }}
+
+  <label>Point of view</label>
+  <input type="radio" name="annual_report_upload[point_of_view]" value="E" checked="checked">Exporter
+  <input type="radio" name="annual_report_upload[point_of_view]" value="I">Importer
+
+<p>Please upload a file in CSV format</p>
+
+<span class="btn btn-success fileinput-button">
+  <i class="icon-plus icon-white"></i>
+  <span>Select file</span>
+  {{view view.fileInput name="annual_report_upload[csv_source_file]"}}
+</span>
+<span>{{view.fileName}}</span>
+<div id="upload-message"></div>
+
+{{confirm-button title="Upload" action="uploadAnnualReport" left=true}}
+<input id='submitUpload' type="submit" value="Upload" disabled="disabled" style="display: none">
+
+</form>

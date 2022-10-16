@@ -1,0 +1,100 @@
+<strong class="title more">SUSPENSIONS</strong>
+{{#unless citesSuspensions}}
+  {{#if citesSuspensionsIsLoading}}
+    {{ partial 'species/spinner'}}
+  {{else}}
+    <p class="empty">There are no current suspensions in place for this {{#tolower rankName}}{{/tolower}}.</p>
+  {{/if}}
+{{else}}
+  <table summary="data table">
+    <thead>
+      <tr>
+        <th class="col2">DATE</th>
+        <th class="col2">COUNTRY</th>
+        <th class="col2">NOTIFICATION</th>
+        <th class="col6">NOTES</th>
+      </tr>
+    </thead>
+    <tbody {{bind-attr class="controller.citesSuspensionsExpanded:historic_expanded"}}>
+      {{#each suspension in currentCitesSuspensions}}
+        <tr class="current">
+          <td>
+            {{suspension.start_date}}
+          </td>
+          <td>
+            {{suspension.geo_entity.name}}<br>
+            <i>{{#if suspension.applies_to_import}}(import){{/if}}</i>
+          </td>
+          <td>
+            <a class="legal-links" href="{{unbound suspension.start_notification.url}}">
+              {{suspension.start_notification.name}}
+            </a>
+          </td>
+          <td class="last">
+            {{#if suspension.subspecies_info}}
+              {{{suspension.subspecies_info}}}<br />
+            {{/if}}
+            {{#if suspension.notes}}
+              {{{suspension.notes}}}
+              <br /><br />
+            {{/if}}
+            {{{suspension.nomenclature_note_en}}}
+          </td> 
+        </tr>
+      {{else}}
+        <tr class="current">
+          <td colspan=4>There are no current suspensions in place for this {{#tolower controllers.taxonConcept.rankName}}{{/tolower}}.</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  {{#if historicCitesSuspensions}}
+    <div {{bind-attr class=":historic controller.citesSuspensionsExpanded::hidden"}}>
+      <table summary="data table">
+        <thead>
+          <tr>
+            <th class="col2">&nbsp;</th>
+            <th class="col2">&nbsp;</th>
+            <th class="col2">&nbsp;</th>
+            <th class="col6">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each suspension in historicCitesSuspensions}}
+            <tr>
+              <td>
+                {{suspension.start_date}}
+              </td>
+              <td>
+                {{suspension.geo_entity.name}}<br>
+                <i>{{#if suspension.applies_to_import}}(import){{/if}}</i>
+              </td>
+              <td>
+                <a class="legal-links" href="{{unbound suspension.start_notification.url}}">
+                  {{suspension.start_notification.name}}
+                </a>,
+              </td>
+              <td>
+                {{#if suspension.subspecies_info}}
+                  {{{suspension.subspecies_info}}}<br />
+                {{/if}}
+                {{#if suspension.notes}}
+                  {{{suspension.notes}}}
+                  <br /><br />
+                {{/if}}
+                {{{suspension.nomenclature_note_en}}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <div {{bind-attr class=":btn-hloder citesSuspensionsExpanded:expanded"}}>
+      {{#if controller.citesSuspensionsExpanded}}
+        <a class="link active" {{action 'contractList' 'cites_suspensions' 'citesSuspensionsExpanded'}}>HIDE HISTORY</a>
+      {{else}}
+        <a class="link" {{action 'expandList' 'cites_suspensions' 'citesSuspensionsExpanded'}}>SHOW HISTORY</a>
+      {{/if}}
+    </div>
+  {{/if}}
+{{/unless}}

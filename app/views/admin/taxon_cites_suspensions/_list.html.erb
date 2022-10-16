@@ -1,0 +1,45 @@
+<thead>
+  <th>Year</th>
+  <th>Start date</th>
+  <th>End date</th>
+  <th>Country or Territory</th>
+  <th>Purpose</th>
+  <th>Term</th>
+  <th>Source</th>
+  <th>Basis</th>
+  <th>Notes</th>
+  <th>Actions</th>
+  <th>Info</th>
+</thead>
+<tbody>
+  <% collection.each do |suspension| %>
+    <tr class="<%= if suspension.is_current? then "current_listing" end %>">
+      <td><%= suspension.year %></td>
+      <td><%= suspension.start_notification && suspension.start_date_formatted %></td>
+      <td><%= suspension.end_notification && suspension.end_date_formatted %></td>
+      <td>
+        <%= '[IMPORT]' if suspension.applies_to_import %>
+        <%= suspension.geo_entity && suspension.geo_entity.name_en %>
+      </td>
+      <td><%= suspension.purposes && suspension.purposes.map(&:code).join(', ') %></td>
+      <td><%= suspension.terms && suspension.terms.map(&:code).join(', ') %></td>
+      <td><%= suspension.sources && suspension.sources.map(&:code).join(', ') %></td>
+      <td><%= suspension.start_notification && suspension.start_notification.subtype %></td>
+      <td><%= suspension.notes %></td>
+      <td>
+        <%= link_to edit_icon,
+          edit_admin_taxon_concept_cites_suspension_path(@taxon_concept, suspension)
+        %>
+        <%= link_to delete_icon,
+          admin_taxon_concept_cites_suspension_path(@taxon_concept, suspension),
+          data: { confirm: "Warning: you are about to delete data. Are you sure?" }, :method => :delete
+        %>
+      </td>
+      <td>
+        <%= tracking_info(suspension) %>
+        <%= internal_notes(suspension) %>
+      </td>
+    </tr>
+  <% end -%>
+</tbody>
+

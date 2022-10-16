@@ -1,0 +1,51 @@
+<thead>
+  <th>Geo entity</th>
+  <th width="20%">Relationship type</th>
+  <th>Related geo entity</th>
+  <th width="10%">Actions</th>
+</thead>
+<tbody>
+  <% collection.each do |geo_relationship| -%>
+    <tr>
+      <td>
+        <a href="#"
+          class="editable editable-click editable-required editable-geo-entity"
+          data-type="select" data-resource="geo_relationship"
+          data-name="geo_entity_id" data-placeholder="Required"
+          data-original-title="Enter the related entity's name"
+          data-url="<%= resource_url(geo_relationship) %>"
+          data-pk="<%= geo_relationship.id %>">
+          <%= geo_relationship.geo_entity.name %>
+        </a>
+      </td>
+      <td>
+        <a href="#"
+          id="geo-relationship-<%= geo_relationship.id %>"
+          class="editable editable-click editable-required editable-geo-relationship-type"
+          data-type="select" data-resource="geo_relationship"
+          data-name="designation_id" data-placeholder="Required"
+          data-original-title="Enter the geo relationship's type"
+          data-url="<%= resource_url(geo_relationship) %>"
+          data-pk="<%= geo_relationship.id %>">
+          <%= geo_relationship.geo_relationship_type.name %>
+        </a>
+      </td>
+      <td>
+        <a href="#"
+          class="editable editable-click editable-required editable-geo-entity"
+          data-type="select" data-resource="geo_relationship"
+          data-name="other_geo_entity_id" data-placeholder="Required"
+          data-original-title="Enter the related entity's name"
+          data-url="<%= resource_url(geo_relationship) %>"
+          data-pk="<%= geo_relationship.id %>">
+          <%= geo_relationship.related_geo_entity.name %>
+        </a>
+      </td>
+      <td>
+        <%= link_to delete_icon, resource_url(geo_relationship),
+          data: { confirm: "Warning: you are about to delete data. Are you sure?" }, :method => :delete
+        %>
+      </td>
+    </tr>
+  <% end -%>
+</tbody>
