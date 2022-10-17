@@ -44,8 +44,7 @@ services:
     links:
       - db
       - redis
-    command: bash -c "bundle exec sidekiq"
-    #command: bundle exec sidekiq
+    command: bundle exec sidekiq
     env_file:
        - '.env'
 
