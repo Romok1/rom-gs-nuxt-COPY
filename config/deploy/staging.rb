@@ -1,9 +1,9 @@
 set :stage, :staging
-set :branch, :develop
+set :branch, :test-sapi-new
 
-server "sapi-staging.linode.unep-wcmc.org", user: "wcmc", roles: %w{app web db}
+server "romoke-test.unep-wcmc.org", user: "wcmc", roles: %w{app web db}
 
-set :domain, "sapi-staging.linode.unep-wcmc.org"
+set :domain, "romoke-test.unep-wcmc.org"
 
 set :application, "sapi"
 
