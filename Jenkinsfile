@@ -171,7 +171,7 @@ def deploy() {
         git checkout test-sapi-new
         rvm use $(cat .ruby-version) --install
         bundle install
-        bundle exec cap staging deploy
+        bundle exec cap staging deploy --trace
     '''
 }
 
