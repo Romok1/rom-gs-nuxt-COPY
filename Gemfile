@@ -39,6 +39,10 @@ gem 'redis-rails', '~> 4.0.0'
 
 gem 'whenever', :require => false
 
+gem 'rbnacl', '< 5.0', :require => false
+gem 'rbnacl-libsodium', :require => false
+gem 'bcrypt_pbkdf', '< 2.0', :require => false
+
 gem 'sprockets', '~> 2.12.5' # upgrading to 3 breaks handlebars/tilt
 gem 'ember-rails', '~> 0.14.1'
 gem 'ember-source', '~> 1.6.0'
