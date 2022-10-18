@@ -148,8 +148,8 @@ pipeline {
 def buildProject() {
     sh 'echo "Building Project.............."'
     sh "cp .env-jenkins .env"
-    sh "cp config/database-jenkinsci.yml config/database.yml"
-    sh "cp config/sidekiq-jenkinsci.yml config/sidekiq.yml"
+    sh "cp config/database.yml.jenkins config/database.yml"
+    sh "cp config/sidekiq.yml.jenkins config/sidekiq.yml"
     sh "cp config/secrets.yml.jenkins config/secrets.yml"
     sh "docker-compose -f ${COMPOSE_FILE} --project-name=${JOB_NAME} build --pull --build-arg RAILS_MASTER_KEY=${rails_key}"
 }
