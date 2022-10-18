@@ -155,7 +155,7 @@ def buildProject() {
 }
 
 def prepareDatabase() {
-    COMMAND = "bundle exec rake db:drop db:create db:migrate db:seed"
+    COMMAND = "bundle exec rake db:drop db:create db:migrate"
     sh "docker-compose --project-name=${JOB_NAME} run web ${COMMAND}"
 }
 
