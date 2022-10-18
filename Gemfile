@@ -39,9 +39,9 @@ gem 'redis-rails', '~> 4.0.0'
 
 gem 'whenever', :require => false
 
-gem 'rbnacl', '< 5.0', :require => false
-gem 'rbnacl-libsodium', :require => false
-gem 'bcrypt_pbkdf', '< 2.0', :require => false
+#gem 'rbnacl', '< 5.0', :require => false
+#gem 'rbnacl-libsodium', :require => false
+#gem 'bcrypt_pbkdf', '< 2.0', :require => false
 
 gem 'sprockets', '~> 2.12.5' # upgrading to 3 breaks handlebars/tilt
 gem 'ember-rails', '~> 0.14.1'
@@ -120,7 +120,7 @@ group :development do
   gem 'git_pretty_accept'
   gem 'rubocop', '~> 0.40.0', require: false
   gem 'letter_opener'
-  #gem 'bcrypt_pbkdf'
+  gem 'bcrypt_pbkdf'
   gem 'ed25519'
   # @TODO: bring back when ruby updated to > 2.6 # gem 'net-ssh', '7.0.0.beta1' # openssl 3.0 compatibility @see https://stackoverflow.com/q/72068406/1090438
 end
