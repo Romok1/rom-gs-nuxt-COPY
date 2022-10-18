@@ -80,7 +80,7 @@ pipeline {
     	}
 	stage("Deploy to Staging") { 
             when {
-                branch 'develop'
+                branch 'test-sapi-new'
             }
             steps { 
                	script {
@@ -151,7 +151,7 @@ def buildProject() {
     sh "cp config/database.yml.jenkins config/database.yml"
     sh "cp config/sidekiq.yml.jenkins config/sidekiq.yml"
     sh "cp config/secrets.yml.jenkins config/secrets.yml"
-    sh "docker-compose -f ${COMPOSE_FILE} --project-name=${JOB_NAME} build --pull --build-arg RAILS_MASTER_KEY=${rails_key}"
+    sh "docker-compose -f ${COMPOSE_FILE} --project-name=${JOB_NAME} build --pull"
 }
 
 def prepareDatabase() {
@@ -168,7 +168,7 @@ def deploy() {
     sh '''#!/bin/bash -l
         eval $(ssh-agent)
         ssh-add /tmp/id_deploy
-        git checkout develop
+        git checkout test-sapi-new
         rvm use $(cat .ruby-version) --install
         bundle install
         bundle exec cap staging deploy
