@@ -17,7 +17,7 @@ gem 'pg_array_parser'
 gem 'nested-hstore'
 gem 'pg_search', '~> 0.6.0' # 0.5.7
 gem 'foreigner'
-gem 'oj' # optimised JSON (picked by multi_json)
+#gem 'oj' # optimised JSON (picked by multi_json)
 gem 'nokogiri', '>= 1.8.5'
 gem 'inherited_resources', '~> 1.7.0'
 gem 'traco', '~> 2.0.0'
@@ -117,6 +117,7 @@ group :development do
   gem 'rubocop', '~> 0.40.0', require: false
   gem 'letter_opener'
  # gem 'bcrypt_pbkdf'
+  gem 'oj' # optimised JSON (picked by multi_json)
   gem 'ed25519'
   # @TODO: bring back when ruby updated to > 2.6 # gem 'net-ssh', '7.0.0.beta1' # openssl 3.0 compatibility @see https://stackoverflow.com/q/72068406/1090438
 end
