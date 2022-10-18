@@ -1,5 +1,5 @@
 set :stage, :staging
-set :branch, :test-sapi-new
+set :branch, :testsapinewdeploy
 
 server "romoke-test.unep-wcmc.org", user: "wcmc", roles: %w{app web db}
 
