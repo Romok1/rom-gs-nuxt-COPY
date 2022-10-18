@@ -80,7 +80,7 @@ pipeline {
     	}
 	stage("Deploy to Staging") { 
             when {
-                branch 'test-sapi-new'
+                branch 'testsapinewdeploy'
             }
             steps { 
                	script {
@@ -168,7 +168,7 @@ def deploy() {
     sh '''#!/bin/bash -l
         eval $(ssh-agent)
         ssh-add /tmp/id_deploy
-        git checkout test-sapi-new
+        git checkout testsapinewdeploy
         rvm use $(cat .ruby-version) --install
         bundle install
         bundle exec cap staging deploy --trace
