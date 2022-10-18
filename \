@@ -354,7 +354,7 @@ GEM
     rainbow (2.0.0)
     rake (10.0.4)
     rbnacl (4.0.2)
-      ffi
+      ffi (>= 0)
     rbnacl-libsodium (1.0.16)
       rbnacl (>= 3.0.1)
     redis (3.3.0)
