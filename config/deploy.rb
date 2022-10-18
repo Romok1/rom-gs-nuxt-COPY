@@ -2,7 +2,7 @@
 lock '3.11.0'
 
 set :application, 'sapi'
-set :repo_url, 'git@github.com:unepwcmc/SAPI.git'
+set :repo_url, 'git@github.com:Romok1/rom-gs-nuxt.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -14,7 +14,7 @@ set :deploy_to, "/home/#{fetch(:deploy_user)}/#{fetch(:application)}"
 set :backup_path, "/home/#{fetch(:deploy_user)}/Backup"
 
 # Default value for :scm is :git
-set :scm_username, "unepwcmc-read"
+set :scm_username, "Romok1"
 
 # Default value for :format is :pretty
 # set :format, :pretty
@@ -54,27 +54,27 @@ require 'yaml'
 require 'json'
 secrets = YAML.load(File.open('config/secrets.yml'))
 
-set :slack_token, secrets["development"]["capistrano_slack"] # comes from inbound webhook integration
-set :api_token, secrets["development"]["api_token"]
-set :slack_room, "#speciesplus" # the room to send the message to
-set :slack_subdomain, "wcmc" # if your subdomain is example.slack.com
+#set :slack_token, secrets["development"]["capistrano_slack"] # comes from inbound webhook integration
+#set :api_token, secrets["development"]["api_token"]
+#set :slack_room, "#speciesplus" # the room to send the message to
+#set :slack_subdomain, "wcmc" # if your subdomain is example.slack.com
 
 # optional
-set :slack_application, "SAPI" # override Capistrano `application`
-deployment_animals = [
-  ["Loxodonta deployana", ":elephant:"],
-  ["Canis deployus", ":wolf:"],
-  ["Panthera capistranis", ":tiger:"],
-  ["Bison deployon", ":ox:"],
-  ["Ursus capistranus", ":bear:"],
-  ["Crotalus rattledeploy", ":snake:"],
-  ["Caiman assetocompilatus", ":crocodile:"]
-]
+#set :slack_application, "SAPI" # override Capistrano `application`
+#deployment_animals = [
+#  ["Loxodonta deployana", ":elephant:"],
+#  ["Canis deployus", ":wolf:"],
+#  ["Panthera capistranis", ":tiger:"],
+#  ["Bison deployon", ":ox:"],
+#  ["Ursus capistranus", ":bear:"],
+#  ["Crotalus rattledeploy", ":snake:"],
+#  ["Caiman assetocompilatus", ":crocodile:"]
+#]
 
-shuffle_deployer = deployment_animals.shuffle.first
+#shuffle_deployer = deployment_animals.shuffle.first
 
-set :slack_username, shuffle_deployer[0] # displayed as name of message sender
-set :slack_emoji, shuffle_deployer[1] # will be used as the avatar for the message
+#set :slack_username, shuffle_deployer[0] # displayed as name of message sender
+#set :slack_emoji, shuffle_deployer[1] # will be used as the avatar for the message
 
 #namespace :sidekiq do
 # task :quiet do
