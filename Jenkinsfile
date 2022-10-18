@@ -16,14 +16,14 @@ pipeline {
    }
    environment {
         SLACK_TEAM_DOMAIN = "wcmc"
-        SLACK_TOKEN = credentials('slack-token-sapi')
-        SLACK_CHANNEL = "#jenkins-cicd-sapi"
+        SLACK_TOKEN = credentials('slack-token-test-jenkinsci')
+        SLACK_CHANNEL = "#test-jenkinsci"
         COMPOSE_FILE = "docker-compose.yml"
 	GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
-	SNYK_URL = "https://app.snyk.io/org/informatics.wcmc/projects"
+	SNYK_URL = "https://app.snyk.io/org/olaiyafunmmi/projects"
         jenkinsConsoleUrl = "$env.JOB_URL" + "$env.BUILD_NUMBER" + "/consoleText"
         DIR = "$JENKINS_HOME/workspace"
-   }
+   } //SLACK_TOKEN = credentials('slack-token-sapi') SLACK_CHANNEL = "#jenkins-cicd-sapi"   SNYK_URL = "https://app.snyk.io/org/informatics.wcmc/projects"
    stages {
         stage ('Start') {
             steps {
@@ -147,9 +147,10 @@ pipeline {
 
 def buildProject() {
     sh 'echo "Building Project.............."'
-    sh "cp .env-jenkins-docker .env"
+    sh "cp .env-jenkins .env"
     sh "cp config/database-jenkinsci.yml config/database.yml"
     sh "cp config/sidekiq-jenkinsci.yml config/sidekiq.yml"
+    sh "cp config/secrets.yml.jenkins config/secrets.yml"
     sh "docker-compose -f ${COMPOSE_FILE} --project-name=${JOB_NAME} build --pull --build-arg RAILS_MASTER_KEY=${rails_key}"
 }
 
