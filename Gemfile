@@ -143,6 +143,7 @@ group :test do
   gem 'rbnacl-libsodium', :require => false
   gem 'bcrypt_pbkdf', '< 2.0', :require => false
   gem 'wkhtmltopdf-binary', '~> 0.9.9'
+  gem 'appsignal'
 end
 
 gem 'rake', '~> 10.0.3'
@@ -167,5 +168,5 @@ gem 'dotenv-rails'
 
 gem 'sitemap_generator'
 
-gem 'appsignal'
+#gem 'appsignal'
 gem 'test-unit', '~> 3.1' # annoyingly, rails console won't start without it in staging / production
