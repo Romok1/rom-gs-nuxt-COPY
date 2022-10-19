@@ -55,7 +55,7 @@ gem 'acts-as-taggable-on', '~> 4.0.0'
 gem 'carrierwave'
 gem 'prawn', '~> 0.13.2'
 gem 'pdfkit'
-gem 'wkhtmltopdf-binary', '~> 0.9.9'
+#gem 'wkhtmltopdf-binary', '~> 0.9.9'
 
 gem 'underscore-rails'
 gem "font-awesome-rails"
@@ -142,6 +142,7 @@ group :test do
   gem 'rbnacl', '< 5.0', :require => false
   gem 'rbnacl-libsodium', :require => false
   gem 'bcrypt_pbkdf', '< 2.0', :require => false
+  gem 'wkhtmltopdf-binary', '~> 0.9.9'
 end
 
 gem 'rake', '~> 10.0.3'
