@@ -47,7 +47,7 @@ gem 'handlebars-source', '1.0.12'
 gem 'jquery-rails', '2.1.4' # do not upgrade until https://github.com/jquery/jquery/pull/1142 isd pulled into jquery-rails
 gem 'jquery-mousewheel-rails', '~> 0.0.9'
 gem 'jquery-cookie-rails', '~> 1.3.1.1'
-gem 'bootstrap-sass', '~> 2.3.2.2'
+#gem 'bootstrap-sass', '~> 2.3.2.2'
 gem 'kaminari'
 gem 'select2-rails', '~> 3.5.4' #initSelection deprecated on upgrade to version 4
 gem 'nested_form', '~> 0.3.2'
@@ -101,7 +101,7 @@ group :development do
   # Deploy with Capistrano
   gem 'capistrano', '~> 3.11.0', require: false
   gem 'capistrano-rails',   '~> 1.4.0', require: false
-  #gem 'capistrano-bundler', '~> 1.5.0', require: false
+  gem 'capistrano-bundler', '~> 1.5.0', require: false
   gem 'capistrano-rvm', '~> 0.1.2', require: false
   gem 'capistrano-maintenance', '~> 1.0', require: false
   gem 'capistrano-passenger', '~> 0.2.0', require: false
@@ -167,6 +167,6 @@ gem 'rails-secrets', '~> 1.0.2'
 gem 'dotenv-rails'
 
 gem 'sitemap_generator'
-
+gem 'bootstrap-sass', '~> 2.3.2.2'
 #gem 'appsignal'
 gem 'test-unit', '~> 3.1' # annoyingly, rails console won't start without it in staging / production
