@@ -171,10 +171,9 @@ def deploy() {
         git checkout testsapinewdeploy
         rvm use $(cat .ruby-version) --install
         bundle install
-	cp config/database.yml.sample config/database.yml
         bundle exec cap staging deploy --trace
     '''
-}
+} //cp config/database.yml.sample config/database.yml
 
 def dockerImageCleanup() {
     sh "docker-compose --project-name=${JOB_NAME} stop &> /dev/null || true &> /dev/null"
