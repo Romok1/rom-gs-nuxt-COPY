@@ -171,6 +171,7 @@ def deploy() {
         git checkout testsapinewdeploy
         rvm use $(cat .ruby-version) --install
         bundle install
+	cp config/database.yml.sample config/database.yml
         bundle exec cap staging deploy --trace
     '''
 }
