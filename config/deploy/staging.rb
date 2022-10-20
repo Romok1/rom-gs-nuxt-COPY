@@ -1,15 +1,18 @@
 set :stage, :staging
 set :branch, :testsapinewdeploy
 
-server "romoke-test.unep-wcmc.org", user: "wcmc", roles: %w{app web db}
+server "44.210.8.224", user: "ubuntu", roles: %w{app web db}
+set :domain, "44.210.8.224"
 
-set :domain, "romoke-test.unep-wcmc.org"
+#server "romoke-test.unep-wcmc.org", user: "wcmc", roles: %w{app web db}
+
+#set :domain, "romoke-test.unep-wcmc.org"
 
 set :application, "sapi"
 
 set :server_name, "#{fetch(:application)}.#{fetch(:domain)}"
 
-set :sudo_user, "wcmc"
+set :sudo_user, "ubuntu"
 
 set :app_port, "80"
 
