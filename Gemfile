@@ -17,7 +17,7 @@ gem 'pg_array_parser'
 gem 'nested-hstore'
 gem 'pg_search', '~> 0.6.0' # 0.5.7
 gem 'foreigner'
-#gem 'oj' # optimised JSON (picked by multi_json)
+gem 'oj' # optimised JSON (picked by multi_json)
 gem 'nokogiri', '>= 1.8.5'
 gem 'inherited_resources', '~> 1.7.0'
 gem 'traco', '~> 2.0.0'
@@ -47,7 +47,7 @@ gem 'handlebars-source', '1.0.12'
 gem 'jquery-rails', '2.1.4' # do not upgrade until https://github.com/jquery/jquery/pull/1142 isd pulled into jquery-rails
 gem 'jquery-mousewheel-rails', '~> 0.0.9'
 gem 'jquery-cookie-rails', '~> 1.3.1.1'
-#gem 'bootstrap-sass', '~> 2.3.2.2'
+gem 'bootstrap-sass', '~> 2.3.2.2'
 gem 'kaminari'
 gem 'select2-rails', '~> 3.5.4' #initSelection deprecated on upgrade to version 4
 gem 'nested_form', '~> 0.3.2'
@@ -55,7 +55,7 @@ gem 'acts-as-taggable-on', '~> 4.0.0'
 gem 'carrierwave'
 gem 'prawn', '~> 0.13.2'
 gem 'pdfkit'
-#gem 'wkhtmltopdf-binary', '~> 0.9.9'
+gem 'wkhtmltopdf-binary', '~> 0.9.9'
 
 gem 'underscore-rails'
 gem "font-awesome-rails"
@@ -101,7 +101,7 @@ group :development do
   # Deploy with Capistrano
   gem 'capistrano', '~> 3.11.0', require: false
   gem 'capistrano-rails',   '~> 1.4.0', require: false
- # gem 'capistrano-bundler', '~> 1.5.0', require: false
+  gem 'capistrano-bundler', '~> 1.5.0', require: false
   gem 'capistrano-rvm', '~> 0.1.2', require: false
   gem 'capistrano-maintenance', '~> 1.0', require: false
   gem 'capistrano-passenger', '~> 0.2.0', require: false
@@ -116,9 +116,11 @@ group :development do
   gem 'git_pretty_accept'
   gem 'rubocop', '~> 0.40.0', require: false
   gem 'letter_opener'
- # gem 'bcrypt_pbkdf'
-  gem 'oj' # optimised JSON (picked by multi_json)
+  #gem 'bcrypt_pbkdf'
   gem 'ed25519'
+  gem 'rbnacl', '< 5.0', :require => false
+  gem 'rbnacl-libsodium', :require => false
+  gem 'bcrypt_pbkdf', '< 2.0', :require => false
   # @TODO: bring back when ruby updated to > 2.6 # gem 'net-ssh', '7.0.0.beta1' # openssl 3.0 compatibility @see https://stackoverflow.com/q/72068406/1090438
 end
 
@@ -139,11 +141,6 @@ group :test do
   gem 'simplecov', :require => false
   gem 'coveralls', :require => false
   gem 'capybara', '~> 2.2.0'
-  gem 'rbnacl', '< 5.0', :require => false
-  gem 'rbnacl-libsodium', :require => false
-  gem 'bcrypt_pbkdf', '< 2.0', :require => false
-  gem 'wkhtmltopdf-binary', '~> 0.9.9'
-  gem 'appsignal'
 end
 
 gem 'rake', '~> 10.0.3'
@@ -167,6 +164,6 @@ gem 'rails-secrets', '~> 1.0.2'
 gem 'dotenv-rails'
 
 gem 'sitemap_generator'
-gem 'bootstrap-sass', '~> 2.3.2.2'
-#gem 'appsignal'
+
+gem 'appsignal'
 gem 'test-unit', '~> 3.1' # annoyingly, rails console won't start without it in staging / production
