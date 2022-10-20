@@ -8,7 +8,7 @@ set :repo_url, 'git@github.com:Romok1/rom-gs-nuxt.git'
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_user, 'wcmc'
+set :deploy_user, 'ubuntu'
 set :deploy_to, "/home/#{fetch(:deploy_user)}/#{fetch(:application)}"
 
 set :backup_path, "/home/#{fetch(:deploy_user)}/Backup"
